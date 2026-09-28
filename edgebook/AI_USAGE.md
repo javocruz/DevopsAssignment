@@ -29,3 +29,18 @@ Hello! what i did for this first push was add my whole repo idea into various co
 **In my own words, how this works:**
 i added config.py so get_settings reads my settings from the environment. if PORT is not set, port is 8000. if TYPESAFE_API_KEY is missing, it stays an empty string and the app still starts. pytest.ini lets me run plain pytest so it can import config. all of these things are being set up to prevent future errors, and making everything cleaner
 
+
+## 2026-09-28 / C2
+
+**Tool:** Cursor
+
+**Prompt:** Implement C2: FastAPI entrypoint, one SQLite connection per request, versioned schema with the 5 tables, and database tests.
+
+**Disposition (Accepted / Modified / Rejected):** Accepted
+
+**What changed & why:** Added `db.py`, `app.py`, `tests/conftest.py`, and `tests/test_db.py`. Startup lives in `main()` so tests never create `./data/edgebook.db`.
+
+**In my own words, how this works:**
+what we did in this commit was more basic setups, we initialized the database with db.py to create DATA_DIR, it also sets up the basic tables to be able to work with them later. 
+
+

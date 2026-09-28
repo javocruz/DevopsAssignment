@@ -29,7 +29,7 @@ Keys: `export TYPESAFE_API_KEY=...` and `export THENEWSAPI_TOKEN=...` in the she
 - **Tests:** defaults with empty env; `PORT=9000` -> int 9000; `EDGE_THRESHOLD=abc` -> ValueError; `DECIDER=banana` -> ValueError.
 - **Done when:** tests pass.
 
-### [ ] C2. `Add FastAPI entrypoint, per-request SQLite connections and versioned schema`
+### [x] C2. `Add FastAPI entrypoint, per-request SQLite connections and versioned schema`
 - **Files:** `app.py`, `db.py`, `tests/test_db.py`, `tests/conftest.py`
 - **Tasks:**
   - `db.get_connection()`: `row_factory = sqlite3.Row`, `PRAGMA foreign_keys=ON`, `PRAGMA journal_mode=WAL`.
