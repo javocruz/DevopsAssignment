@@ -15,6 +15,9 @@ htmlcov/
 # Local env files are optional, never required, never committed
 .env
 
+# Javi's local study notes, not part of the submission
+docs/context/08-decisions.md
+
 # OS / editor
 .DS_Store
 .vscode/

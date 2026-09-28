@@ -20,7 +20,7 @@ Keys: `export TYPESAFE_API_KEY=...` and `export THENEWSAPI_TOKEN=...` in the she
 - **Tasks:** `git init`, GitHub repo, push.
 - **AI_USAGE row:** docs drafted with Claude.
 
-### [ ] C1. `Add validated config reading all env vars with offline defaults`
+### [x] C1. `Add validated config reading all env vars with offline defaults`
 - **Files:** `config.py`, `requirements.txt`, `tests/test_config.py`
 - **Tasks:**
   - `Settings` frozen dataclass with every var in `03-architecture.md`, typed.
