@@ -58,7 +58,7 @@ If the spec already decides it, follow that and say which part you followed.
 
 1. **Explain-back**: 3 to 6 bullets on how the new code works, using the real function and variable names, in plain language.
 2. **A worked example** if any math was added (real numbers, step by step).
-3. **Write the `AI_USAGE.md` entry into the file**, in the same heading format already there. Fill Tool, Prompt, Disposition, and What changed. Leave **In my own words, how this works** blank. Never write that field for him. Do not only paste the entry in chat.
+3. **Write the `AI_USAGE.md` entry into the file as a new table row** with the six required columns. Fill Date/commit, Tool, Prompt, Disposition, and What changed. Leave **In my own words, how this works** blank. Never write that cell for him. Do not switch the log to headings. Do not only paste the entry in chat.
 4. **2 or 3 quiz questions** from `07-learning-guide.md` that the commit touches.
 
 ## Tone
