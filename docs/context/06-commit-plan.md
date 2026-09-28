@@ -40,7 +40,7 @@ Keys: `export TYPESAFE_API_KEY=...` and `export THENEWSAPI_TOKEN=...` in the she
 - **Tests:** fresh DB gets version 1 + 5 tables; second `init_db()` is a no-op; wrong version raises RuntimeError.
 - **Done when:** `python app.py` starts in ~1 s, `/healthz` ok, `sqlite3 data/edgebook.db ".tables"` shows 5 tables.
 
-### [ ] C3. `Add ADR 1: choose FastAPI over Flask and Django`
+### [x] C3. `Add ADR 1: choose FastAPI over Flask and Django`
 - **Files:** `ADR.md`. Javi writes it. Dated 2026-09-28.
 
 ---

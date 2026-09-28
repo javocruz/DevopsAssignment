@@ -2,6 +2,14 @@
 
 Five entries, added on the day each decision is made.
 
+## [1]. Backend framework
+Date: 2026-09-28
+Status: Decided
+Context: Edgebook is one Python process with SQLite and JSON routes. It needs a web framework, and the database connection cannot be shared across requests.
+Decision: I chose FastAPI. It checks request data and serves /docs on its own, and Depends fits get_db: one SQLite connection per request, opened and closed for me.
+Alternatives considered: Django. It pushes an ORM, and this project uses plain sqlite3 on purpose. It is also a lot of framework for one small app.
+Consequences: Routes can use Depends(get_db), and /docs is free. The cost is that I have to be able to explain a FastAPI dependency, and routes stay plain def rather than async.
+
 <!--
 Format (copy for each entry):
 
