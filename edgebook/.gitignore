@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# App data (SQLite lives here, never commit it)
+data/
+
+# Test / coverage output
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local env files are optional, never required, never committed
+.env
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
