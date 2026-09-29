@@ -52,7 +52,7 @@ Keys: `export TYPESAFE_API_KEY=...` and `export THENEWSAPI_TOKEN=...` in the she
 - **Tasks:** dataclasses exactly as `05-logic-spec.md`. Javi writes ADR 2 (mention: news inside Intel, one DB file now, per-domain DBs in A2).
 - **Done when:** imports work, ADR 2 dated 2026-09-29.
 
-### [ ] C5. `Add fixture market source and Intel repo for markets and snapshots`
+### [x] C5. `Add fixture market source and Intel repo for markets and snapshots`
 - **Files:** `intel/sources.py` (FixtureSource), `intel/repo.py`, `fixtures/resolved_markets.json` (markets only for now, 5 hand-made rows are fine until C8 rebuilds it), `tests/test_sources.py`
 - **Tasks:** `INSERT OR IGNORE` for markets and snapshots; `list_markets`, `latest_snapshot`.
 - **Tests:** fixture rows have required keys, `0 < yes_price < 1`, outcome in {0,1}; saving twice doesn't duplicate.

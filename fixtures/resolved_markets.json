@@ -1,0 +1,62 @@
+[
+  {
+    "id": "fx-ecb-cut",
+    "question": "Will the ECB cut rates at its December 2025 meeting?",
+    "rules": "Resolves Yes if the ECB lowers its deposit facility rate at the December 2025 monetary policy meeting.",
+    "category": "economics",
+    "end_date": "2025-12-18T23:59:00Z",
+    "news_query": "ECB rate cut",
+    "yes_price": 0.62,
+    "captured_at": "2025-11-20T12:00:00Z",
+    "status": "resolved",
+    "outcome": 1
+  },
+  {
+    "id": "fx-btc-100k",
+    "question": "Will Bitcoin close above 100000 on 2025-12-31?",
+    "rules": "Resolves Yes if the BTC/USD daily close on 2025-12-31 is above 100000.",
+    "category": "crypto",
+    "end_date": "2025-12-31T23:59:00Z",
+    "news_query": "Bitcoin price",
+    "yes_price": 0.41,
+    "captured_at": "2025-12-01T12:00:00Z",
+    "status": "resolved",
+    "outcome": 0
+  },
+  {
+    "id": "fx-spain-euro",
+    "question": "Will Spain win Euro 2024?",
+    "rules": "Resolves Yes if Spain wins the UEFA Euro 2024 final.",
+    "category": "sports",
+    "end_date": "2024-07-14T23:59:00Z",
+    "news_query": "Spain Euro 2024",
+    "yes_price": 0.18,
+    "captured_at": "2024-06-10T12:00:00Z",
+    "status": "resolved",
+    "outcome": 1
+  },
+  {
+    "id": "fx-fed-cut",
+    "question": "Will the Fed cut rates before July 2024?",
+    "rules": "Resolves Yes if the Federal Reserve lowers the federal funds target range before 2024-07-01.",
+    "category": "economics",
+    "end_date": "2024-06-30T23:59:00Z",
+    "news_query": "Fed rate cut",
+    "yes_price": 0.55,
+    "captured_at": "2024-03-01T12:00:00Z",
+    "status": "resolved",
+    "outcome": 0
+  },
+  {
+    "id": "fx-paris-olympics",
+    "question": "Will Paris host the 2024 Olympics?",
+    "rules": "Resolves Yes if the 2024 Summer Olympics open in Paris as scheduled.",
+    "category": "sports",
+    "end_date": "2024-07-26T23:59:00Z",
+    "news_query": "Paris Olympics",
+    "yes_price": 0.97,
+    "captured_at": "2024-06-01T12:00:00Z",
+    "status": "resolved",
+    "outcome": 1
+  }
+]
