@@ -4,8 +4,9 @@ __pycache__/
 .venv/
 venv/
 
-# App data (SQLite lives here, never commit it)
-data/
+# App data (SQLite lives here, never commit it). Leading slash so
+# tests/data/ sample payloads are still committed.
+/data/
 
 # Test / coverage output
 .pytest_cache/

@@ -57,7 +57,7 @@ Keys: `export TYPESAFE_API_KEY=...` and `export THENEWSAPI_TOKEN=...` in the she
 - **Tasks:** `INSERT OR IGNORE` for markets and snapshots; `list_markets`, `latest_snapshot`.
 - **Tests:** fixture rows have required keys, `0 < yes_price < 1`, outcome in {0,1}; saving twice doesn't duplicate.
 
-### [ ] C6. `Add Polymarket source parsing Gamma markets and JSON-encoded outcomePrices`
+### [x] C6. `Add Polymarket source parsing Gamma markets and JSON-encoded outcomePrices`
 - **Files:** `intel/sources.py` (PolymarketSource, `parse_gamma_market`, `get_source`), `intel/routes.py` (`POST /markets/sync`, `GET /markets`), `app.py` (mount), `tests/data/gamma_sample.json`, `tests/test_sources.py`
 - **Tasks:** verify Gamma params in docs.polymarket.com first. Save one real response as the sample.
 - **Tests:** parse sample; non-binary -> None; fetch with `httpx.MockTransport`; timeout -> error summary, no crash.

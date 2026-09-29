@@ -6,8 +6,10 @@ from fastapi import Depends, FastAPI
 
 from config import get_settings
 from db import get_db, get_schema_version, init_db
+from intel.routes import router as intel_router
 
 app = FastAPI(title="Edgebook")
+app.include_router(intel_router)
 
 
 @app.get("/healthz")

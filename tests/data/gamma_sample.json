@@ -1,0 +1,28 @@
+[
+  {
+    "id": "559651",
+    "question": "Xi Jinping out before 2027?",
+    "description": "This market will resolve to \"Yes\" if China's General Secretary of the Communist Party, Xi Jinping, is removed from power for any length of time between July 3, 2025, and December 31, 2026, 11:59 PM ET. Otherwise, this market will resolve to \"No\".\n\nCCP General Secretary Xi Jinping will be considered removed from power if he announces his resignation from his role as General Secretary, or is otherwise dismissed, detained, disqualified, or otherwise loses his position or is prevented from fulfilling his duties as General Secretary within this market's timeframe.\n\nThe primary resolution source for this market will be a consensus of credible reporting.",
+    "category": null,
+    "endDate": "2027-01-01T04:59:00Z",
+    "outcomes": "[\"Yes\", \"No\"]",
+    "outcomePrices": "[\"0.0345\", \"0.9655\"]",
+    "closed": false,
+    "active": true,
+    "updatedAt": "2026-09-29T21:51:22.084396Z",
+    "slug": "xi-jinping-out-before-2027"
+  },
+  {
+    "id": "559652",
+    "question": "Will Gavin Newsom win the 2028 Democratic presidential nomination?",
+    "description": "This market will resolve to \u201cYes\u201d if the named individual wins and accepts the 2028 nomination of the Democratic Party for U.S. president. Otherwise, this market will resolve to \u201cNo\u201d.\n\nThe resolution source for this market will be a consensus of official Democratic Party sources.\n\nAny replacement of the democratic nominee before election day will not change the resolution of the market.",
+    "category": null,
+    "endDate": "2028-11-08T04:59:00Z",
+    "outcomes": "[\"Yes\", \"No\"]",
+    "outcomePrices": "[\"0.164\", \"0.836\"]",
+    "closed": false,
+    "active": true,
+    "updatedAt": "2026-09-29T21:51:22.084396Z",
+    "slug": "will-gavin-newsom-win-the-2028-democratic-presidential-nomination-568"
+  }
+]
