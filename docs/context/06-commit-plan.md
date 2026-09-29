@@ -47,7 +47,7 @@ Keys: `export TYPESAFE_API_KEY=...` and `export THENEWSAPI_TOKEN=...` in the she
 
 ## Tue Sep 29
 
-### [ ] C4. `Add Estimate and Resolution contracts and ADR 2 on the Intel/Book seam`
+### [x] C4. `Add Estimate and Resolution contracts and ADR 2 on the Intel/Book seam`
 - **Files:** `contracts.py`, `intel/__init__.py`, `book/__init__.py`, `ADR.md`
 - **Tasks:** dataclasses exactly as `05-logic-spec.md`. Javi writes ADR 2 (mention: news inside Intel, one DB file now, per-domain DBs in A2).
 - **Done when:** imports work, ADR 2 dated 2026-09-29.
