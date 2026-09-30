@@ -37,6 +37,10 @@ This includes what to build next, commit wording, history rewrites, new dependen
 
 If the spec already decides it, follow that and say which part you followed.
 
+## Opus commits
+
+Before starting **C8**, **C9**, **C13**, or **C18**, stop. Do not implement them in this chat. Run that commit with Claude Code (`claude`) using Opus from this session, then wait for it to finish. Only write the code here if Javi explicitly says to.
+
 ## Hard rules for agents
 
 1. **One commit at a time.** Find the next unchecked commit in `06-commit-plan.md`. Only touch the files it lists. Stop when its "Done when" is met. Commit message starts with the plan id: `C1: Add validated config reading all env vars with offline defaults`.
@@ -64,3 +68,5 @@ If the spec already decides it, follow that and say which part you followed.
 ## Tone
 
 Javi prefers direct, informal, plain-language explanations. Bullets over paragraphs. No em dashes.
+
+After every AI_USAGE draft, also give an easy explanation of that draft, in plain language, so he can rewrite it in his own words.

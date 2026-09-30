@@ -66,19 +66,19 @@ Keys: `export TYPESAFE_API_KEY=...` and `export THENEWSAPI_TOKEN=...` in the she
 
 ## Wed Sep 30
 
-### [ ] C7. `Add stub and Jev deciders with parsing of Jev choice and score answers`
+### [x] C7. `Add stub and Jev deciders with parsing of Jev choice and score answers`
 - **Files:** `intel/decider.py`, `tests/data/jev_sample.json`, `tests/test_decider.py`
 - **Tasks:** request exactly as `05-logic-spec.md`. Make ONE real call with your key from a Python shell, save the response as `jev_sample.json` (remove anything sensitive).
 - **Tests:** stub deterministic + in range; `parse_jev_response(sample)` -> correct Decision; score 3.0 -> 0.75; missing key -> stub; JevDecider via MockTransport sends `Authorization: Bearer` and all 3 questions.
 
-### [ ] C8. `Add TheNewsAPI source with headline cache and look-ahead filter`
+### [ ] C8. `Add TheNewsAPI source with headline cache and look-ahead filter` (Opus: stop and tell Javi to use Claude Code)
 - **Files:** `intel/news.py`, `intel/repo.py` (news queries), `intel/routes.py` (`POST /news/fetch`), `scripts/build_fixture.py`, `fixtures/resolved_markets.json` (rebuilt, headlines stored as title + description + url + date only), `tests/data/thenewsapi_sample.json`, `tests/test_news.py`
 - **Tasks:**
   - `build_news_query`, `filter_news_before`, FixtureNews, TheNewsApi, `get_news_source`, `fetch_news_for_markets` with call cap.
   - `scripts/build_fixture.py`: pulls 30 to 40 resolved binary Polymarket markets, a pre-resolution price, and 3 headlines each with `published_before=captured_at`. Hand-edit `news_query` where the auto one is bad. Uses ~40 of your 100 daily news calls, run it once.
 - **Tests:** query builder example; filter drops future items and sorts newest first; TheNewsApi via MockTransport never puts the token in any logged message; cap stops at N calls; cached market isn't fetched again.
 
-### [ ] C9. `Add estimate runs that store the exact state sent to the decider`
+### [ ] C9. `Add estimate runs that store the exact state sent to the decider` (Opus: stop and tell Javi to use Claude Code)
 - **Files:** `intel/estimates.py`, `intel/repo.py` (estimates + `list_estimate_records`, `list_resolutions`), `intel/routes.py` (`POST /estimates/run`, `GET /estimates`), `tests/test_estimates.py`
 - **Tasks:** `days_to_resolution`, `build_state`, `render_state`, `run_estimates` with batch limit and per-market failure handling.
 - **Tests:** state never has `outcome`/`yes_price`; `basic` has no headlines, `news` does; running twice is a no-op; one failing market doesn't stop the batch; `list_estimate_records` returns `Estimate` objects.
@@ -97,7 +97,7 @@ Keys: `export TYPESAFE_API_KEY=...` and `export THENEWSAPI_TOKEN=...` in the she
 ### [ ] C12. `Add settlement with P&L for Yes and No bets`
 - **Files:** `book/settlement.py`, `tests/test_settlement.py`
 
-### [ ] C13. `Add bets repo and pipeline routes for auto-betting and settling`
+### [ ] C13. `Add bets repo and pipeline routes for auto-betting and settling` (Opus: stop and tell Javi to use Claude Code)
 - **Files:** `book/repo.py`, `book/routes.py` (`GET /portfolio`), `pipeline.py`, `app.py` (mount), `tests/test_pipeline.py`
 - **Tests:** full offline run on `tmp_db`: sync -> news -> estimate -> auto-bet -> settle, every bet has status + pnl; auto-bet twice doesn't double bet; `grep -r "from intel" book/` empty.
 
@@ -126,7 +126,7 @@ Keys: `export TYPESAFE_API_KEY=...` and `export THENEWSAPI_TOKEN=...` in the she
 - **Files:** `security.py`, route files, `tests/test_security.py`
 - **Tests:** no `ADMIN_TOKEN` -> open; set + right header -> 200; set + wrong/missing -> 401; `/healthz` always open.
 
-### [ ] C18. `Add dashboard showing Jev vs market, portfolio and scorecard`
+### [ ] C18. `Add dashboard showing Jev vs market, portfolio and scorecard` (Opus: stop and tell Javi to use Claude Code)
 - **Files:** `templates/base.html`, `templates/dashboard.html`, `static/style.css`, `pipeline.py` (`GET /`)
 - Buttons use `fetch()` to call JSON routes (sends `X-Admin-Token` from an input box if set). Scorecard has a decider + context selector.
 
