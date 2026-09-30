@@ -39,3 +39,28 @@ def latest_snapshot(conn, market_id):
         """,
         (market_id,),
     ).fetchone()
+
+
+# The cache key is (market_id, url), so the same article is never stored
+# twice and a re-run costs no API calls.
+def save_news_items(conn, market_id, items, fetched_at):
+    for item in items:
+        conn.execute(
+            """
+            INSERT OR IGNORE INTO news_items
+                (market_id, title, description, source, url, published_at, fetched_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                market_id, item["title"], item.get("description"),
+                item.get("source"), item["url"], item["published_at"], fetched_at,
+            ),
+        )
+    conn.commit()
+
+
+# One query for the whole batch instead of one COUNT per market.
+def market_ids_with_news(conn):
+    rows = conn.execute("SELECT DISTINCT market_id FROM news_items").fetchall()
+    return {row["market_id"] for row in rows}
+

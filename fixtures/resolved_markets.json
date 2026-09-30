@@ -1,62 +1,1227 @@
 [
   {
-    "id": "fx-ecb-cut",
-    "question": "Will the ECB cut rates at its December 2025 meeting?",
-    "rules": "Resolves Yes if the ECB lowers its deposit facility rate at the December 2025 monetary policy meeting.",
-    "category": "economics",
-    "end_date": "2025-12-18T23:59:00Z",
-    "news_query": "ECB rate cut",
-    "yes_price": 0.62,
-    "captured_at": "2025-11-20T12:00:00Z",
+    "id": "253591",
+    "question": "Will Donald Trump win the 2024 US Presidential Election?",
+    "rules": "This market will resolve to \u201cYes\u201d if Donald J. Trump wins the 2024 US Presidential Election. Otherwise, this market will resolve to \u201cNo.\u201d\n\nThe resolution source for this market is the Associated Press, Fox News, and NBC. This market will resolve once all three sources call the race for the same candidate. If all three sources haven\u2019t called the race for the same candidate by the inauguration date (January 20, 2025) this market will resolve based on who is inaugurated.",
+    "category": null,
+    "end_date": "2024-11-05T12:00:00Z",
+    "news_query": "donald trump win 2024 us",
+    "yes_price": 0.6425,
+    "captured_at": "2024-10-22T11:00:03Z",
     "status": "resolved",
-    "outcome": 1
+    "outcome": 1,
+    "news": [
+      {
+        "title": "US Elections 2024: Nikki Haley beats Donald Trump in Washington DC for first primary win",
+        "description": "Haley, the only remaining challenger to Donald Trump in the race, won 62.9% of the vote, versus 33.2% captured by the former president.",
+        "source": "dnaindia.com",
+        "url": "https://www.dnaindia.com/world/report-us-elections-2024-nikki-haley-beats-donald-trump-in-washington-dc-for-first-primary-win-3080323",
+        "published_at": "2024-03-04T03:27:00.000000Z"
+      },
+      {
+        "title": "Poll: Do you think Donald Trump will run and can he win in 2024?",
+        "description": "The former president has been hinting at another White House run for months.",
+        "source": "thejournal.ie",
+        "url": "https://www.thejournal.ie/trump-2024-election-5915834-Nov2022/",
+        "published_at": "2022-11-10T13:26:58.000000Z"
+      },
+      {
+        "title": "Political Betting Odds of Donald Trump 2024 Win Rising",
+        "description": "The odds of Trump being reelected in 2024 are increasing, as are the odds of Republicans gaining back a majority in Congress.",
+        "source": "breitbart.com",
+        "url": "https://www.breitbart.com/politics/2021/11/29/political-betting-odds-trump-win-2024-rising-gop-odds-house-senate-increase/",
+        "published_at": "2021-11-30T06:53:31.000000Z"
+      }
+    ]
   },
   {
-    "id": "fx-btc-100k",
-    "question": "Will Bitcoin close above 100000 on 2025-12-31?",
-    "rules": "Resolves Yes if the BTC/USD daily close on 2025-12-31 is above 100000.",
-    "category": "crypto",
-    "end_date": "2025-12-31T23:59:00Z",
-    "news_query": "Bitcoin price",
-    "yes_price": 0.41,
-    "captured_at": "2025-12-01T12:00:00Z",
+    "id": "253597",
+    "question": "Will Kamala Harris win the 2024 US Presidential Election?",
+    "rules": "This market will resolve to \u201cYes\u201d if Kamala Harris wins the 2024 US Presidential Election. Otherwise, this market will resolve to \u201cNo.\u201d\n\nThe resolution source for this market is the Associated Press, Fox News, and NBC. This market will resolve once all three sources call the race for the same candidate. If all three sources haven\u2019t called the race for the same candidate by the inauguration date (January 20, 2025) this market will resolve based on who is inaugurated.\n\nNote: An update may be made to this market to allow for early expiration if the candidate is definitively no longer in contention for the presidency.",
+    "category": null,
+    "end_date": "2024-11-04T12:00:00Z",
+    "news_query": "kamala harris win 2024 us",
+    "yes_price": 0.3855,
+    "captured_at": "2024-10-21T11:00:02Z",
     "status": "resolved",
-    "outcome": 0
+    "outcome": 0,
+    "news": [
+      {
+        "title": "Can Kamala Harris \u201cWin It All\u201d?",
+        "description": "The Nation Magazine",
+        "source": "thenation.com",
+        "url": "https://www.thenation.com/article/politics/kamala-harris-election-trifecta/",
+        "published_at": "2024-09-24T09:00:00.000000Z"
+      },
+      {
+        "title": "'Will work hard to...': Kamala Harris officially declares her candidature for US presidential elections",
+        "description": "The upcoming US presidential election on November 5 will see Vice President Kamala Harris as the Democratic nominee, following Biden's endorsement.",
+        "source": "dnaindia.com",
+        "url": "https://www.dnaindia.com/world/report-will-work-hard-to-kamala-harris-officially-declares-her-candidature-for-us-presidential-elections-3098757",
+        "published_at": "2024-07-27T04:23:00.000000Z"
+      },
+      {
+        "title": "Kamala Harris Officially Declares Her Candidature For US Presidential Polls, Says 'In November...'",
+        "description": "US Vice President Kamala Harris\u00a0emphasised that she would work hard to earn every vote.",
+        "source": "zeenews.india.com",
+        "url": "https://zeenews.india.com/world/kamala-harris-officially-declares-her-candidature-us-presidential-polls-says-in-november-2770702.html",
+        "published_at": "2024-07-27T02:40:00.000000Z"
+      }
+    ]
   },
   {
-    "id": "fx-spain-euro",
-    "question": "Will Spain win Euro 2024?",
-    "rules": "Resolves Yes if Spain wins the UEFA Euro 2024 final.",
-    "category": "sports",
-    "end_date": "2024-07-14T23:59:00Z",
-    "news_query": "Spain Euro 2024",
-    "yes_price": 0.18,
-    "captured_at": "2024-06-10T12:00:00Z",
+    "id": "511754",
+    "question": "Will Donald Trump be inaugurated?",
+    "rules": "This market will resolve to \"Yes\" if Donald J. Trump is inaugurated as President of the United States. Otherwise, this market will resolve to \"No\".\n\nInauguration day is currently scheduled for January 20, 2025. If inauguration day is delayed, this market will remain open until someone has been inaugurated. If no one has been inaugurated by January 31, 2025, 11:59 PM ET, this market will resolve to \"No\". \n\nThe primary resolution source for this market will be information from the US government, however a consensus of credible reporting will also be used.",
+    "category": null,
+    "end_date": "2025-01-20T12:00:00Z",
+    "news_query": "donald trump inaugurated",
+    "yes_price": 0.9865,
+    "captured_at": "2025-01-06T11:00:02Z",
     "status": "resolved",
-    "outcome": 1
+    "outcome": 1,
+    "news": [
+      {
+        "title": "US military industrial complex seeks to unleash World War III \u2014 Donald Trump Jr.",
+        "description": "\"The Military Industrial Complex seems to want to make sure they get World War 3 going before my father has a chance to create peace and save lives,\" he said",
+        "source": "tass.com",
+        "url": "https://tass.com/world/1873769",
+        "published_at": "2024-11-17T23:22:54.000000Z"
+      },
+      {
+        "title": "Donald Trump Health: 'Overweight...never smoker': 5 things to know about Donald Trump's health",
+        "description": "US News:  Donald Trump is 6 feet 3 inches tall, according to records. His weight is 244 pounds (110 kg). He is medically obese. However, there are many records",
+        "source": "timesofindia.indiatimes.com",
+        "url": "https://timesofindia.indiatimes.com/world/us/overweight-never-smoker-5-things-to-know-about-donald-trumps-health/articleshow/114358355.cms",
+        "published_at": "2024-10-18T18:00:41.000000Z"
+      },
+      {
+        "title": "Donald Trump's eldest sister Maryanne Trump Barry dies",
+        "description": "The former federal judge died at her home in Manhattan and was found early on Monday morning, according to reports.",
+        "source": "news.sky.com",
+        "url": "https://news.sky.com/story/donald-trumps-eldest-sister-maryanne-trump-barry-dies-13007521",
+        "published_at": "2023-11-13T18:20:00.000000Z"
+      }
+    ]
   },
   {
-    "id": "fx-fed-cut",
-    "question": "Will the Fed cut rates before July 2024?",
-    "rules": "Resolves Yes if the Federal Reserve lowers the federal funds target range before 2024-07-01.",
-    "category": "economics",
-    "end_date": "2024-06-30T23:59:00Z",
-    "news_query": "Fed rate cut",
-    "yes_price": 0.55,
-    "captured_at": "2024-03-01T12:00:00Z",
+    "id": "512340",
+    "question": "Will Nicolae Ciuc\u0103 win the 2024 Romanian Presidential election?",
+    "rules": "Presidential elections will be held in Romania on 24 November 2024. A second round will be held on 8 December 2024 if no candidate receives an absolute majority of the vote.\n\nThis market will resolve to \"Yes\" if Nicolae Ciuc\u0103 wins this election. Otherwise, this market will resolve to \"No\".\n\nThis market includes any potential second round. If the result of this election isn't known by April 30, 2025, 11:59 PM ET, the market will resolve to \"No\".\n\nThis market will resolve solely based off the first official announcement of the election results from the Romanian Government, specifically the Permanent Electoral Authority (https://www.roaep.ro/prezentare/).\n",
+    "category": null,
+    "end_date": "2024-12-08T12:00:00Z",
+    "news_query": "ciuca romania presidential election",
+    "yes_price": 0.0175,
+    "captured_at": "2024-11-24T11:00:03Z",
     "status": "resolved",
-    "outcome": 0
+    "outcome": 0,
+    "news": [
+      {
+        "title": "Political and General News Events from Oct 25",
+        "description": "Oct 25 (Reuters) \u2013",
+        "source": "nationalpost.com",
+        "url": "https://nationalpost.com/pmn/news-pmn/political-and-general-news-events-from-oct-25-2",
+        "published_at": "2022-10-25T12:30:10.000000Z"
+      },
+      {
+        "title": "Political and General News Events from Sept 28",
+        "description": "Sept 28 (Reuters) \u2013",
+        "source": "nationalpost.com",
+        "url": "https://nationalpost.com/pmn/news-pmn/political-and-general-news-events-from-sept-28-3",
+        "published_at": "2022-09-28T11:48:24.000000Z"
+      },
+      {
+        "title": "Political and General News Events from Sept 27",
+        "description": "Sept 27 (Reuters) \u2013",
+        "source": "nationalpost.com",
+        "url": "https://nationalpost.com/pmn/news-pmn/political-and-general-news-events-from-sept-27-2",
+        "published_at": "2022-09-27T13:26:16.000000Z"
+      }
+    ]
   },
   {
-    "id": "fx-paris-olympics",
-    "question": "Will Paris host the 2024 Olympics?",
-    "rules": "Resolves Yes if the 2024 Summer Olympics open in Paris as scheduled.",
-    "category": "sports",
-    "end_date": "2024-07-26T23:59:00Z",
-    "news_query": "Paris Olympics",
-    "yes_price": 0.97,
-    "captured_at": "2024-06-01T12:00:00Z",
+    "id": "546814",
+    "question": "Will Zelenskyy wear a suit before July?",
+    "rules": "This market will resolve to \"Yes\" if Volodymyr Zelenskyy is is photographed or videotaped wearing a suit between May 22 and June 30, 2025 ET. Otherwise, this market will resolve to \"No\".\n\nFor this market to resolve to \"Yes\" the images or video must be taken and released within this market's timeframe. The images or video must be authentic, not the result of artificial intelligence or video editing.\n\nThe resolution source will be a consensus of credible reporting.",
+    "category": null,
+    "end_date": "2025-06-30T12:00:00Z",
+    "news_query": "zelenskyy suit",
+    "yes_price": 0.075,
+    "captured_at": "2025-06-16T11:00:07Z",
     "status": "resolved",
-    "outcome": 1
+    "outcome": 0,
+    "news": [
+      {
+        "title": "Trump 'offended' by Zelenskyy not wearing a suit in White House",
+        "description": "After being asked by a reporter why he wasn't wearing a suit, Volodymyr Zelenskyy said:",
+        "source": "news.sky.com",
+        "url": "https://news.sky.com/story/trump-offended-by-zelenskyy-not-wearing-a-suit-in-white-house-13319114",
+        "published_at": "2025-03-01T07:19:00.000000Z"
+      },
+      {
+        "title": "No suit, no lunch, no respect: Zelenskyy-Trump feud started with a fashion dig",
+        "description": "Zelenskyy, whose country was invaded by Russia three years ago in an ongoing conflict, has been known for his casual style.",
+        "source": "yahoo.com",
+        "url": "https://www.yahoo.com/news/no-suit-no-lunch-no-221947928.html",
+        "published_at": "2025-02-28T22:19:47.000000Z"
+      },
+      {
+        "title": "'Buy a suit Zelenskyy': Ukrainian president greets Trump in casual sweatshirt and boots",
+        "description": "US News: Ukrainian President Volodymyr Zelenskyy's casual attire during meetings with US President-elect Donald Trump and French President Emmanuel Macron in P",
+        "source": "timesofindia.indiatimes.com",
+        "url": "https://timesofindia.indiatimes.com/world/us/buy-a-suit-zelenskyy-ukrainian-president-greets-trump-in-casual-sweatshirt-and-boots/articleshow/116092869.cms",
+        "published_at": "2024-12-08T01:00:23.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "253642",
+    "question": "Will any other Republican Politician win the 2024 US Presidential Election?",
+    "rules": "This market will resolve to \u201cYes\u201d if any other Republican Politician other than Donald J. Trump, Nikki Haley, Robert F. Kennedy Jr., Ron DeSantis, Vivek Ramaswamy, and Chris Christie wins. Otherwise this market will resolve to \u201cNo.\u201d\n\nFor the purposes of this market a Republican Politician is defined as an individual who has held elected office at either the state or federal level (i.e. including but not limited to US Senator, US Representative, Governor, Lieutenant Governor, State Senator, State Representative) and runs as a Republican for the 2024 US Presidential election. \n\nIf their affiliation changes to Independent or a party other than Republican before election day, the individual will not be considered as a Republican Politician.",
+    "category": null,
+    "end_date": "2024-11-05T00:00:00Z",
+    "news_query": "republican presidential nominee 2024",
+    "yes_price": 0.0015,
+    "captured_at": "2024-10-21T23:00:02Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "(4th LD) Trump formally nominated as 2024 Republican presidential nominee",
+        "description": "(ATTN: ADDS more info in paras 3, 9)By Song Sang-ho WASHINGTON, July 15 (Yonhap) -- The ...",
+        "source": "yna.co.kr",
+        "url": "https://en.yna.co.kr/view/AEN20240716000254315?section=news&input=rss",
+        "published_at": "2024-07-16T06:25:48.000000Z"
+      },
+      {
+        "title": "(3rd LD) Trump formally nominated as 2024 Republican presidential nominee",
+        "description": "(ATTN: CHANGES lead; ADDS more info in 3rd para)By Song Sang-ho WASHINGTON, July 15 (Yon...",
+        "source": "yna.co.kr",
+        "url": "https://en.yna.co.kr/view/AEN20240716000253315?section=news&input=rss",
+        "published_at": "2024-07-16T04:57:37.000000Z"
+      },
+      {
+        "title": "Republican Party 2024 GOP presidential nominee debate: Live",
+        "description": "The Republican Party debate features a notable lineup of candidates, however former US President Donald Trump is likely to give it a miss",
+        "source": "gulfbusiness.com",
+        "url": "https://gulfbusiness.com/republican-party-2024-presidential-debate-live/",
+        "published_at": "2023-08-23T22:20:47.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "601697",
+    "question": "Fed decreases interest rates by 50+ bps after January 2026 meeting?",
+    "rules": "The FED interest rates are defined in this market by the upper bound of the target federal funds range. The decisions on the target federal fund range are made by the Federal Open Market Committee (FOMC) meetings.\n\nThis market will resolve to the amount of basis points the upper bound of the target federal funds rate is changed by versus the level it was prior to the Federal Reserve's January 2026 meeting.\n\nIf the target federal funds rate is changed to a level not expressed in the displayed options, the change will be rounded up to the nearest 25 and will resolve to the relevant bracket. (e.g. if there's a cut/increase of 12.5 bps it will be considered to be 25 bps)\n\nThe resolution source for this market is the FOMC\u2019s statement after its meeting scheduled for January 27 - 28, 2026 according to the official calendar: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm.\n\nThe level and change of the target federal funds rate is also published at the official website of the Federal Reserve at https://www.federalreserve.gov/monetarypolicy/openmarket.htm.\n\nThis market may resolve as soon as the FOMC\u2019s statement for their January meeting with relevant data is issued. If no statement is released by the end date of the next scheduled meeting, this market will resolve to the \"No change\" bracket.",
+    "category": null,
+    "end_date": "2026-01-28T00:00:00Z",
+    "news_query": "fed interest rate decision",
+    "yes_price": 0.0025,
+    "captured_at": "2026-01-13T23:00:16Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "New U.S. economy data before next Fed interest rate decision",
+        "description": "The Federal Reserve will soon announce its next interest rate move as new data trickles in about the U.S. economy. CBS News MoneyWatch correspondent Kelly O'Gra...",
+        "source": "cbsnews.com",
+        "url": "https://www.cbsnews.com/video/new-us-economy-data-before-next-fed-interest-rate-decision/",
+        "published_at": "2024-10-31T20:01:00.000000Z"
+      },
+      {
+        "title": "Fed set for 1st interest rate decision since forecasting cuts",
+        "description": "The decision comes days after GDP data rebuked fears of a recession.",
+        "source": "abcnews.go.com",
+        "url": "https://abcnews.go.com/Business/fed-set-1st-rate-decision-forecasting-cuts/story?id=106772816",
+        "published_at": "2024-01-31T12:47:28.000000Z"
+      },
+      {
+        "title": "Treasury yields dip ahead of Fed interest rate decision",
+        "description": "U.S Treasury yields fell on Wednesday as investors awaited the Federal Reserve\u2019s latest interest rate decision and guidance on the central bank\u2019s policy pat...",
+        "source": "cnbc.com",
+        "url": "https://www.cnbc.com/2023/03/22/us-treasury-yields-ahead-of-fed-interest-rate-decision.html",
+        "published_at": "2023-03-22T09:49:32.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "601700",
+    "question": "Fed increases interest rates by 25+ bps after January 2026 meeting?",
+    "rules": "The FED interest rates are defined in this market by the upper bound of the target federal funds range. The decisions on the target federal fund range are made by the Federal Open Market Committee (FOMC) meetings.\n\nThis market will resolve to the amount of basis points the upper bound of the target federal funds rate is changed by versus the level it was prior to the Federal Reserve's January 2026 meeting.\n\nIf the target federal funds rate is changed to a level not expressed in the displayed options, the change will be rounded up to the nearest 25 and will resolve to the relevant bracket. (e.g. if there's a cut/increase of 12.5 bps it will be considered to be 25 bps)\n\nThe resolution source for this market is the FOMC\u2019s statement after its meeting scheduled for January 27 - 28, 2026 according to the official calendar: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm.\n\nThe level and change of the target federal funds rate is also published at the official website of the Federal Reserve at https://www.federalreserve.gov/monetarypolicy/openmarket.htm.\n\nThis market may resolve as soon as the FOMC\u2019s statement for their January meeting with relevant data is issued. If no statement is released by the end date of the next scheduled meeting, this market will resolve to the \"No change\" bracket.",
+    "category": null,
+    "end_date": "2026-01-28T00:00:00Z",
+    "news_query": "fed interest rate decision",
+    "yes_price": 0.0005,
+    "captured_at": "2026-01-13T23:00:12Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "New U.S. economy data before next Fed interest rate decision",
+        "description": "The Federal Reserve will soon announce its next interest rate move as new data trickles in about the U.S. economy. CBS News MoneyWatch correspondent Kelly O'Gra...",
+        "source": "cbsnews.com",
+        "url": "https://www.cbsnews.com/video/new-us-economy-data-before-next-fed-interest-rate-decision/",
+        "published_at": "2024-10-31T20:01:00.000000Z"
+      },
+      {
+        "title": "Fed set for 1st interest rate decision since forecasting cuts",
+        "description": "The decision comes days after GDP data rebuked fears of a recession.",
+        "source": "abcnews.go.com",
+        "url": "https://abcnews.go.com/Business/fed-set-1st-rate-decision-forecasting-cuts/story?id=106772816",
+        "published_at": "2024-01-31T12:47:28.000000Z"
+      },
+      {
+        "title": "Treasury yields dip ahead of Fed interest rate decision",
+        "description": "U.S Treasury yields fell on Wednesday as investors awaited the Federal Reserve\u2019s latest interest rate decision and guidance on the central bank\u2019s policy pat...",
+        "source": "cnbc.com",
+        "url": "https://www.cnbc.com/2023/03/22/us-treasury-yields-ahead-of-fed-interest-rate-decision.html",
+        "published_at": "2023-03-22T09:49:32.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "2270330",
+    "question": "US x Iran permanent peace deal by June 15, 2026?",
+    "rules": "This market will resolve to \u201cYes\u201d if Iran and the United states agree to a permanent peace deal by the specified date, 11:59 PM ET. Otherwise, this market will resolve to \u201cNo\u201d. \n\nA permanent peace deal refers to any agreement which explicitly indicates that military hostilities between the United States and Iran have ended or will permanently cease, or uses equivalent language clearly signaling a lasting end to military hostilities between the United States and Iran. Agreements that are explicitly temporary or which do not include a definitive agreement to end military hostilities between the US and Iran on a lasting basis (e.g. a temporary extension of the two-week ceasefire agreement announced on April 7, 2026), will not qualify.\n\nA qualifying agreement will be considered to have been established if either of the following conditions are met:\n\n- The United States and Iran each sign or formally adopt a written agreement (e.g. a treaty or multi-point agreement) which meets the above criteria.\n\n- Both the governments of the United States and Iran provide clear public confirmation that a qualifying agreement has been definitively established. Negotiations, statements of progress, or other statements which do not constitute a definitive announcement that a qualifying agreement has been reached will not count.\n\nThe primary resolution source for this market will be official information from the governments of the United States and Iran; however, a consensus of credible reporting may also be used.",
+    "category": null,
+    "end_date": "2026-06-15T00:00:00Z",
+    "news_query": "us iran peace deal",
+    "yes_price": 0.155,
+    "captured_at": "2026-05-31T23:00:05Z",
+    "status": "resolved",
+    "outcome": 1,
+    "news": [
+      {
+        "title": "Trump rejects Iran peace proposal, impacting US-Iran nuclear deal prospects",
+        "description": "Trump rejects Iran's peace proposal, lowering expectations for a US-Iran nuclear deal. Deal by June now at 27.5% YES.",
+        "source": "cryptobriefing.com",
+        "url": "https://cryptobriefing.com/trump-rejects-iran-peace-proposal-impacting-us-iran-nuclear-deal-prospects/",
+        "published_at": "2026-05-11T21:10:48.000000Z"
+      },
+      {
+        "title": "Iran extends Strait of Hormuz blockade amid US-Iran peace deal uncertainty",
+        "description": "Iran extended the Strait of Hormuz blockade amid peace deal uncertainty. Permanent peace deal by May 31, 2026 at 18.5% YES.",
+        "source": "cryptobriefing.com",
+        "url": "https://cryptobriefing.com/iran-extends-strait-of-hormuz-blockade-amid-us-iran-peace-deal-uncertainty/",
+        "published_at": "2026-05-01T05:10:43.000000Z"
+      },
+      {
+        "title": "Iran warns US of retaliation, peace deal odds plummet",
+        "description": "Iran warns of retaliation, causing peace deal odds to drop sharply. Peace deal by April 22 at 19.5% YES.",
+        "source": "cryptobriefing.com",
+        "url": "https://cryptobriefing.com/iran-warns-us-of-retaliation-peace-deal-odds-plummet/",
+        "published_at": "2026-04-20T14:06:54.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "558938",
+    "question": "Will Argentina win the 2026 FIFA World Cup?",
+    "rules": "This market will resolve according to the national team that wins the 2026 FIFA World Cup.\n\nIf at any point it becomes impossible for this team to win the FIFA World Cup based on the rules of FIFA (e.g., they are eliminated in the knockout stage), this market will resolve immediately to \u201cNo\u201d.\n\nIf the 2026 FIFA World Cup is permanently canceled or has not been completed by October 13, 2026, 11:59 PM this market will resolve to \u201cOther\u201d.\n\nThe primary resolution source will be official information from FIFA, however, a consensus of credible reporting may also be used.",
+    "category": null,
+    "end_date": "2026-07-20T00:00:00Z",
+    "news_query": "argentina win fifa world cup",
+    "yes_price": 0.1735,
+    "captured_at": "2026-07-05T23:00:05Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "Kan\u2019ani congratulates Argentina on winning FIFA World Cup",
+        "description": "Iranian Foreign Ministry Spokesman Nasser Kan'ani has congratulated Argentina on its win in the 2022 FIFA World Cup tournament.",
+        "source": "theiranproject.com",
+        "url": "https://theiranproject.com/blog/2022/12/19/kanani-congratulates-argentina-on-winning-fifa-world-cup/",
+        "published_at": "2022-12-19T10:15:24.000000Z"
+      },
+      {
+        "title": "FIFA World Cup: Argentina versus France",
+        "description": "The FIFA World Cup final between Argentina and France, will be held on Sunday, December 18 at the Lusail Stadium",
+        "source": "gulfbusiness.com",
+        "url": "https://gulfbusiness.com/fifa-world-cup-final-argentina-versus-france-what-you-need-to-know/",
+        "published_at": "2022-12-15T14:17:05.000000Z"
+      },
+      {
+        "title": "Fifa World Cup: Saudi Crown Prince ecstatic after team's historic win over Argentina",
+        "description": "There was joy and jubilation all around as Saudi Arabia's football team scored a shock upset against Argentina in the World Cup on Tuesday...",
+        "source": "news.google.com",
+        "url": "https://www.khaleejtimes.com/fifa-world-cup/fifa-world-cup-saudi-crown-prince-ecstatic-after-teams-historic-win-over-argentina",
+        "published_at": "2022-11-22T14:51:52.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "1706788",
+    "question": "US x Iran ceasefire by April 7?",
+    "rules": "This market will resolve to \u201cYes\u201d if there is an official ceasefire agreement, defined as a publicly announced and mutually agreed halt in direct military engagement, between the United States and Iran by the listed date, 11:59 PM ET.\n\nFor the purposes of this market, an \u201cofficial ceasefire agreement\u201d requires clear public confirmation from both the United States government and the government of Iran that they have agreed to halt military hostilities against one another, or for an official ceasefire agreement to be otherwise confirmed to have been reached by an overwhelming consensus of media reporting.\n\nIf the agreement is officially reached before the resolution date, this market will resolve to \u201cYes,\u201d regardless of whether the ceasefire officially takes effect after the resolution date.\n\nAny form of informal understanding, backchannel communication, de-escalation without an announced agreement, or unilateral pause in hostilities will not be considered an official ceasefire. Humanitarian pauses, limited operational pauses, or temporary tactical stand-downs will not count toward the resolution of this market.\n\nA broader peace deal, normalization agreement, or political framework will qualify only if it includes a publicly announced and mutually agreed halt in military engagement between the United States and Iran, effective on a specified date, or otherwise confirmed by an overwhelming consensus of credible reporting. Agreements that outline future negotiations or de-escalation measures without an explicit, dated commitment to stop fighting will not qualify.\n\nThis market\u2019s resolution will be based on official statements from the United States government and the government of Iran. However, an overwhelming consensus of credible media reporting confirming that an official ceasefire agreement has been reached will suffice.",
+    "category": null,
+    "end_date": "2026-04-07T00:00:00Z",
+    "news_query": "us iran ceasefire",
+    "yes_price": 0.275,
+    "captured_at": "2026-03-25T05:00:30Z",
+    "status": "resolved",
+    "outcome": 1,
+    "news": [
+      {
+        "title": "Fragile ceasefire holds with US-Iran talks dubbed \u2018promising\u2019",
+        "description": "TEHRAN: The ceasefire brokered by US President Donald Trump between Iran and Israel appeared to be holding on Wednesday a day after both countries signalled tha...",
+        "source": "pakistantoday.com.pk",
+        "url": "https://www.pakistantoday.com.pk/2025/06/25/fragile-ceasefire-holds-with-us-iran-talks-dubbed-promising/",
+        "published_at": "2025-06-25T14:10:20.000000Z"
+      },
+      {
+        "title": "Iran Confirms Ceasefire",
+        "description": "Trump claimed that Israel and Iran had agreed to a \\\"complete and total ceasefire\\\" soon after Iran launched a limited missile attack Monday on a US military ba...",
+        "source": "deccanchronicle.com",
+        "url": "https://www.deccanchronicle.com/world/middle-east/iran-confirms-ceasefire-1887209",
+        "published_at": "2025-06-24T06:00:06.000000Z"
+      },
+      {
+        "title": "Israel-Iran War LIVE Updates: Israel Says Iran Launched New Attack As US Celebrates \"Historic Ceasefire\"",
+        "description": "US-Israel-Iran Conflict LIVE Updates: A series of powerful explosions rocked Tehran early Tuesday morning, hours after US President Donald Trump announced that ...",
+        "source": "ndtv.com",
+        "url": "https://www.ndtv.com/world-news/israel-iran-war-live-updates-us-president-donald-trump-announces-ceasefire-between-israel-and-iran-tehran-reject-truce-tel-aviv-news-8744764",
+        "published_at": "2025-06-24T01:02:09.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "654415",
+    "question": "Will the Fed increase interest rates by 25+ bps after the March 2026 meeting?",
+    "rules": "The FED interest rates are defined in this market by the upper bound of the target federal funds range. The decisions on the target federal fund range are made by the Federal Open Market Committee (FOMC) meetings.\n\nThis market will resolve to the amount of basis points the upper bound of the target federal funds rate is changed by versus the level it was prior to the Federal Reserve's March 2026 meeting.\n\nIf the target federal funds rate is changed to a level not expressed in the displayed options, the change will be rounded up to the nearest 25 and will resolve to the relevant bracket. (e.g. if there's a cut/increase of 12.5 bps it will be considered to be 25 bps)\n\nThe resolution source for this market is the FOMC\u2019s statement after its meeting scheduled for March 17 - 18, 2026 according to the official calendar: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm.\n\nThe level and change of the target federal funds rate is also published at the official website of the Federal Reserve at https://www.federalreserve.gov/monetarypolicy/openmarket.htm.\n\nThis market may resolve as soon as the FOMC\u2019s statement for their March meeting with relevant data is issued. If no statement is released by the end date of the next scheduled meeting, this market will resolve to the \"No change\" bracket.",
+    "category": null,
+    "end_date": "2026-03-18T00:00:00Z",
+    "news_query": "fed interest rate decision",
+    "yes_price": 0.007,
+    "captured_at": "2026-03-03T23:00:28Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "New U.S. economy data before next Fed interest rate decision",
+        "description": "The Federal Reserve will soon announce its next interest rate move as new data trickles in about the U.S. economy. CBS News MoneyWatch correspondent Kelly O'Gra...",
+        "source": "cbsnews.com",
+        "url": "https://www.cbsnews.com/video/new-us-economy-data-before-next-fed-interest-rate-decision/",
+        "published_at": "2024-10-31T20:01:00.000000Z"
+      },
+      {
+        "title": "Fed set for 1st interest rate decision since forecasting cuts",
+        "description": "The decision comes days after GDP data rebuked fears of a recession.",
+        "source": "abcnews.go.com",
+        "url": "https://abcnews.go.com/Business/fed-set-1st-rate-decision-forecasting-cuts/story?id=106772816",
+        "published_at": "2024-01-31T12:47:28.000000Z"
+      },
+      {
+        "title": "Treasury yields dip ahead of Fed interest rate decision",
+        "description": "U.S Treasury yields fell on Wednesday as investors awaited the Federal Reserve\u2019s latest interest rate decision and guidance on the central bank\u2019s policy pat...",
+        "source": "cnbc.com",
+        "url": "https://www.cnbc.com/2023/03/22/us-treasury-yields-ahead-of-fed-interest-rate-decision.html",
+        "published_at": "2023-03-22T09:49:32.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "253727",
+    "question": "Kamala Harris wins the popular vote?",
+    "rules": "This market will resolve to \u201cYes\u201d if Kamala Harris is the candidate who receives the most votes in the 2024 U.S. presidential election, otherwise this market will resolve to \u201cNo.\u201d\n\nIn case of a tie, this market will resolve in favor of the candidate whose last name comes first in alphabetical order.\n\nThe resolution source will be an overwhelming consensus of credible reporting as to who is the winner of the popular vote.\n\nNote: An update may be made to this market to allow for early expiration if the candidate is definitively no longer in contention for the presidency.\n",
+    "category": null,
+    "end_date": "2024-11-05T12:00:00Z",
+    "news_query": "kamala harris wins popular vote",
+    "yes_price": 0.6275,
+    "captured_at": "2024-10-22T11:00:03Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "CNN data reporter surprised by Kamala Harris' popularity rise since becoming a presidential candidate",
+        "description": "CNN's Harry Enten seemed surprised on Wednesday by Vice President Kamala Harris' increased popularity rating, as she was a historically unpopular vice president...",
+        "source": "foxnews.com",
+        "url": "https://www.foxnews.com/media/cnn-data-reporter-surprised-kamala-harris-popularity-rise-since-becoming-presidential-candidate",
+        "published_at": "2024-09-18T18:00:54.000000Z"
+      },
+      {
+        "title": "Kamala Harris in 'danger zone' in swing states says CNN data reporter: National polls 'don't matter'",
+        "description": "CNN data reporter Harry Enten sounded the alarm about Vice President Kamala Harris' swing-state poll numbers on Monday and said she was in the",
+        "source": "foxnews.com",
+        "url": "https://www.foxnews.com/media/cnn-polling-analyst-says-kamala-harris-danger-zone-swing-state-polls-national-polls-dont-matter",
+        "published_at": "2024-09-16T18:16:05.000000Z"
+      },
+      {
+        "title": "Kamala Harris could win the popular vote by millions \u2014 but still be caught short in the states that count",
+        "description": "It has been a dream start to Kamala Harris's bid for the White House, and supporters are confident she'll beat Donald Trump in the popular vote \u2014 but the Elec...",
+        "source": "abc.net.au",
+        "url": "https://www.abc.net.au/news/2024-09-09/us-electoral-college-election-system-and-kamala-harris-democrats/104314562",
+        "published_at": "2024-09-08T19:00:00.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "570360",
+    "question": "Fed decreases interest rates by 50+ bps after December 2025 meeting?",
+    "rules": "The FED interest rates are defined in this market by the upper bound of the target federal funds range. The decisions on the target federal fund range are made by the Federal Open Market Committee (FOMC) meetings.\n\nThis market will resolve to the amount of basis points the upper bound of the target federal funds rate is changed by versus the level it was prior to the Federal Reserve's December 2025 meeting.\n\nIf the target federal funds rate is changed to a level not expressed in the displayed options, the change will be rounded up to the nearest 25 and will resolve to the relevant bracket. (e.g. if there's a cut/increase of 12.5 bps it will be considered to be 25 bps)\n\nThe resolution source for this market is the FOMC\u2019s statement after its meeting scheduled for December 9 - 10, 2025 according to the official calendar: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm.\n\nThe level and change of the target federal funds rate is also published at the official website of the Federal Reserve at https://www.federalreserve.gov/monetarypolicy/openmarket.htm.\n\nThis market may resolve as soon as the FOMC\u2019s statement for their December meeting with relevant data is issued. If no statement is released by the end date of the next scheduled meeting, this market will resolve to the \"No change\" bracket.",
+    "category": null,
+    "end_date": "2025-12-10T00:00:00Z",
+    "news_query": "fed interest rate decision",
+    "yes_price": 0.0145,
+    "captured_at": "2025-11-25T23:00:21Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "New U.S. economy data before next Fed interest rate decision",
+        "description": "The Federal Reserve will soon announce its next interest rate move as new data trickles in about the U.S. economy. CBS News MoneyWatch correspondent Kelly O'Gra...",
+        "source": "cbsnews.com",
+        "url": "https://www.cbsnews.com/video/new-us-economy-data-before-next-fed-interest-rate-decision/",
+        "published_at": "2024-10-31T20:01:00.000000Z"
+      },
+      {
+        "title": "Fed set for 1st interest rate decision since forecasting cuts",
+        "description": "The decision comes days after GDP data rebuked fears of a recession.",
+        "source": "abcnews.go.com",
+        "url": "https://abcnews.go.com/Business/fed-set-1st-rate-decision-forecasting-cuts/story?id=106772816",
+        "published_at": "2024-01-31T12:47:28.000000Z"
+      },
+      {
+        "title": "Treasury yields dip ahead of Fed interest rate decision",
+        "description": "U.S Treasury yields fell on Wednesday as investors awaited the Federal Reserve\u2019s latest interest rate decision and guidance on the central bank\u2019s policy pat...",
+        "source": "cnbc.com",
+        "url": "https://www.cnbc.com/2023/03/22/us-treasury-yields-ahead-of-fed-interest-rate-decision.html",
+        "published_at": "2023-03-22T09:49:32.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "558968",
+    "question": "Will Egypt win the 2026 FIFA World Cup?",
+    "rules": "This market will resolve according to the national team that wins the 2026 FIFA World Cup.\n\nIf at any point it becomes impossible for this team to win the FIFA World Cup based on the rules of FIFA (e.g., they are eliminated in the knockout stage), this market will resolve immediately to \u201cNo\u201d.\n\nIf the 2026 FIFA World Cup is permanently canceled or has not been completed by October 13, 2026, 11:59 PM this market will resolve to \u201cOther\u201d.\n\nThe primary resolution source will be official information from FIFA, however, a consensus of credible reporting may also be used.",
+    "category": null,
+    "end_date": "2026-07-20T00:00:00Z",
+    "news_query": "egypt win fifa world cup",
+    "yes_price": 0.0025,
+    "captured_at": "2026-07-05T23:00:05Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "Egypt head coach raises Palestinian flag after historic FIFA World Cup win, dedicates victory to Palestinians",
+        "description": "Football News: Egypt head coach Hossam Hassan paid an emotional tribute to the Palestinian people after guiding his team to a landmark FIFA World Cup achievemen...",
+        "source": "timesofindia.indiatimes.com",
+        "url": "https://timesofindia.indiatimes.com/sports/football/fifa-world-cup/egypt-head-coach-raises-palestinian-flag-after-historic-fifa-world-cup-win-dedicates-victory-to-palestinians/articleshow/132173266.cms",
+        "published_at": "2026-07-04T01:59:48.000000Z"
+      },
+      {
+        "title": "FIFA World Cup, Iran vs Egypt LIVE: Iran draw level",
+        "description": "Egypt takes on Iran in FIFA World Cup 2026. Follow LIVE score, goals, lineups, key moments and full-time result.",
+        "source": "thehindu.com",
+        "url": "https://www.thehindu.com/sport/football/egypt-vs-iran-live-score-fifa-world-cup-live-match-updates-june-27-2026/article71153208.ece",
+        "published_at": "2026-06-27T03:07:24.000000Z"
+      },
+      {
+        "title": "Belgium vs Egypt Live streaming: When and where to watch BEL vs EGY FIFA World Cup 2022 friendly in India",
+        "description": "Belgium vs Egypt FIFA World Cup 2022 friendly live streaming: Here's how to watch the Belgium vs Egypt FIFA World Cup friendly game live in India.",
+        "source": "dnaindia.com",
+        "url": "https://www.dnaindia.com/sports/report-belgium-vs-egypt-live-streaming-when-and-where-to-watch-bel-vs-egy-fifa-world-cup-friendly-in-india-jio-cinema-3003376",
+        "published_at": "2022-11-18T10:49:49.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "680392",
+    "question": "US government shutdown Saturday?",
+    "rules": "This market will resolve to \u201cYes\u201d if the U.S. Office of Personnel Management (OPM) announces another federal government shutdown due to a lapse in appropriations by January 31, 2026, 11:59 PM ET. Otherwise, this market will resolve to \"No\".\n\nPartial shutdowns count as shutdowns; announcements of office closures due to holidays or inclement weather do not qualify as a shutdown.\n\nThe resolution source for this market will be OPM\u2019s Operating Status page (https://www.opm.gov/policy-data-oversight/snow-dismissal-procedures/current-status/).",
+    "category": null,
+    "end_date": "2026-01-31T00:00:00Z",
+    "news_query": "government shutdown",
+    "yes_price": 0.235,
+    "captured_at": "2026-01-16T23:00:11Z",
+    "status": "resolved",
+    "outcome": 1,
+    "news": [
+      {
+        "title": "Government Shutdown: US government shutdown: What it is, impact on visa, scientific research and more",
+        "description": "If Congress fails to extend funding past November 17, government services would be disrupted and federal workers would be told not to work. Essential",
+        "source": "timesofindia.indiatimes.com",
+        "url": "https://timesofindia.indiatimes.com/gadgets-news/us-government-shutdown-what-it-is-impact-on-visa-scientific-research-and-more/articleshow/105192922.cms",
+        "published_at": "2023-11-13T19:15:43.000000Z"
+      },
+      {
+        "title": "Countdown to US Government shutdown begins",
+        "description": "It's fairly likely the US government will be shutdown again, and it will be very damaging the longer it drags on.",
+        "source": "thenewdaily.com.au",
+        "url": "https://thenewdaily.com.au/news/world/us-news/2023/09/29/us-government-shutdown-likely/",
+        "published_at": "2023-09-29T12:00:48.000000Z"
+      },
+      {
+        "title": "Government Shutdown: Understanding the impending US government shutdown: How will it affect Americans",
+        "description": "US News: The US is facing the possibility of a government shutdown if lawmakers fail to pass crucial spending bills by the September 30 deadline. The dispute b",
+        "source": "timesofindia.indiatimes.com",
+        "url": "https://timesofindia.indiatimes.com/world/us/understanding-the-impending-us-government-shutdown-how-will-it-affect-americans/articleshow/103930894.cms",
+        "published_at": "2023-09-25T10:27:38.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "253609",
+    "question": "Will Michelle Obama win the 2024 US Presidential Election?",
+    "rules": "This market will resolve to \u201cYes\u201d if Michelle Obama wins the 2024 US Presidential Election. Otherwise, this market will resolve to \u201cNo.\u201d\n\nThe resolution source for this market is the Associated Press, Fox News, and NBC. This market will resolve once all three sources call the race for the same candidate. If all three sources haven\u2019t called the race for the same candidate by the inauguration date (January 20, 2025) this market will resolve based on who is inaugurated.\n\nNote: An update may be made to this market to allow for early expiration if the candidate is definitively no longer in contention for the presidency.",
+    "category": null,
+    "end_date": "2024-11-05T00:00:00Z",
+    "news_query": "michelle obama win 2024 us",
+    "yes_price": 0.0005,
+    "captured_at": "2024-10-21T23:00:02Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "Only Michelle Obama could defeat Donald Trump, poll shows",
+        "description": "After US President Joseph Biden's lackluster performance in the debate against his predecessor Donald Trump prompted numerous cries for his stepping down from t...",
+        "source": "en.mercopress.com",
+        "url": "https://en.mercopress.com/2024/07/04/only-michelle-obama-could-defeat-donald-trump-poll-shows",
+        "published_at": "2024-07-04T09:42:00.000000Z"
+      },
+      {
+        "title": "Michelle Obama could 'sneak her way' into the 2024 presidential race, NY Post columnist warns",
+        "description": "New York Post columnist Cindy Adams warned on Wednesday that Americans shouldn't be",
+        "source": "foxnews.com",
+        "url": "https://www.foxnews.com/media/michelle-obama-could-sneak-way-into-2024-presidential-race-ny-post-columnist-warns",
+        "published_at": "2024-01-18T19:06:17.000000Z"
+      },
+      {
+        "title": "Here's Who Javed Akhtar Thinks Can Win 2024 US Presidential Election",
+        "description": "Mr Akhtar, who is currently in the United States, said he had come to the conclusion after visiting different cities in the country and speaking to a cross-sect...",
+        "source": "ndtv.com",
+        "url": "https://www.ndtv.com/india-news/heres-who-javed-akhtar-thinks-can-win-2024-us-presidential-election-4090749",
+        "published_at": "2023-06-03T07:17:00.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "558963",
+    "question": "Will Morocco win the 2026 FIFA World Cup?",
+    "rules": "This market will resolve according to the national team that wins the 2026 FIFA World Cup.\n\nIf at any point it becomes impossible for this team to win the FIFA World Cup based on the rules of FIFA (e.g., they are eliminated in the knockout stage), this market will resolve immediately to \u201cNo\u201d.\n\nIf the 2026 FIFA World Cup is permanently canceled or has not been completed by October 13, 2026, 11:59 PM this market will resolve to \u201cOther\u201d.\n\nThe primary resolution source will be official information from FIFA, however, a consensus of credible reporting may also be used.",
+    "category": null,
+    "end_date": "2026-07-20T00:00:00Z",
+    "news_query": "morocco win fifa world cup",
+    "yes_price": 0.0315,
+    "captured_at": "2026-07-05T23:00:04Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "Morocco Reach FIFA World Cup Last 16 After Penalty Win Over Netherlands",
+        "description": "Morocco booked their place in the FIFA World Cup Round of 16 after defeating the Netherlands 3-2 on penalties following a thrilling 1-1 draw in their",
+        "source": "propakistani.pk",
+        "url": "https://propakistani.pk/2026/06/30/morocco-reach-fifa-world-cup-last-16-after-penalty-win-over-netherlands/",
+        "published_at": "2026-06-30T08:10:39.000000Z"
+      },
+      {
+        "title": "Morocco earns its first-ever FIFA Women\u2019s World Cup win",
+        "description": "In their opening match, Morocco\u2019s women witnessed a humiliating 6-0 loss against Germany.\u00a0 Morocco made history with a victorious close-range header that led...",
+        "source": "dohanews.co",
+        "url": "https://dohanews.co/morocco-earns-its-first-ever-fifa-womens-world-cup-win/",
+        "published_at": "2023-07-30T08:57:04.000000Z"
+      },
+      {
+        "title": "Morocco defeats Belgium 2-0 at FIFA World Cup",
+        "description": "The goals were scored by Abdelhamid Sabiri (73rd minute) and Zakaria Aboukhalal (90+2)",
+        "source": "tass.com",
+        "url": "https://tass.com/sport/1542433",
+        "published_at": "2022-11-27T15:23:40.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "558934",
+    "question": "Will Spain win the 2026 FIFA World Cup?",
+    "rules": "This market will resolve according to the national team that wins the 2026 FIFA World Cup.\n\nIf at any point it becomes impossible for this team to win the FIFA World Cup based on the rules of FIFA (e.g., they are eliminated in the knockout stage), this market will resolve immediately to \u201cNo\u201d.\n\nIf the 2026 FIFA World Cup is permanently canceled or has not been completed by October 13, 2026, 11:59 PM this market will resolve to \u201cOther\u201d.\n\nThe primary resolution source will be official information from FIFA, however, a consensus of credible reporting may also be used.",
+    "category": null,
+    "end_date": "2026-07-20T00:00:00Z",
+    "news_query": "spain win fifa world cup",
+    "yes_price": 0.1265,
+    "captured_at": "2026-07-05T23:00:05Z",
+    "status": "resolved",
+    "outcome": 1,
+    "news": [
+      {
+        "title": "Holders Spain win FIFA U-17 Women\u2019s World Cup",
+        "description": "Spain emerged the winners after an own goal by Colombian defender Ana Mar\u00eda Guzm\u00e1n Zapata in the 82nd minute of the final at the D Y Patil Sports Stadium.",
+        "source": "indianexpress.com",
+        "url": "https://indianexpress.com/article/sports/football/holders-spain-win-fifa-u-17-womens-world-cup-8239534/",
+        "published_at": "2022-10-30T18:16:45.000000Z"
+      },
+      {
+        "title": "Holders Spain win FIFA U-17 Women\u2019s World Cup",
+        "description": "Navi Mumbai, Oct 30 (PTI) Defending champions Spain won the FIFA U-17 Women\u2019s World Cup with a 1-0 victory over first-time finalists Colombia whose campaign e...",
+        "source": "theprint.in",
+        "url": "https://theprint.in/sport/holders-spain-win-fifa-u-17-womens-world-cup/1188332/",
+        "published_at": "2022-10-30T17:30:57.000000Z"
+      },
+      {
+        "title": "Holders Spain win FIFA U-17 Women's World Cup",
+        "description": "FIFA president Gianni Infantino was in attendance at the venue as Spain eked out a solitary goal win and retained the title they also claimed in 2018",
+        "source": "thehindu.com",
+        "url": "https://www.thehindu.com/sport/football/holders-spain-win-fifa-u-17-womens-world-cup/article66074967.ece",
+        "published_at": "2022-10-30T17:18:11.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "538932",
+    "question": "Will Zohran Mamdani win the 2025 NYC mayoral election?",
+    "rules": "The 2025 New York City mayoral election will be held on November 4, 2025, to elect the mayor of New York City.\n\nThis market will resolve according to the candidate that wins the election.\n\nThe resolution source for this market is the Associated Press, Fox News, and NBC. This market will resolve once all three sources call the race for the same candidate. If all three sources haven\u2019t called the race for the same candidate, this market will resolve based on official certification.",
+    "category": null,
+    "end_date": "2025-11-04T12:00:00Z",
+    "news_query": "zohran mamdani win nyc mayoral",
+    "yes_price": 0.9275,
+    "captured_at": "2025-10-21T11:00:12Z",
+    "status": "resolved",
+    "outcome": 1,
+    "news": [
+      {
+        "title": "'He Sounds More Pakistani Than Indian': Kangana Ranaut Launches Attack On Zohran Mamdani After NYC Mayoral Primary Win",
+        "description": "Actor-turned-BJP politician Kangana Ranaut, on Thursday, June 26, launched a scathing attack Indian-origin politician Zohran Mamdani following his recent victor...",
+        "source": "freepressjournal.in",
+        "url": "https://www.freepressjournal.in/india/he-sounds-more-pakistani-than-indian-kangana-ranaut-launches-attack-on-zohran-mamdani-after-nyc-mayoral-primary-win",
+        "published_at": "2025-06-26T06:48:18.000000Z"
+      },
+      {
+        "title": "Zohran Mamdani Clinches NYC Mayoral Primary After Vowing to Jail Netanyahu",
+        "description": "To defeat Mamdani, the candidates with low prospects of making a difference should unite behind Cuomo to rid the city of this menace.",
+        "source": "jewishpress.com",
+        "url": "https://www.jewishpress.com/news/elections-news/zohran-mamdani-clinches-nyc-mayoral-primary-after-vowing-to-jail-netanyahu/2025/06/25/",
+        "published_at": "2025-06-25T06:23:09.000000Z"
+      },
+      {
+        "title": "\"Will Shock Political Establishment\": Indian Origin NYC Mayoral Candidate Zohran Mamdani",
+        "description": "Indian-origin New York State Assemblyman Zohran Mamdani has come within striking distance of ex-governor Andrew Cuomo in the New York City mayoral race, newly r...",
+        "source": "ndtv.com",
+        "url": "https://www.ndtv.com/world-news/indian-origin-zohran-mamdani-slams-billionaires-for-endorsing-rival-in-nyc-mayoral-polls-8639236",
+        "published_at": "2025-06-11T04:54:38.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "558943",
+    "question": "Will USA win the 2026 FIFA World Cup?",
+    "rules": "This market will resolve according to the national team that wins the 2026 FIFA World Cup.\n\nIf at any point it becomes impossible for this team to win the FIFA World Cup based on the rules of FIFA (e.g., they are eliminated in the knockout stage), this market will resolve immediately to \u201cNo\u201d.\n\nIf the 2026 FIFA World Cup is permanently canceled or has not been completed by October 13, 2026, 11:59 PM this market will resolve to \u201cOther\u201d.\n\nThe primary resolution source will be official information from FIFA, however, a consensus of credible reporting may also be used.",
+    "category": null,
+    "end_date": "2026-07-20T00:00:00Z",
+    "news_query": "usa win fifa world cup",
+    "yes_price": 0.0325,
+    "captured_at": "2026-07-05T23:00:06Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "FIFA World Cup 2026: USA records highest WC attendance in history, says FIFA",
+        "description": "The United States recorded a new FIFA World Cup attendance record, drawing over 8 million fans to matches, underscoring a surge in football's popularity. Meanwh...",
+        "source": "economictimes.indiatimes.com",
+        "url": "https://economictimes.indiatimes.com/news/sports/football/fifa-world-cup-2026-usa-records-highest-wc-attendance-in-history-says-fifa/articleshow/132190687.cms",
+        "published_at": "2026-07-05T04:38:31.000000Z"
+      },
+      {
+        "title": "Possibilities of USA, Iran faceoff in FIFA World Cup knockout stage",
+        "description": "The possibility of the United States and Iran meeting at the 2026 FIFA World Cup has emerged as one of the tournament's most intriguing potential storylines, wi...",
+        "source": "arynews.tv",
+        "url": "https://arynews.tv/possibilities-of-usa-iran-faceoff-in-fifa-world-cup-knockout-stage",
+        "published_at": "2026-06-13T13:28:45.000000Z"
+      },
+      {
+        "title": "FIFA World Cup 2022: Netherlands seal quarter-final place with 3-1 win over USA",
+        "description": "The Dutch put on a clinical show, beating USA 3-1 and becoming the first team to book their spot in the quarter-finals in Qatar.",
+        "source": "dnaindia.com",
+        "url": "https://www.dnaindia.com/sports/report-fifa-world-cup-2022-netherlands-seal-quarter-final-place-with-3-1-win-over-usa-3007794",
+        "published_at": "2022-12-03T17:06:00.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "253595",
+    "question": "Will Robert F. Kennedy Jr. win the 2024 US Presidential Election?",
+    "rules": "This market will resolve to \u201cYes\u201d if Robert F. Kennedy Jr. wins the 2024 US Presidential Election. Otherwise, this market will resolve to \u201cNo.\u201d\n\nThe resolution source for this market is the Associated Press, Fox News, and NBC. This market will resolve once all three sources call the race for the same candidate. If all three sources haven\u2019t called the race for the same candidate by the inauguration date (January 20, 2025) this market will resolve based on who is inaugurated.\n\nNote: An update may be made to this market to allow for early expiration if the candidate is definitively no longer in contention for the presidency.",
+    "category": null,
+    "end_date": "2024-11-04T12:00:00Z",
+    "news_query": "robert f kennedy jr win",
+    "yes_price": 0.0005,
+    "captured_at": "2024-10-21T11:00:02Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "Robert F. Kennedy Jr Declares Independent 2024 Presidential Run",
+        "description": "Robert F. Kennedy Jr, an environmental lawyer, anti-vaccine activist and son of the former senator, announced on Monday in Philadelphia that he is dropping his ...",
+        "source": "ndtv.com",
+        "url": "https://www.ndtv.com/world-news/robert-f-kennedy-jr-declares-independent-2024-presidential-run-4466030",
+        "published_at": "2023-10-09T20:15:41.000000Z"
+      },
+      {
+        "title": "Robert F. Kennedy Jr. decries \u2018weaponization\u2019 of FBI",
+        "description": "The FBI was weaponized to take down Donald Trump, making mockery of the US \u201cdemocratic ideal,\u201d candidate Robert F. Kennedy Jr. says",
+        "source": "rt.com",
+        "url": "https://www.rt.com/news/576789-rfk-jr-decries-fbi-weaponization-against-trump/",
+        "published_at": "2023-05-23T18:19:58.000000Z"
+      },
+      {
+        "title": "Robert F. Kennedy Jr. says middle class was 'wiped out' during COVID-19 lockdowns",
+        "description": "Robert F. Kennedy Jr., who is challenging President Joe Biden for the Democratic nomination in 2024, said he's in a better spot to run against Trump.",
+        "source": "usatoday.com",
+        "url": "https://www.usatoday.com/story/news/politics/2023/04/23/robert-f-kennedy-jr-covid-biden-trump-2024/11724150002/",
+        "published_at": "2023-04-23T13:03:19.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "558945",
+    "question": "Will Mexico win the 2026 FIFA World Cup?",
+    "rules": "This market will resolve according to the national team that wins the 2026 FIFA World Cup.\n\nIf at any point it becomes impossible for this team to win the FIFA World Cup based on the rules of FIFA (e.g., they are eliminated in the knockout stage), this market will resolve immediately to \u201cNo\u201d.\n\nIf the 2026 FIFA World Cup is permanently canceled or has not been completed by October 13, 2026, 11:59 PM this market will resolve to \u201cOther\u201d.\n\nThe primary resolution source will be official information from FIFA, however, a consensus of credible reporting may also be used.",
+    "category": null,
+    "end_date": "2026-07-20T00:00:00Z",
+    "news_query": "mexico win fifa world cup",
+    "yes_price": 0.0455,
+    "captured_at": "2026-07-05T23:00:06Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "Mexico, South Korea Win FIFA World Cup Openers",
+        "description": "Hosts Mexico made a perfect launch of their World Cup 2026 campaign Thursday with an authentic 2-0 win against South Africa in A Group. The second match of Day ...",
+        "source": "rttnews.com",
+        "url": "https://www.rttnews.com/3659858/mexico-south-korea-win-fifa-world-cup-openers.aspx?type=ts",
+        "published_at": "2026-06-12T10:42:18.000000Z"
+      },
+      {
+        "title": "Bafana Bafana legend predicts WIN over Mexico at FIFA World Cup 2026",
+        "description": "Former captain Steven Pienaar remains confident that South Africa can upset Mexico in their opening match of FIFA World Cup 2026.",
+        "source": "thesouthafrican.com",
+        "url": "https://www.thesouthafrican.com/sport/soccer/soccer-world-cup/bafana-bafana-legend-predicts-win-over-mexico-at-fifa-world-cup-2026/",
+        "published_at": "2026-06-08T17:18:05.000000Z"
+      },
+      {
+        "title": "Mexico fan chant at World Cup subject of FIFA investigation",
+        "description": "FIFA opened an investigation into potentially discriminatory chants heard from Mexico fans during their World Cup-opening 0-0 draw against Poland.",
+        "source": "espn.co.uk",
+        "url": "https://www.espn.co.uk/football/mexico-mex/story/4811887/mexico-fan-chant-at-world-cup-subject-of-fifa-investigation",
+        "published_at": "2022-11-24T02:07:10.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "558951",
+    "question": "Will Norway win the 2026 FIFA World Cup?",
+    "rules": "This market will resolve according to the national team that wins the 2026 FIFA World Cup.\n\nIf at any point it becomes impossible for this team to win the FIFA World Cup based on the rules of FIFA (e.g., they are eliminated in the knockout stage), this market will resolve immediately to \u201cNo\u201d.\n\nIf the 2026 FIFA World Cup is permanently canceled or has not been completed by October 13, 2026, 11:59 PM this market will resolve to \u201cOther\u201d.\n\nThe primary resolution source will be official information from FIFA, however, a consensus of credible reporting may also be used.",
+    "category": null,
+    "end_date": "2026-07-20T00:00:00Z",
+    "news_query": "norway win fifa world cup",
+    "yes_price": 0.0505,
+    "captured_at": "2026-07-05T23:00:06Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "Brazil vs. Norway & Mexico vs. England: How to Watch FIFA World Cup Matches",
+        "description": "The 2026 FIFA World Cup is really heating up! What matches are on the World Cup schedule today? There are two big matches today (Sunday, July 5) that you",
+        "source": "justjared.com",
+        "url": "https://www.justjared.com/2026/07/05/brazil-vs-norway-mexico-vs-england-how-to-watch-fifa-world-cup-matches/",
+        "published_at": "2026-07-05T17:09:54.000000Z"
+      },
+      {
+        "title": "World Cup 2026: Haaland brace sends Norway into knockouts with 3-2 win over Senegal",
+        "description": "Erling Haaland continued his prolific run at the FIFA World Cup 2026, scoring twice as Norway beat Senegal 3-2 in a thrilling Group I contest on Tuesday, June 2...",
+        "source": "indiatoday.intoday.in",
+        "url": "https://www.indiatoday.in/sports/football/story/world-cup-erling-haaland-brace-sends-norway-into-knockouts-with-win-over-senegal-2932197-2026-06-23",
+        "published_at": "2026-06-23T02:15:14.000000Z"
+      },
+      {
+        "title": "FIFA Women's World Cup live updates: Matildas vs Ireland, New Zealand vs Norway",
+        "description": "The biggest tournament in women's football is here as Australia\u00a0and New Zealand welcome the globe to the FIFA Women's World Cup. Follow the action from day 1 w...",
+        "source": "abc.net.au",
+        "url": "https://www.abc.net.au/news/2023-07-20/live-updates-fifa-women-world-cup-blog-matildas-vs-ireland/102622916",
+        "published_at": "2023-07-20T06:33:51.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "504494",
+    "question": "Fed increases interest rates by 25+ bps after November 2024 meeting?",
+    "rules": "The FED interest rates are defined in this market by the upper bound of the target federal funds range. The decisions on the target federal fund range are made by the Federal Open Market Committee (FOMC) meetings.\n\nThis market will resolve to \u201cYes\u201d if following the Federal Reserve's November 2024 meeting the upper bound of the target federal funds rate is increased by 25 or more basis points below the level it was prior to the meeting. Otherwise, it will resolve to \u201cNo.\u201d\n\nThe resolution source for this market is the FOMC\u2019s statement after its meeting scheduled for November 6 - 7, 2024 according to the official calendar: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm.\n\nThe level and change of the target federal funds rate is also published at the official website of the Federal Reserve at https://www.federalreserve.gov/monetarypolicy/openmarket.htm.\n\nThis market may resolve as soon as the FOMC\u2019s statement for their November meeting with relevant data is issued. If no statement is released by December 18, 2024, 11:59 PM ET, this market will resolve to the \"No change\" bracket.",
+    "category": null,
+    "end_date": "2024-11-07T12:00:00Z",
+    "news_query": "fed interest rate decision",
+    "yes_price": 0.002,
+    "captured_at": "2024-10-24T11:00:02Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "UAE interest rates remain unchanged amid Fed rate decision",
+        "description": "The CBUAE traditionally moves lockstep with the US Fed amid the UAE having pegged its currency to the US dollar at a rate of Dhs3.67 to $1",
+        "source": "gulfbusiness.com",
+        "url": "https://gulfbusiness.com/uae-interest-rates-us-fed/",
+        "published_at": "2024-05-02T05:22:08.000000Z"
+      },
+      {
+        "title": "Fed set for 1st interest rate decision since forecasting cuts",
+        "description": "The decision comes days after GDP data rebuked fears of a recession.",
+        "source": "abcnews.go.com",
+        "url": "https://abcnews.go.com/Business/fed-set-1st-rate-decision-forecasting-cuts/story?id=106772816",
+        "published_at": "2024-01-31T12:47:28.000000Z"
+      },
+      {
+        "title": "Treasury yields dip ahead of Fed interest rate decision",
+        "description": "U.S Treasury yields fell on Wednesday as investors awaited the Federal Reserve\u2019s latest interest rate decision and guidance on the central bank\u2019s policy pat...",
+        "source": "cnbc.com",
+        "url": "https://www.cnbc.com/2023/03/22/us-treasury-yields-ahead-of-fed-interest-rate-decision.html",
+        "published_at": "2023-03-22T09:49:32.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "570363",
+    "question": "Fed increases interest rates by 25+ bps after December 2025 meeting?",
+    "rules": "The FED interest rates are defined in this market by the upper bound of the target federal funds range. The decisions on the target federal fund range are made by the Federal Open Market Committee (FOMC) meetings.\n\nThis market will resolve to the amount of basis points the upper bound of the target federal funds rate is changed by versus the level it was prior to the Federal Reserve's December 2025 meeting.\n\nIf the target federal funds rate is changed to a level not expressed in the displayed options, the change will be rounded up to the nearest 25 and will resolve to the relevant bracket. (e.g. if there's a cut/increase of 12.5 bps it will be considered to be 25 bps)\n\nThe resolution source for this market is the FOMC\u2019s statement after its meeting scheduled for December 9 - 10, 2025 according to the official calendar: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm.\n\nThe level and change of the target federal funds rate is also published at the official website of the Federal Reserve at https://www.federalreserve.gov/monetarypolicy/openmarket.htm.\n\nThis market may resolve as soon as the FOMC\u2019s statement for their December meeting with relevant data is issued. If no statement is released by the end date of the next scheduled meeting, this market will resolve to the \"No change\" bracket.",
+    "category": null,
+    "end_date": "2025-12-10T00:00:00Z",
+    "news_query": "fed interest rate decision",
+    "yes_price": 0.0035,
+    "captured_at": "2025-11-25T23:00:08Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "New U.S. economy data before next Fed interest rate decision",
+        "description": "The Federal Reserve will soon announce its next interest rate move as new data trickles in about the U.S. economy. CBS News MoneyWatch correspondent Kelly O'Gra...",
+        "source": "cbsnews.com",
+        "url": "https://www.cbsnews.com/video/new-us-economy-data-before-next-fed-interest-rate-decision/",
+        "published_at": "2024-10-31T20:01:00.000000Z"
+      },
+      {
+        "title": "Fed set for 1st interest rate decision since forecasting cuts",
+        "description": "The decision comes days after GDP data rebuked fears of a recession.",
+        "source": "abcnews.go.com",
+        "url": "https://abcnews.go.com/Business/fed-set-1st-rate-decision-forecasting-cuts/story?id=106772816",
+        "published_at": "2024-01-31T12:47:28.000000Z"
+      },
+      {
+        "title": "Treasury yields dip ahead of Fed interest rate decision",
+        "description": "U.S Treasury yields fell on Wednesday as investors awaited the Federal Reserve\u2019s latest interest rate decision and guidance on the central bank\u2019s policy pat...",
+        "source": "cnbc.com",
+        "url": "https://www.cnbc.com/2023/03/22/us-treasury-yields-ahead-of-fed-interest-rate-decision.html",
+        "published_at": "2023-03-22T09:49:32.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "558974",
+    "question": "Will Switzerland win the 2026 FIFA World Cup?",
+    "rules": "This market will resolve according to the national team that wins the 2026 FIFA World Cup.\n\nIf at any point it becomes impossible for this team to win the FIFA World Cup based on the rules of FIFA (e.g., they are eliminated in the knockout stage), this market will resolve immediately to \u201cNo\u201d.\n\nIf the 2026 FIFA World Cup is permanently canceled or has not been completed by October 13, 2026, 11:59 PM this market will resolve to \u201cOther\u201d.\n\nThe primary resolution source will be official information from FIFA, however, a consensus of credible reporting may also be used.",
+    "category": null,
+    "end_date": "2026-07-20T00:00:00Z",
+    "news_query": "switzerland win fifa world cup",
+    "yes_price": 0.0085,
+    "captured_at": "2026-07-05T23:00:05Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "FIFA World Cup 2026 LIVE: Switzerland vs Bosnia and Herzegovina",
+        "description": "Both teams drew their opening matches, making this a crucial encounter in the race for qualification",
+        "source": "deccanchronicle.com",
+        "url": "https://www.deccanchronicle.com/sports/fifa-world-cup-2026-live-switzerland-vs-bosnia-and-herzegovina-1964591",
+        "published_at": "2026-06-18T18:42:14.000000Z"
+      },
+      {
+        "title": "Countdown to 2026 FIFA World Cup: Xhaka leading Switzerland to genuine contention",
+        "description": "Switzerland heads to the 2026 FIFA World Cup with a track record of proven performance in major tournaments and consistency on the biggest stages, especially ov...",
+        "source": "vanguardngr.com",
+        "url": "https://www.vanguardngr.com/2026/04/countdown-to-2026-fifa-world-cup-xhaka-leading-switzerland-to-genuine-contention/",
+        "published_at": "2026-04-27T15:02:00.000000Z"
+      },
+      {
+        "title": "FIFA World Cup 2022 | Brazil takes on Switzerland without Neymar",
+        "description": "Switzerland knew how to stop Brazil at the 2018 World Cup which the teams opened by playing to a 1-1 draw",
+        "source": "thehindu.com",
+        "url": "https://www.thehindu.com/sport/football/fifa-world-cup-2022-brazil-takes-on-switzerland-without-neymar/article66192861.ece",
+        "published_at": "2022-11-27T17:03:12.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "558936",
+    "question": "Will France win the 2026 FIFA World Cup?",
+    "rules": "This market will resolve according to the national team that wins the 2026 FIFA World Cup.\n\nIf at any point it becomes impossible for this team to win the FIFA World Cup based on the rules of FIFA (e.g., they are eliminated in the knockout stage), this market will resolve immediately to \u201cNo\u201d.\n\nIf the 2026 FIFA World Cup is permanently canceled or has not been completed by October 13, 2026, 11:59 PM this market will resolve to \u201cOther\u201d.\n\nThe primary resolution source will be official information from FIFA, however, a consensus of credible reporting may also be used.",
+    "category": null,
+    "end_date": "2026-07-20T00:00:00Z",
+    "news_query": "france win fifa world cup",
+    "yes_price": 0.3455,
+    "captured_at": "2026-07-05T23:00:05Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "France makes World Cup history with dominant win over Sweden",
+        "description": "Kylian Mbappe and France cruised to a 30- win over Sweden, and they made FIFA World Cup history as they move on to the Round of 16.",
+        "source": "larrybrownsports.com",
+        "url": "https://larrybrownsports.com/soccer/france-makes-world-cup-history-with-dominant-win-over-sweden/760134",
+        "published_at": "2026-06-30T23:49:01.000000Z"
+      },
+      {
+        "title": "FIFA World Cup: France and Argentina headline Monday\u2019s action",
+        "description": "The FIFA World Cup continues on Monday, 22 June, with two heavyweight fixtures set to take centre stage as the race for the Round of 32 intensifies.",
+        "source": "thesouthafrican.com",
+        "url": "https://www.thesouthafrican.com/sport/soccer/soccer-world-cup/fifa-world-cup-france-and-argentina-headline-mondays-action/",
+        "published_at": "2026-06-22T08:32:56.000000Z"
+      },
+      {
+        "title": "FIFA World Cup: Argentina versus France",
+        "description": "The FIFA World Cup final between Argentina and France, will be held on Sunday, December 18 at the Lusail Stadium",
+        "source": "gulfbusiness.com",
+        "url": "https://gulfbusiness.com/fifa-world-cup-final-argentina-versus-france-what-you-need-to-know/",
+        "published_at": "2022-12-15T14:17:05.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "1180303",
+    "question": "Khamenei out as Supreme Leader of Iran by February 28?",
+    "rules": "This market will resolve to \"Yes\" if Iran's Supreme Leader, Ali Khamenei, is removed from power for any length of time between this market's creation and February 28, 2026, 11:59 PM ET. Otherwise, this market will resolve to \"No\".\n\nKhamenei will be considered to be removed from power if he resigns, is detained, or otherwise loses his position or is prevented from fulfilling his duties as Supreme Leader of Iran within this market's timeframe.\n\nThe primary resolution source for this market will be a consensus of credible reporting.",
+    "category": null,
+    "end_date": "2026-02-28T00:00:00Z",
+    "news_query": "khamenei supreme leader",
+    "yes_price": 0.0335,
+    "captured_at": "2026-02-13T23:00:17Z",
+    "status": "resolved",
+    "outcome": 1,
+    "news": [
+      {
+        "title": "Iran warns against attempts to target supreme leader Khamenei",
+        "description": "",
+        "source": "pakistantoday.com.pk",
+        "url": "https://www.pakistantoday.com.pk/2025/11/23/iran-warns-against-attempts-to-target-supreme-leader-khamenei/",
+        "published_at": "2025-11-23T18:07:11.000000Z"
+      },
+      {
+        "title": "Iran warns of attempts to target supreme leader Khamenei",
+        "description": "Iran's intelligence warns of foreign plots to target supreme leader Khamenei amid escalating tensions with the U.S. and Israel.",
+        "source": "thehindu.com",
+        "url": "https://www.thehindu.com/news/international/iran-warns-of-attempts-to-target-supreme-leader-khamenei/article70314487.ece",
+        "published_at": "2025-11-23T17:57:24.000000Z"
+      },
+      {
+        "title": "Is Iran's Supreme Leader Ayatollah Khamenei Ill? Who Is Mojtaba Khamenei, His Likely Successor",
+        "description": "While Iranian officials have not commented on the rumors, Khamenei did his best to downplay speculation by publishing a photo of himself with an Iranian ambassa...",
+        "source": "zeenews.india.com",
+        "url": "https://zeenews.india.com/world/is-irans-supreme-leader-ayatollah-khamenei-ill-who-is-mojtaba-khamenei-his-likely-successor-2821775.html",
+        "published_at": "2024-11-19T02:49:00.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "558946",
+    "question": "Will Belgium win the 2026 FIFA World Cup?",
+    "rules": "This market will resolve according to the national team that wins the 2026 FIFA World Cup.\n\nIf at any point it becomes impossible for this team to win the FIFA World Cup based on the rules of FIFA (e.g., they are eliminated in the knockout stage), this market will resolve immediately to \u201cNo\u201d.\n\nIf the 2026 FIFA World Cup is permanently canceled or has not been completed by October 13, 2026, 11:59 PM this market will resolve to \u201cOther\u201d.\n\nThe primary resolution source will be official information from FIFA, however, a consensus of credible reporting may also be used.",
+    "category": null,
+    "end_date": "2026-07-20T00:00:00Z",
+    "news_query": "belgium win fifa world cup",
+    "yes_price": 0.0125,
+    "captured_at": "2026-07-05T23:00:05Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "Belgium edges out Senegal with 3-2 comeback win at 2026 FIFA World Cup",
+        "description": "Belgium is set to play its Round of 16 match against either the US or Bosnia and Herzegovina",
+        "source": "tass.com",
+        "url": "https://tass.com/sports/2154205",
+        "published_at": "2026-07-02T00:28:45.000000Z"
+      },
+      {
+        "title": "VIDEO: Riots in Belgium, Netherlands after Morocco win at FIFA World Cup",
+        "description": "Police detained about a dozen people after they deployed water cannons and fire tear gas to disperse crowds in Brussels.",
+        "source": "freepressjournal.in",
+        "url": "https://www.freepressjournal.in/sports/video-riots-in-belgium-netherlands-after-morocco-win-at-fifa-world-cup",
+        "published_at": "2022-11-28T03:00:34.000000Z"
+      },
+      {
+        "title": "Morocco defeats Belgium 2-0 at FIFA World Cup",
+        "description": "The goals were scored by Abdelhamid Sabiri (73rd minute) and Zakaria Aboukhalal (90+2)",
+        "source": "tass.com",
+        "url": "https://tass.com/sport/1542433",
+        "published_at": "2022-11-27T15:23:40.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "253706",
+    "question": "Will Donald Trump win the popular vote in the 2024 Presidential Election?",
+    "rules": "This market will resolve to \u201cYes\u201d if Donald Trump is the candidate who receives the most votes in the 2024 U.S. presidential election, otherwise this market will resolve to \u201cNo.\u201d\n\nIn case of a tie, this market will resolve in favor of the candidate whose last name comes first in alphabetical order.\n\nThe resolution source will be an overwhelming consensus of credible reporting as to who is the winner of the popular vote.",
+    "category": null,
+    "end_date": "2024-11-05T12:00:00Z",
+    "news_query": "donald trump win popular vote",
+    "yes_price": 0.3725,
+    "captured_at": "2024-10-22T11:00:03Z",
+    "status": "resolved",
+    "outcome": 1,
+    "news": [
+      {
+        "title": "Kamala Harris could win the popular vote by millions \u2014 but still be caught short in the states that count",
+        "description": "It has been a dream start to Kamala Harris's bid for the White House, and supporters are confident she'll beat Donald Trump in the popular vote \u2014 but the Elec...",
+        "source": "abc.net.au",
+        "url": "https://www.abc.net.au/news/2024-09-09/us-electoral-college-election-system-and-kamala-harris-democrats/104314562",
+        "published_at": "2024-09-08T19:00:00.000000Z"
+      },
+      {
+        "title": "Biden leads Trump in 2024 popular vote, trails Haley, DeSantis: poll",
+        "description": "President Biden eked out a one-point lead over former President Donald Trump, but trailed other 2024 GOP hopefuls like Nikki Haley and Ron DeSantis, a poll foun...",
+        "source": "nypost.com",
+        "url": "https://nypost.com/2023/10/12/donald-trump-trails-joe-biden-while-nikki-haley-and-ron-desantis-best-him-poll/",
+        "published_at": "2023-10-12T16:47:50.000000Z"
+      },
+      {
+        "title": "Republicans Aren\u2019t Really Trying to Win Popular-Vote Majorities",
+        "description": "Candidates who want to expand the party\u2019s base, like former Maryland governor Larry Hogan, no longer have a chance of being nominated.",
+        "source": "thenation.com",
+        "url": "https://www.thenation.com/article/politics/republicans-popular-vote-majorities/",
+        "published_at": "2023-03-10T10:00:57.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "558970",
+    "question": "Will Cape Verde win the 2026 FIFA World Cup?",
+    "rules": "This market will resolve according to the national team that wins the 2026 FIFA World Cup.\n\nIf at any point it becomes impossible for this team to win the FIFA World Cup based on the rules of FIFA (e.g., they are eliminated in the knockout stage), this market will resolve immediately to \u201cNo\u201d.\n\nIf the 2026 FIFA World Cup is permanently canceled or has not been completed by October 13, 2026, 11:59 PM this market will resolve to \u201cOther\u201d.\n\nThe primary resolution source will be official information from FIFA, however, a consensus of credible reporting may also be used.",
+    "category": null,
+    "end_date": "2026-07-20T00:00:00Z",
+    "news_query": "cape verde win fifa world",
+    "yes_price": 0.0005,
+    "captured_at": "2026-07-04T03:00:08Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "Cape Verde advances to knockout stage in its first-ever FIFA World Cup",
+        "description": "Cape Verde, making its FIFA World Cup debut, earned three points in Group H and advanced to the knockout stage in second place",
+        "source": "tass.com",
+        "url": "https://tass.com/sports/2152279",
+        "published_at": "2026-06-27T02:50:01.000000Z"
+      },
+      {
+        "title": "Saudi Arabia vs. Cape Verde Prediction, Odds, Picks For World Cup Match",
+        "description": "Check out the odds for the Saudi Arabia vs. Cape Verde Group H matchup at the 2026 FIFA World Cup.",
+        "source": "api.foxsports.com",
+        "url": "https://www.foxsports.com/stories/soccer/2026-world-cup-saudi-arabia-cape-verde-odds-prediction-picks",
+        "published_at": "2026-06-26T14:00:07.000000Z"
+      },
+      {
+        "title": "Spain vs. Cape Verde Prediction, Odds, Picks For World Cup Match",
+        "description": "Check out the odds for the Spain vs. Cape Verde Group H matchup at the 2026 FIFA World Cup.",
+        "source": "api.foxsports.com",
+        "url": "https://www.foxsports.com/stories/soccer/2026-world-cup-spain-cape-verde-odds-prediction-picks",
+        "published_at": "2026-06-15T06:00:57.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "253641",
+    "question": "Will any other Democratic Politician win the 2024 US Presidential Election?",
+    "rules": "This market will resolve to \u201cYes\u201d if any other Democratic Politician other than Joe Biden, Gavin Newsom, Robert F. Kennedy Jr., Kamala Harris, Michelle Obama, Hillary Clinton, AOC, Bernie Sanders, and Elizabeth Warren wins. Otherwise this market will resolve to \u201cNo.\u201d\n\nFor the purposes of this market a Democratic Politician is defined as an individual who has held elected office at either the state or federal level (i.e. including but not limited to US Senator, US Representative, Governor, Lieutenant Governor, State Senator, State Representative) and runs as a Democrat for the 2024 US Presidential election. \n\nIf their affiliation changes to Independent or a party other than Democrat before election day, the individual will not be considered as a Democratic Politician.",
+    "category": null,
+    "end_date": "2024-11-05T00:00:00Z",
+    "news_query": "democratic presidential nominee 2024",
+    "yes_price": 0.0005,
+    "captured_at": "2024-10-21T23:00:02Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "Kamala Harris declared Democratic presidential nominee",
+        "description": "She is also the first ever Indian American to be nominated as presidential candidate of either the Republican or the Democratic party.",
+        "source": "rediff.com",
+        "url": "https://www.rediff.com/news/report/kamala-harris-declared-democratic-prez-nominee-first-indian-american/20240803.htm",
+        "published_at": "2024-08-02T19:12:19.000000Z"
+      },
+      {
+        "title": "Joe Biden Withdraws From 2024 Presidential Race, Endorses Kamala Harris As Democratic Nominee",
+        "description": "Joe Biden has cleared the air after he announced that he is pulling out of the presidential race. Joe Biden nominated Vice President Kamala Harris as the Democr...",
+        "source": "freepressjournal.in",
+        "url": "https://www.freepressjournal.in/world/joe-biden-withdraws-from-2024-presidential-race-endorses-kamala-harris-as-democratic-nominee",
+        "published_at": "2024-07-21T20:15:10.000000Z"
+      },
+      {
+        "title": "Joe Biden Endorses Kamala Harris As Democratic Presidential Nominee",
+        "description": "President Joe Biden has endorsed Vice President Kamala Harris to serve as the new Democratic presidential nominee. \"My fellow Democrats, I have decided not to a...",
+        "source": "deadline.com",
+        "url": "https://deadline.com/2024/07/biden-endorses-kamala-harris-2024-election-1236016931/",
+        "published_at": "2024-07-21T18:18:07.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "529278",
+    "question": "Will Frances Fitzgerald win the Irish Presidential Election?",
+    "rules": "The 2025 Irish presidential election must take place by Tuesday, 11 November 2025.\n\nThis market will resolve to the individual who wins the next Irish presidential election.\n\nIf the result of this election isn't known by February 28, 2026, 11:59 PM ET, the market group will resolve to \"Other\".\n\nThis market will resolve based on the result of the election as indicated by a consensus of credible reporting. If there is ambiguity, this market will resolve based solely on the official results as reported by the he Irish Government, specifically the Electoral Commission (An Coimisi\u00fan Toghch\u00e1in (see: https://www.electoralcommission.ie/).",
+    "category": null,
+    "end_date": "2025-11-11T12:00:00Z",
+    "news_query": "fitzgerald irish presidential election",
+    "yes_price": 0.0005,
+    "captured_at": "2025-10-25T21:00:20Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "RT\u00c9 puts Irish drama at the heart of new schedule",
+        "description": "RT\u00c9 has announced its 2025-26 schedule, with a record year of drama, new documentaries, returning favourites and major live sport set to air from this autumn t...",
+        "source": "rte.ie",
+        "url": "https://www.rte.ie/entertainment/2025/0821/1529396-rte-puts-irish-drama-at-the-heart-of-new-schedule/",
+        "published_at": "2025-08-21T05:00:00.000000Z"
+      },
+      {
+        "title": "The presidential election is a few months away \u2014 here are some names that might be running",
+        "description": "Who will get a seat in the big house in the park? We\u2019ll be deciding in November.",
+        "source": "thejournal.ie",
+        "url": "https://www.thejournal.ie/presidential-election-who-is-in-the-running-6681243-Apr2025/",
+        "published_at": "2025-04-19T20:00:41.000000Z"
+      },
+      {
+        "title": "Fine Gael will run its own presidential candidate separate to Fianna F\u00e1il, Harris confirms",
+        "description": "Fine Gael leader Simon Harris says his gut tells him a contest within the party \u2018could be healthy\u2019.",
+        "source": "thejournal.ie",
+        "url": "https://www.thejournal.ie/fine-gael-presidential-candidate-simon-harris-interview-6653242-Mar2025/",
+        "published_at": "2025-03-19T06:15:04.000000Z"
+      }
+    ]
+  },
+  {
+    "id": "558935",
+    "question": "Will England win the 2026 FIFA World Cup?",
+    "rules": "This market will resolve according to the national team that wins the 2026 FIFA World Cup.\n\nIf at any point it becomes impossible for this team to win the FIFA World Cup based on the rules of FIFA (e.g., they are eliminated in the knockout stage), this market will resolve immediately to \u201cNo\u201d.\n\nIf the 2026 FIFA World Cup is permanently canceled or has not been completed by October 13, 2026, 11:59 PM this market will resolve to \u201cOther\u201d.\n\nThe primary resolution source will be official information from FIFA, however, a consensus of credible reporting may also be used.",
+    "category": null,
+    "end_date": "2026-07-20T00:00:00Z",
+    "news_query": "england win fifa world cup",
+    "yes_price": 0.0815,
+    "captured_at": "2026-07-05T23:00:06Z",
+    "status": "resolved",
+    "outcome": 0,
+    "news": [
+      {
+        "title": "Fifa Women's World Cup: England v Haiti preview",
+        "description": "The Lionesses have been",
+        "source": "bbc.co.uk",
+        "url": "https://www.bbc.co.uk/sport/football/66265569?at_medium=RSS&at_campaign=KARANGA",
+        "published_at": "2023-07-21T14:49:39.000000Z"
+      },
+      {
+        "title": "Fifa Women's World Cup: England v Haiti preview",
+        "description": "The Lionesses have been",
+        "source": "bbc.co.uk",
+        "url": "https://www.bbc.co.uk/sport/football/66265569",
+        "published_at": "2023-07-21T14:49:39.000000Z"
+      },
+      {
+        "title": "LIVE | FIFA World Cup: England v France \u2013 Saturday, 10 December 2022",
+        "description": "The 2022 FIFA World Cup quarter-finals conclude with a heavyweight clash between old rivals England and France.",
+        "source": "thesouthafrican.com",
+        "url": "https://www.thesouthafrican.com/sport/soccer/soccer-world-cup-2022/live-fifa-world-cup-england-france-result-10-december-2022-breaking/",
+        "published_at": "2022-12-10T16:18:17.000000Z"
+      }
+    ]
   }
 ]

@@ -17,11 +17,21 @@ REQUIRED_KEYS = {
 
 def test_fixture_rows_are_valid():
     rows = FixtureSource().fetch()
-    assert len(rows) == 5
+    assert 30 <= len(rows) <= 40
     for row in rows:
         assert REQUIRED_KEYS <= row.keys()
         assert 0 < row["yes_price"] < 1
         assert row["outcome"] in {0, 1}
+
+
+# The look-ahead check on the saved data itself. [:19] cuts both sides to
+# YYYY-MM-DDTHH:MM:SS, since the API adds .000000Z and captured_at ends in Z.
+def test_fixture_headlines_are_before_captured_at():
+    for row in FixtureSource().fetch():
+        assert len(row["news"]) == 3
+        for headline in row["news"]:
+            assert set(headline) == {"title", "description", "source", "url", "published_at"}
+            assert headline["published_at"][:19] < row["captured_at"][:19]
 
 
 def test_saving_twice_does_not_duplicate(tmp_db):
@@ -29,17 +39,18 @@ def test_saving_twice_does_not_duplicate(tmp_db):
     conn = get_connection()
     save_markets(conn, rows)
     save_markets(conn, rows)
-    assert len(list_markets(conn)) == 5
+    assert len(list_markets(conn)) == len(rows)
     snapshots = conn.execute("SELECT COUNT(*) FROM price_snapshots").fetchone()[0]
-    assert snapshots == 5
+    assert snapshots == len(rows)
     conn.close()
 
 
 def test_latest_snapshot_returns_fixture_price(tmp_db):
+    rows = FixtureSource().fetch()
     conn = get_connection()
-    save_markets(conn, FixtureSource().fetch())
-    snapshot = latest_snapshot(conn, "fx-ecb-cut")
-    assert snapshot["yes_price"] == 0.62
+    save_markets(conn, rows)
+    snapshot = latest_snapshot(conn, rows[0]["id"])
+    assert snapshot["yes_price"] == rows[0]["yes_price"]
     assert latest_snapshot(conn, "no-such-market") is None
     conn.close()
 

@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "found": 58824,
+    "returned": 3,
+    "limit": 3,
+    "page": 1
+  },
+  "data": [
+    {
+      "uuid": "8a9e8abf-e157-446b-bf91-b57539a63ddf",
+      "title": "Trump indicted over efforts to undo 2020 presidential election",
+      "description": "Former U.S. President Donald Trump was indicted on Aug. 1 in connection with his efforts to overturn the results of the 2020 presidential election, according to...",
+      "keywords": "United States, former U.S. President Donald Trump, Donald Trump, Donald Trump indicted, 2020 U.S. presidential election, presidential election",
+      "snippet": "KYODO NEWS - 1 hour ago - 06:57 | All, World\n\nFormer U.S. President Donald Trump was indicted Tuesday in connection with his efforts to overturn the results of ...",
+      "url": "https://english.kyodonews.net/news/2023/08/55378f2e57cb-update1-trump-indicted-over-efforts-to-undo-2020-presidential-election.html",
+      "image_url": "https://img.kyodonews.net/english/public/images/posts/b99c01cb0cd1edf877bf9c5748fbcf55/cropped_image_l.jpg",
+      "language": "en",
+      "published_at": "2023-08-02T06:57:19.000000Z",
+      "source": "english.kyodonews.net",
+      "categories": [
+        "general"
+      ],
+      "relevance_score": 46.188496
+    },
+    {
+      "uuid": "e2c0f7d5-a444-4fa1-8fdf-691b76cfcf1c",
+      "title": "Trump warns of potential US failure if Harris wins presidential election",
+      "description": "The US will hold its presidential election on November 5",
+      "keywords": "",
+      "snippet": "NEW YORK, August 19. /TASS/. The United States will fail if Democratic nominee and Vice President Kamala Harris wins the November presidential election, former ...",
+      "url": "https://tass.com/world/1830775",
+      "image_url": "https://tass.com/img/blocks/common/tass_logo_share_ru.png",
+      "language": "en",
+      "published_at": "2024-08-19T08:05:04.000000Z",
+      "source": "tass.com",
+      "categories": [
+        "general"
+      ],
+      "relevance_score": 45.67726
+    },
+    {
+      "uuid": "d1361b8d-65b9-4209-9df1-88fe6469602c",
+      "title": "US Presidential Election Top 10: US Presidential Election Top 10: Is Donald Trump done as an orator?",
+      "description": "US News: Explore the significant moments from the recent presidential debate between Kamala Harris and Donald Trump, highlighting Trump's apparent decline as a ...",
+      "keywords": "Vivek Ramaswamy, US Presidential Elections, US Presidential Election Top 10, Taylor Swift, Kamala Harris, Joe Biden, Donald Trump, Abdul Ghani Baradar",
+      "snippet": "Biden goes MAGA: President Joe Biden (remember him) put on a Trump hat as show of solidarity on 9/11. The Trump War Room said this. ‘Good Job’: It’s easy ...",
+      "url": "https://timesofindia.indiatimes.com/world/us/us-presidential-elections-top-10-is-this-the-end-of-trump-the-orator/articleshow/113297602.cms",
+      "image_url": "https://static.toiimg.com/thumb/msid-113297920,width-1070,height-580,imgsize-145302,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg",
+      "language": "en",
+      "published_at": "2024-09-12T14:32:55.000000Z",
+      "source": "timesofindia.indiatimes.com",
+      "categories": [
+        "general"
+      ],
+      "relevance_score": 45.44355
+    }
+  ]
+}
