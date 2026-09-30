@@ -78,7 +78,7 @@ Keys: `export TYPESAFE_API_KEY=...` and `export THENEWSAPI_TOKEN=...` in the she
   - `scripts/build_fixture.py`: pulls 30 to 40 resolved binary Polymarket markets, a pre-resolution price, and 3 headlines each with `published_before=captured_at`. Hand-edit `news_query` where the auto one is bad. Uses ~40 of your 100 daily news calls, run it once.
 - **Tests:** query builder example; filter drops future items and sorts newest first; TheNewsApi via MockTransport never puts the token in any logged message; cap stops at N calls; cached market isn't fetched again.
 
-### [ ] C9. `Add estimate runs that store the exact state sent to the decider` (Opus: stop and tell Javi to use Claude Code)
+### [x] C9. `Add estimate runs that store the exact state sent to the decider` (Opus: stop and tell Javi to use Claude Code)
 - **Files:** `intel/estimates.py`, `intel/repo.py` (estimates + `list_estimate_records`, `list_resolutions`), `intel/routes.py` (`POST /estimates/run`, `GET /estimates`), `tests/test_estimates.py`
 - **Tasks:** `days_to_resolution`, `build_state`, `render_state`, `run_estimates` with batch limit and per-market failure handling.
 - **Tests:** state never has `outcome`/`yes_price`; `basic` has no headlines, `news` does; running twice is a no-op; one failing market doesn't stop the batch; `list_estimate_records` returns `Estimate` objects.

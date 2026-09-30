@@ -1,3 +1,6 @@
+from contracts import Estimate, Resolution
+
+
 # INSERT OR IGNORE plus the UNIQUE keys make every save idempotent:
 # syncing the same markets twice changes nothing the second time.
 def save_markets(conn, rows):
@@ -64,3 +67,90 @@ def market_ids_with_news(conn):
     rows = conn.execute("SELECT DISTINCT market_id FROM news_items").fetchall()
     return {row["market_id"] for row in rows}
 
+
+
+def list_news_items(conn, market_id):
+    rows = conn.execute(
+        """
+        SELECT title, description, published_at FROM news_items
+        WHERE market_id = ?
+        """,
+        (market_id,),
+    ).fetchall()
+    return [dict(row) for row in rows]
+
+
+def estimate_exists(conn, market_id, snapshot_id, decider_name, context_level):
+    row = conn.execute(
+        """
+        SELECT 1 FROM estimates
+        WHERE market_id = ? AND snapshot_id = ? AND decider = ? AND context_level = ?
+        """,
+        (market_id, snapshot_id, decider_name, context_level),
+    ).fetchone()
+    return row is not None
+
+
+# UNIQUE (market_id, snapshot_id, decider, context_level) makes a second
+# save for the same key a no-op.
+def save_estimate(conn, market_id, snapshot_id, decider_name, context_level,
+                  decision, state_json, created_at):
+    conn.execute(
+        """
+        INSERT OR IGNORE INTO estimates
+            (market_id, snapshot_id, decider, context_level, jev_prob,
+             info_score, confidence, category, state_json, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        (
+            market_id, snapshot_id, decider_name, context_level, decision.jev_prob,
+            decision.info_score, decision.confidence, decision.category,
+            state_json, created_at,
+        ),
+    )
+    conn.commit()
+
+
+# market_price is the snapshot the estimate was made at, not the latest one,
+# so Book compares Jev against the price he could actually have bet on.
+def list_estimate_records(conn):
+    rows = conn.execute(
+        """
+        SELECT e.id, e.market_id, m.question, s.yes_price, e.jev_prob,
+               e.info_score, e.confidence, e.decider, e.context_level, e.created_at
+        FROM estimates e
+        JOIN markets m ON m.id = e.market_id
+        JOIN price_snapshots s ON s.id = e.snapshot_id
+        ORDER BY e.id
+        """
+    ).fetchall()
+    return [
+        Estimate(
+            estimate_id=row["id"],
+            market_id=row["market_id"],
+            question=row["question"],
+            market_price=row["yes_price"],
+            jev_prob=row["jev_prob"],
+            info_score=row["info_score"],
+            confidence=row["confidence"],
+            decider=row["decider"],
+            context_level=row["context_level"],
+            created_at=row["created_at"],
+        )
+        for row in rows
+    ]
+
+
+# markets has no resolved_at column, so end_date stands in for it.
+def list_resolutions(conn):
+    rows = conn.execute(
+        """
+        SELECT id, outcome, end_date FROM markets
+        WHERE outcome IS NOT NULL
+        ORDER BY id
+        """
+    ).fetchall()
+    return [
+        Resolution(market_id=row["id"], outcome=row["outcome"], resolved_at=row["end_date"])
+        for row in rows
+    ]
