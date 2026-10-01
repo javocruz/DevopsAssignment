@@ -94,7 +94,7 @@ Keys: `export TYPESAFE_API_KEY=...` and `export THENEWSAPI_TOKEN=...` in the she
 - **Files:** `book/strategy.py`, `tests/test_strategy.py`
 - **Tests:** all worked examples, exact threshold, negative edge. File imports nothing from `intel`, `db`, `httpx`.
 
-### [ ] C12. `Add settlement with P&L for Yes and No bets`
+### [x] C12. `Add settlement with P&L for Yes and No bets`
 - **Files:** `book/settlement.py`, `tests/test_settlement.py`
 
 ### [ ] C13. `Add bets repo and pipeline routes for auto-betting and settling`
@@ -111,6 +111,7 @@ Keys: `export TYPESAFE_API_KEY=...` and `export THENEWSAPI_TOKEN=...` in the she
 
 ### [ ] C15. `Add ADR 4 on testing focus and record coverage in README`
 - **Files:** `ADR.md`, `README.md`, tests to close gaps
+- Audit the repo against the spec before chasing coverage. Check that function names and formulas match `05-logic-spec.md`, that `book/` does not import `intel`, that no API key is in the tree, that `state_json` never has `outcome` or `yes_price`, that tests never call Jev, Polymarket, or TheNewsAPI, that every fixture `yes_price` is strictly between 0 and 1, and that `docs/diagrams/db-schema.md` matches `db.py`. The fresh-clone checklist stays on C21.
 - `pytest --cov=. --cov-report=term-missing` ≥70%, pasted in README.
 
 ### [ ] C16. `Run real Jev on fixture markets with and without news`
