@@ -65,6 +65,15 @@ def read_stake(name, default):
     return value
 
 
+# size_stake divides by this. Zero crashes, and a negative threshold lets
+# almost every edge through and produces a negative stake.
+def read_threshold(name, default):
+    value = read_float(name, default)
+    if value <= 0:
+        raise ValueError(f"{name} must be greater than 0, got {value}")
+    return value
+
+
 # Reads the environment on every call so tests can change vars without a restart.
 def get_settings():
     return Settings(
@@ -84,7 +93,7 @@ def get_settings():
         jev_model=read_str("JEV_MODEL", "jev-latest"),
         http_timeout=read_float("HTTP_TIMEOUT", 10),
         estimate_batch_limit=read_int("ESTIMATE_BATCH_LIMIT", 20),
-        edge_threshold=read_float("EDGE_THRESHOLD", 0.08),
+        edge_threshold=read_threshold("EDGE_THRESHOLD", 0.08),
         min_confidence=read_float("MIN_CONFIDENCE", 0.6),
         min_info=read_float("MIN_INFO", 0.4),
         base_stake=read_stake("BASE_STAKE", 10),

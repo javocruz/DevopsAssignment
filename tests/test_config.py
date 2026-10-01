@@ -43,6 +43,12 @@ def test_bad_edge_threshold_raises(monkeypatch):
         get_settings()
 
 
+def test_zero_edge_threshold_raises(monkeypatch):
+    monkeypatch.setenv("EDGE_THRESHOLD", "0")
+    with pytest.raises(ValueError, match="EDGE_THRESHOLD"):
+        get_settings()
+
+
 def test_unknown_decider_raises(monkeypatch):
     monkeypatch.setenv("DECIDER", "banana")
     with pytest.raises(ValueError, match="DECIDER"):

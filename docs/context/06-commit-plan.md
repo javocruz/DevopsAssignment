@@ -90,7 +90,7 @@ Keys: `export TYPESAFE_API_KEY=...` and `export THENEWSAPI_TOKEN=...` in the she
 
 ## Thu Oct 1
 
-### [ ] C11. `Add edge, bet gating and stake sizing to book strategy`
+### [x] C11. `Add edge, bet gating and stake sizing to book strategy`
 - **Files:** `book/strategy.py`, `tests/test_strategy.py`
 - **Tests:** all worked examples, exact threshold, negative edge. File imports nothing from `intel`, `db`, `httpx`.
 
