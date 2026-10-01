@@ -39,7 +39,7 @@ If the spec already decides it, follow that and say which part you followed.
 
 ## Opus commits
 
-Before starting **C8**, **C9**, **C13**, or **C18**, stop. Do not implement them in this chat. Run that commit with Claude Code (`claude`) using Opus from this session, then wait for it to finish. Only write the code here if Javi explicitly says to.
+Opus is cancelled. C8 and C9 were done in Claude Code. **C13** and **C18** are done in this chat, same as the other commits.
 
 ## Hard rules for agents
 

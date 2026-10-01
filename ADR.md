@@ -18,6 +18,14 @@ Decision: I split the app into two packages, intel and book, that only share the
 Alternatives considered: One package for everything: simpler now, but I could not split intel and book into two services later without rewriting both. Two database files already: the assignment wants one SQLite path, so that waits until A2. News as a third domain: it is only context for estimates, so it would add work without adding a real feature.
 Consequences: Everything stays in one SQLite file for now, but no foreign key crosses the seam, so each domain can get its own database in A2. The cost is that pipeline.py has to do the glue work between them.
 
+## [3]. SQLite schema
+Date: 2026-10-01
+Status: Decided
+Context: An estimate is judged against the Yes price at that moment. A market gets new prices later. One price column on the market row would be replaced, and the edge would no longer match what Jev was asked.
+Decision: I put yes_price on price_snapshots, together with captured_at, instead of on markets. estimates.snapshot_id points at that row, so the edge uses the price from estimate time.
+Alternatives considered: A yes_price column on markets. That is one less table, but the next sync overwrites the price Jev was compared with, so the edge is no longer honest. No foreign keys on bets, PRAGMA user_version, and state_json are also in the schema. This ADR is only about where the price lives.
+Consequences: list_estimate_records joins price_snapshots to read market_price. That price is the one from the estimate, not a later sync. The cost is an extra table and that join. A market can keep every price it has had.
+
 <!--
 Format (copy for each entry):
 
@@ -32,7 +40,7 @@ Consequences: 1-2 sentences, what this costs or enables later
 Planned entries:
 1. Backend framework (Mon Sep 28)
 2. Intel / Book domain split (Tue Sep 29)
-3. SQLite schema decision (Wed Sep 30)
+3. SQLite schema decision (Thu Oct 1)
 4. Testing approach (Fri Oct 2)
 5. Deliberately not built (Sat Oct 3)
 -->

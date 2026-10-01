@@ -83,7 +83,7 @@ Keys: `export TYPESAFE_API_KEY=...` and `export THENEWSAPI_TOKEN=...` in the she
 - **Tasks:** `days_to_resolution`, `build_state`, `render_state`, `run_estimates` with batch limit and per-market failure handling.
 - **Tests:** state never has `outcome`/`yes_price`; `basic` has no headlines, `news` does; running twice is a no-op; one failing market doesn't stop the batch; `list_estimate_records` returns `Estimate` objects.
 
-### [ ] C10. `Add ADR 3 on the SQLite schema and the DB diagram`
+### [x] C10. `Add ADR 3 on the SQLite schema and the DB diagram`
 - **Files:** `ADR.md`, `docs/diagrams/db-schema.md`. Javi picks one option from `04-data-model.md`. Dated 2026-09-30 (3rd distinct ADR date).
 
 ---
@@ -97,7 +97,7 @@ Keys: `export TYPESAFE_API_KEY=...` and `export THENEWSAPI_TOKEN=...` in the she
 ### [ ] C12. `Add settlement with P&L for Yes and No bets`
 - **Files:** `book/settlement.py`, `tests/test_settlement.py`
 
-### [ ] C13. `Add bets repo and pipeline routes for auto-betting and settling` (Opus: stop and tell Javi to use Claude Code)
+### [ ] C13. `Add bets repo and pipeline routes for auto-betting and settling`
 - **Files:** `book/repo.py`, `book/routes.py` (`GET /portfolio`), `pipeline.py`, `app.py` (mount), `tests/test_pipeline.py`
 - **Tests:** full offline run on `tmp_db`: sync -> news -> estimate -> auto-bet -> settle, every bet has status + pnl; auto-bet twice doesn't double bet; `grep -r "from intel" book/` empty.
 
@@ -126,7 +126,7 @@ Keys: `export TYPESAFE_API_KEY=...` and `export THENEWSAPI_TOKEN=...` in the she
 - **Files:** `security.py`, route files, `tests/test_security.py`
 - **Tests:** no `ADMIN_TOKEN` -> open; set + right header -> 200; set + wrong/missing -> 401; `/healthz` always open.
 
-### [ ] C18. `Add dashboard showing Jev vs market, portfolio and scorecard` (Opus: stop and tell Javi to use Claude Code)
+### [ ] C18. `Add dashboard showing Jev vs market, portfolio and scorecard`
 - **Files:** `templates/base.html`, `templates/dashboard.html`, `static/style.css`, `pipeline.py` (`GET /`)
 - Buttons use `fetch()` to call JSON routes (sends `X-Admin-Token` from an input box if set). Scorecard has a decider + context selector.
 
