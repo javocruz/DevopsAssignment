@@ -105,7 +105,7 @@ Keys: `export TYPESAFE_API_KEY=...` and `export THENEWSAPI_TOKEN=...` in the she
 - **Files:** `book/repo.py`, `book/routes.py` (`GET /portfolio`), `pipeline.py`, `app.py` (mount), `tests/test_pipeline.py`
 - **Tests:** full offline run on `tmp_db`: sync -> news -> estimate -> auto-bet -> settle, every bet has status + pnl; auto-bet twice doesn't double bet; `grep -r "from intel" book/` empty.
 
-### [ ] C14. `Add Brier score and calibration comparing Jev and market per context level`
+### [x] C14. `Add Brier score and calibration comparing Jev and market per context level`
 - **Files:** `book/scoring.py`, `pipeline.py` (`GET /scorecard`), `tests/test_scoring.py`
 - **Tests:** Brier example, empty -> None, p = 1.0 last bucket, scorecard never mixes deciders or context levels.
 
