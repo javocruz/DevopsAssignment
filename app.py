@@ -4,12 +4,16 @@ import sys
 import uvicorn
 from fastapi import Depends, FastAPI
 
+from book.routes import router as book_router
 from config import get_settings
 from db import get_db, get_schema_version, init_db
 from intel.routes import router as intel_router
+from pipeline import router as pipeline_router
 
 app = FastAPI(title="Edgebook")
 app.include_router(intel_router)
+app.include_router(book_router)
+app.include_router(pipeline_router)
 
 
 @app.get("/healthz")

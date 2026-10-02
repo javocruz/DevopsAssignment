@@ -97,13 +97,13 @@ Keys: `export TYPESAFE_API_KEY=...` and `export THENEWSAPI_TOKEN=...` in the she
 ### [x] C12. `Add settlement with P&L for Yes and No bets`
 - **Files:** `book/settlement.py`, `tests/test_settlement.py`
 
-### [ ] C13. `Add bets repo and pipeline routes for auto-betting and settling`
-- **Files:** `book/repo.py`, `book/routes.py` (`GET /portfolio`), `pipeline.py`, `app.py` (mount), `tests/test_pipeline.py`
-- **Tests:** full offline run on `tmp_db`: sync -> news -> estimate -> auto-bet -> settle, every bet has status + pnl; auto-bet twice doesn't double bet; `grep -r "from intel" book/` empty.
-
 ---
 
 ## Fri Oct 2
+
+### [x] C13. `Add bets repo and pipeline routes for auto-betting and settling`
+- **Files:** `book/repo.py`, `book/routes.py` (`GET /portfolio`), `pipeline.py`, `app.py` (mount), `tests/test_pipeline.py`
+- **Tests:** full offline run on `tmp_db`: sync -> news -> estimate -> auto-bet -> settle, every bet has status + pnl; auto-bet twice doesn't double bet; `grep -r "from intel" book/` empty.
 
 ### [ ] C14. `Add Brier score and calibration comparing Jev and market per context level`
 - **Files:** `book/scoring.py`, `pipeline.py` (`GET /scorecard`), `tests/test_scoring.py`
