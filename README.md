@@ -19,11 +19,15 @@ Runs offline by default (bundled fixture markets + stub decider). Open http://lo
 
 ## Configuration
 
-TODO: env var table (C16)
+TODO: env var table (C19)
 
 ## Tests and coverage
 
-TODO: command and result (C14)
+```bash
+pytest --cov=. --cov-report=term-missing
+```
+
+Total coverage: 97% (57 tests).
 
 ## Project docs
 

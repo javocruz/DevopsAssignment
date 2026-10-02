@@ -26,6 +26,14 @@ Decision: I put yes_price on price_snapshots, together with captured_at, instead
 Alternatives considered: A yes_price column on markets. That is one less table, but the next sync overwrites the price Jev was compared with, so the edge is no longer honest. No foreign keys on bets, PRAGMA user_version, and state_json are also in the schema. This ADR is only about where the price lives.
 Consequences: list_estimate_records joins price_snapshots to read market_price. That price is the one from the estimate, not a later sync. The cost is an extra table and that join. A market can keep every price it has had.
 
+## [4]. Testing approach
+Date: 2026-10-02
+Status: Decided
+Context: The grade asks for pytest on the core logic and at least 70% coverage. The quiz asks which parts were tested heavily and which were left thin.
+Decision: I test the math and the parsers hard: compute_edge, should_bet, size_stake, settle_bet, brier_score, calibration_buckets, parse_jev_response, and filter_news_before. Jev, Polymarket, and TheNewsAPI are tested only with httpx.MockTransport and saved samples. Routes are tested only enough to show the pipeline connects.
+Alternatives considered: Testing every route and error branch equally. That lifts the coverage number, but the formulas are what I have to explain, and a live API call in a test needs a key and fails offline.
+Consequences: The coverage command and the number live in the README. app.py startup and some error branches stay thin on purpose.
+
 <!--
 Format (copy for each entry):
 
@@ -41,6 +49,5 @@ Planned entries:
 1. Backend framework (Mon Sep 28)
 2. Intel / Book domain split (Tue Sep 29)
 3. SQLite schema decision (Thu Oct 1)
-4. Testing approach (Fri Oct 2)
 5. Deliberately not built (Sat Oct 3)
 -->
