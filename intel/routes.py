@@ -10,12 +10,13 @@ from intel.estimates import run_estimates
 from intel.news import fetch_news_for_markets, get_news_source
 from intel.repo import list_estimate_records, list_markets, save_markets
 from intel.sources import FixtureSource, get_source
+from security import require_admin
 
 router = APIRouter()
 
 
 @router.post("/markets/sync")
-def sync_markets(conn=Depends(get_db)):
+def sync_markets(conn=Depends(get_db), _admin=Depends(require_admin)):
     source = get_source(get_settings())
     result = source.fetch()
     # FixtureSource returns a plain list, PolymarketSource returns a summary.
@@ -34,9 +35,8 @@ def get_markets(conn=Depends(get_db)):
     return [dict(row) for row in list_markets(conn)]
 
 
-# No admin check yet: require_admin arrives in C17.
 @router.post("/news/fetch")
-def fetch_news(conn=Depends(get_db)):
+def fetch_news(conn=Depends(get_db), _admin=Depends(require_admin)):
     settings = get_settings()
     source = get_news_source(settings)
     return fetch_news_for_markets(
@@ -47,9 +47,10 @@ def fetch_news(conn=Depends(get_db)):
 CONTEXT_LEVELS = ("basic", "news")
 
 
-# No admin check yet: require_admin arrives in C17.
 @router.post("/estimates/run")
-def run_estimates_route(context: str = "basic", conn=Depends(get_db)):
+def run_estimates_route(
+    context: str = "basic", conn=Depends(get_db), _admin=Depends(require_admin)
+):
     if context not in CONTEXT_LEVELS:
         raise HTTPException(status_code=400, detail=f"context must be one of {CONTEXT_LEVELS}")
     settings = get_settings()
