@@ -1,6 +1,8 @@
 from datetime import datetime, timezone
+from pathlib import Path
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi.templating import Jinja2Templates
 
 from book.repo import place_bets, settle_bets
 from book.scoring import brier_score, calibration_buckets
@@ -11,8 +13,18 @@ from security import require_admin
 
 router = APIRouter()
 
+# Resolved from this file, so the templates folder does not depend on
+# the current working directory.
+templates = Jinja2Templates(directory=str(Path(__file__).resolve().parent / "templates"))
+
 DECIDERS = ("stub", "jev")
 CONTEXT_LEVELS = ("basic", "news")
+
+
+# The page is a shell. Estimates, bets, and the scorecard come from the JSON routes.
+@router.get("/")
+def dashboard(request: Request):
+    return templates.TemplateResponse(request, "dashboard.html")
 
 
 def run_time():

@@ -1,0 +1,39 @@
+body {
+  font-family: sans-serif;
+  margin: 1.5rem;
+  line-height: 1.4;
+}
+
+header h1 {
+  margin-bottom: 0.2rem;
+}
+
+label {
+  margin-right: 1rem;
+}
+
+button {
+  margin-right: 0.4rem;
+}
+
+section {
+  margin-top: 1.5rem;
+}
+
+#status {
+  min-height: 1.2rem;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 0.3rem 0.5rem;
+  text-align: left;
+  vertical-align: top;
+}

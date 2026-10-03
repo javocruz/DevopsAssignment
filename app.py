@@ -1,8 +1,10 @@
 import logging
 import sys
+from pathlib import Path
 
 import uvicorn
 from fastapi import Depends, FastAPI
+from fastapi.staticfiles import StaticFiles
 
 from book.routes import router as book_router
 from config import get_settings
@@ -14,6 +16,12 @@ app = FastAPI(title="Edgebook")
 app.include_router(intel_router)
 app.include_router(book_router)
 app.include_router(pipeline_router)
+# The dashboard links to /static/style.css. This is the only static mount.
+app.mount(
+    "/static",
+    StaticFiles(directory=str(Path(__file__).resolve().parent / "static")),
+    name="static",
+)
 
 
 @app.get("/healthz")

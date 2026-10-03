@@ -1,0 +1,259 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+  <label>
+    Admin token
+    <input id="admin-token" type="password" autocomplete="off">
+  </label>
+  <p>Leave this empty and POST routes stay open. If you type a token, each button sends it as X-Admin-Token.</p>
+  <button type="button" id="sync">Sync markets</button>
+  <button type="button" id="fetch-news">Fetch news</button>
+  <button type="button" id="run-estimates">Run estimates</button>
+  <button type="button" id="auto-bet">Auto-bet</button>
+  <button type="button" id="settle">Settle</button>
+  <p id="status"></p>
+</section>
+
+<section>
+  <h2>Jev vs market</h2>
+  <p id="estimates-empty">No estimates yet.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Question</th>
+        <th>Market</th>
+        <th>Jev</th>
+        <th>Gap</th>
+        <th>Decider</th>
+        <th>Context</th>
+        <th>Confidence</th>
+        <th>Info</th>
+      </tr>
+    </thead>
+    <tbody id="estimates-body"></tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Portfolio</h2>
+  <p>Total P&amp;L: <span id="total-pnl">0</span></p>
+  <p id="bets-empty">No bets yet.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Market</th>
+        <th>Side</th>
+        <th>Entry</th>
+        <th>Stake</th>
+        <th>Status</th>
+        <th>P&amp;L</th>
+      </tr>
+    </thead>
+    <tbody id="bets-body"></tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Scorecard</h2>
+  <label>
+    Decider
+    <select id="decider">
+      <option value="stub">stub</option>
+      <option value="jev">jev</option>
+    </select>
+  </label>
+  <label>
+    Context
+    <select id="context">
+      <option value="basic">basic</option>
+      <option value="news">news</option>
+    </select>
+  </label>
+  <p>The context select is what Run estimates sends. The decider select only filters this scorecard. The model that runs is still the DECIDER env var. Lower Brier is better.</p>
+  <p>Count: <span id="score-count">0</span></p>
+  <p>Jev Brier: <span id="jev-brier">none</span></p>
+  <p>Market Brier: <span id="market-brier">none</span></p>
+  <h3>Jev calibration</h3>
+  <p id="jev-buckets-empty">No buckets yet.</p>
+  <table>
+    <thead>
+      <tr><th>Range</th><th>Count</th><th>Avg pred</th><th>Actual rate</th></tr>
+    </thead>
+    <tbody id="jev-buckets"></tbody>
+  </table>
+  <h3>Market calibration</h3>
+  <p id="market-buckets-empty">No buckets yet.</p>
+  <table>
+    <thead>
+      <tr><th>Range</th><th>Count</th><th>Avg pred</th><th>Actual rate</th></tr>
+    </thead>
+    <tbody id="market-buckets"></tbody>
+  </table>
+</section>
+
+<script>
+  function adminHeaders() {
+    var token = document.getElementById("admin-token").value;
+    if (token === "") {
+      return {};
+    }
+    return {"X-Admin-Token": token};
+  }
+
+  function showStatus(text) {
+    document.getElementById("status").textContent = text;
+  }
+
+  function cell(value) {
+    var td = document.createElement("td");
+    // textContent, so a market question cannot inject HTML.
+    td.textContent = value === null || value === undefined ? "" : value;
+    return td;
+  }
+
+  function clearBody(id) {
+    document.getElementById(id).replaceChildren();
+  }
+
+  function fillEstimates(rows) {
+    var body = document.getElementById("estimates-body");
+    clearBody("estimates-body");
+    document.getElementById("estimates-empty").hidden = rows.length > 0;
+    rows.forEach(function (row) {
+      var tr = document.createElement("tr");
+      [
+        row.question,
+        row.market_price,
+        row.jev_prob,
+        row.jev_prob - row.market_price,
+        row.decider,
+        row.context_level,
+        row.confidence,
+        row.info_score
+      ].forEach(function (value) {
+        tr.appendChild(cell(value));
+      });
+      body.appendChild(tr);
+    });
+  }
+
+  function fillBets(portfolio) {
+    var body = document.getElementById("bets-body");
+    clearBody("bets-body");
+    var bets = portfolio.bets;
+    document.getElementById("bets-empty").hidden = bets.length > 0;
+    document.getElementById("total-pnl").textContent = portfolio.total_pnl;
+    bets.forEach(function (bet) {
+      var tr = document.createElement("tr");
+      [bet.market_id, bet.side, bet.entry_price, bet.stake, bet.status, bet.pnl]
+        .forEach(function (value) {
+          tr.appendChild(cell(value));
+        });
+      body.appendChild(tr);
+    });
+  }
+
+  function fillBuckets(bodyId, emptyId, buckets) {
+    var body = document.getElementById(bodyId);
+    clearBody(bodyId);
+    document.getElementById(emptyId).hidden = buckets.length > 0;
+    buckets.forEach(function (bucket) {
+      var tr = document.createElement("tr");
+      [bucket.range, bucket.count, bucket.avg_pred, bucket.actual_rate]
+        .forEach(function (value) {
+          tr.appendChild(cell(value));
+        });
+      body.appendChild(tr);
+    });
+  }
+
+  function fillScorecard(card) {
+    document.getElementById("score-count").textContent = card.count;
+    document.getElementById("jev-brier").textContent = card.jev_brier === null ? "none" : card.jev_brier;
+    document.getElementById("market-brier").textContent = card.market_brier === null ? "none" : card.market_brier;
+    fillBuckets("jev-buckets", "jev-buckets-empty", card.jev_calibration);
+    fillBuckets("market-buckets", "market-buckets-empty", card.market_calibration);
+  }
+
+  async function readJson(response) {
+    var body = await response.json();
+    if (!response.ok) {
+      var detail = body.detail || "";
+      throw new Error(response.status + " " + detail);
+    }
+    return body;
+  }
+
+  async function loadEstimates() {
+    var response = await fetch("/estimates");
+    fillEstimates(await readJson(response));
+  }
+
+  async function loadPortfolio() {
+    var response = await fetch("/portfolio");
+    fillBets(await readJson(response));
+  }
+
+  async function loadScorecard() {
+    var decider = document.getElementById("decider").value;
+    var context = document.getElementById("context").value;
+    var response = await fetch("/scorecard?decider=" + encodeURIComponent(decider) + "&context=" + encodeURIComponent(context));
+    fillScorecard(await readJson(response));
+  }
+
+  async function refresh() {
+    await loadEstimates();
+    await loadPortfolio();
+    await loadScorecard();
+  }
+
+  async function postJson(path) {
+    var response = await fetch(path, {method: "POST", headers: adminHeaders()});
+    var body = await readJson(response);
+    showStatus(JSON.stringify(body));
+    await refresh();
+  }
+
+  document.getElementById("sync").addEventListener("click", function () {
+    postJson("/markets/sync").catch(function (error) {
+      showStatus(error.message);
+    });
+  });
+  document.getElementById("fetch-news").addEventListener("click", function () {
+    postJson("/news/fetch").catch(function (error) {
+      showStatus(error.message);
+    });
+  });
+  document.getElementById("run-estimates").addEventListener("click", function () {
+    var context = document.getElementById("context").value;
+    postJson("/estimates/run?context=" + encodeURIComponent(context)).catch(function (error) {
+      showStatus(error.message);
+    });
+  });
+  document.getElementById("auto-bet").addEventListener("click", function () {
+    postJson("/pipeline/auto-bet").catch(function (error) {
+      showStatus(error.message);
+    });
+  });
+  document.getElementById("settle").addEventListener("click", function () {
+    postJson("/pipeline/settle").catch(function (error) {
+      showStatus(error.message);
+    });
+  });
+  document.getElementById("decider").addEventListener("change", function () {
+    loadScorecard().catch(function (error) {
+      showStatus(error.message);
+    });
+  });
+  document.getElementById("context").addEventListener("change", function () {
+    loadScorecard().catch(function (error) {
+      showStatus(error.message);
+    });
+  });
+
+  refresh().catch(function (error) {
+    showStatus(error.message);
+  });
+</script>
+{% endblock %}
