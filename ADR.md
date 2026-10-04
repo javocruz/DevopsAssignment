@@ -34,6 +34,14 @@ Decision: I test the math and the parsers hard: compute_edge, should_bet, size_s
 Alternatives considered: Testing every route and error branch equally. That lifts the coverage number, but the formulas are what I have to explain, and a live API call in a test needs a key and fails offline.
 Consequences: The coverage command and the number live in the README. app.py startup and some error branches stay thin on purpose.
 
+## [5]. What I chose not to build
+Date: 2026-10-04
+Status: Decided
+Context: The assignment leaves out real orders, user accounts, and a scheduler. On the 35 fixture markets the market Brier was 0.136 and Jev's was about 0.210. Five paper bets lost 50.04. I still wanted the desk to be something I could trust with money later.
+Decision: I keep paper bets only. There is one optional ADMIN_TOKEN instead of accounts. Nothing runs on a timer. Real orders wait until a new batch of markets beats the market on Brier.
+Alternatives considered: Lowering EDGE_THRESHOLD, MIN_CONFIDENCE, or MIN_INFO to place more bets on these same 35 markets. That would bet the forecasts should_bet already skipped, after I had seen the outcomes. Adding another information source. News barely moved Jev, and a new feed is another dependency and another look-ahead risk. Accounts and a scheduler. Neither one changes jev_prob. They only add login and a clock.
+Consequences: place_bets still writes paper rows, and settle_bet still scores them. The cost is that the app does not trade, does not know who the user is, and does not run unless someone presses the button.
+
 <!--
 Format (copy for each entry):
 
@@ -49,5 +57,5 @@ Planned entries:
 1. Backend framework (Mon Sep 28)
 2. Intel / Book domain split (Tue Sep 29)
 3. SQLite schema decision (Thu Oct 1)
-5. Deliberately not built (Sat Oct 3)
+5. What I chose not to build (Sun Oct 4)
 -->
