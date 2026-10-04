@@ -1,5 +1,7 @@
 # Edgebook
 
+IF THE UI LOOKS WEIRD! REMEMBER TO HARD RELOAD!! cmd + shift + R
+
 A paper-trading desk for prediction markets. Edgebook pulls markets, asks Jev (TypeSafe AI) for its own probability on each one, places paper bets where Jev disagrees with the crowd, and scores whether Jev was actually better than the market once markets resolve.
 
 **Pipeline:** fetch markets -> gather news -> ask Jev -> decide bets -> settle bets -> score Jev
