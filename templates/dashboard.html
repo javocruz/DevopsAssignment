@@ -1,60 +1,63 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section>
+<section class="fade-in">
+  <h2>Pipeline</h2>
   <label>
     Admin token
     <input id="admin-token" type="password" autocomplete="off">
   </label>
-  <p>Leave this empty and POST routes stay open. If you type a token, each button sends it as X-Admin-Token.</p>
-  <button type="button" id="sync">Sync markets</button>
-  <button type="button" id="fetch-news">Fetch news</button>
-  <button type="button" id="run-estimates">Run estimates</button>
-  <button type="button" id="auto-bet">Auto-bet</button>
-  <button type="button" id="settle">Settle</button>
+  <p class="small">Leave this empty and POST routes stay open. If you type a token, each button sends it as X-Admin-Token.</p>
+  <ol class="steps">
+    <li class="step">
+      <span class="step-num">1</span>
+      <p>Load markets into the local database.</p>
+      <button type="button" id="sync">Sync markets</button>
+    </li>
+    <li class="step">
+      <span class="step-num">2</span>
+      <p>Gather news headlines for each market.</p>
+      <button type="button" id="fetch-news">Fetch news</button>
+    </li>
+    <li class="step">
+      <span class="step-num">3</span>
+      <p>Ask for a chance, with the Context picked below.</p>
+      <button type="button" id="run-estimates">Run estimates</button>
+    </li>
+    <li class="step">
+      <span class="step-num">4</span>
+      <p>Place paper bets where the gap is big enough.</p>
+      <button type="button" id="auto-bet">Auto-bet</button>
+    </li>
+    <li class="step">
+      <span class="step-num">5</span>
+      <p>Close bets on markets that have resolved.</p>
+      <button type="button" id="settle">Settle</button>
+    </li>
+  </ol>
   <p id="status"></p>
 </section>
 
-<section>
+<section class="fade-in">
   <h2>Jev vs market</h2>
+  <p class="small">Gap is Jev minus market. Positive means Jev thinks YES is more likely than the market does.</p>
   <p id="estimates-empty">No estimates yet.</p>
-  <table>
-    <thead>
-      <tr>
-        <th>Question</th>
-        <th>Market</th>
-        <th>Jev</th>
-        <th>Gap</th>
-        <th>Decider</th>
-        <th>Context</th>
-        <th>Confidence</th>
-        <th>Info</th>
-      </tr>
-    </thead>
-    <tbody id="estimates-body"></tbody>
-  </table>
+  <div id="estimates-body" class="cards"></div>
 </section>
 
-<section>
+<section class="fade-in">
   <h2>Portfolio</h2>
-  <p>Total P&amp;L: <span id="total-pnl">0</span></p>
+  <div class="big-stats">
+    <div class="big-stat">
+      <span class="stat-label">Total P&amp;L</span>
+      <span id="total-pnl" class="big-number">0</span>
+    </div>
+  </div>
   <p id="bets-empty">No bets yet.</p>
-  <table>
-    <thead>
-      <tr>
-        <th>Market</th>
-        <th>Side</th>
-        <th>Entry</th>
-        <th>Stake</th>
-        <th>Status</th>
-        <th>P&amp;L</th>
-      </tr>
-    </thead>
-    <tbody id="bets-body"></tbody>
-  </table>
+  <div id="bets-body" class="cards"></div>
 </section>
 
-<section>
+<section class="fade-in">
   <h2>Scorecard</h2>
   <label>
     Decider
@@ -70,26 +73,39 @@
       <option value="news">news</option>
     </select>
   </label>
-  <p>The context select is what Run estimates sends. The decider select only filters this scorecard. The model that runs is still the DECIDER env var. Lower Brier is better.</p>
-  <p>Count: <span id="score-count">0</span></p>
-  <p>Jev Brier: <span id="jev-brier">none</span></p>
-  <p>Market Brier: <span id="market-brier">none</span></p>
+  <p class="small">The Context select is what Run estimates sends. The Decider select only filters this scorecard. DECIDER in the environment is still what actually runs.</p>
+  <p class="small">Count: <span id="score-count">0</span></p>
+  <div class="big-stats">
+    <div class="big-stat">
+      <span class="stat-label">Jev Brier</span>
+      <span id="jev-brier" class="big-number">none</span>
+    </div>
+    <div class="big-stat">
+      <span class="stat-label">Market Brier</span>
+      <span id="market-brier" class="big-number">none</span>
+    </div>
+  </div>
+  <p class="small">lower is better</p>
   <h3>Jev calibration</h3>
   <p id="jev-buckets-empty">No buckets yet.</p>
+  <div class="table-wrap">
   <table>
     <thead>
       <tr><th>Range</th><th>Count</th><th>Avg pred</th><th>Actual rate</th></tr>
     </thead>
     <tbody id="jev-buckets"></tbody>
   </table>
+  </div>
   <h3>Market calibration</h3>
   <p id="market-buckets-empty">No buckets yet.</p>
+  <div class="table-wrap">
   <table>
     <thead>
       <tr><th>Range</th><th>Count</th><th>Avg pred</th><th>Actual rate</th></tr>
     </thead>
     <tbody id="market-buckets"></tbody>
   </table>
+  </div>
 </section>
 
 <script>
@@ -105,15 +121,57 @@
     document.getElementById("status").textContent = text;
   }
 
+  // Every piece of text goes in with textContent, so a market question cannot inject HTML.
+  function makeEl(tag, className, text) {
+    var el = document.createElement(tag);
+    if (className) {
+      el.className = className;
+    }
+    if (text !== undefined) {
+      el.textContent = text === null ? "" : text;
+    }
+    return el;
+  }
+
   function cell(value) {
-    var td = document.createElement("td");
-    // textContent, so a market question cannot inject HTML.
-    td.textContent = value === null || value === undefined ? "" : value;
-    return td;
+    return makeEl("td", "", value === undefined ? null : value);
   }
 
   function clearBody(id) {
     document.getElementById(id).replaceChildren();
+  }
+
+  function percent(value) {
+    if (value === null || value === undefined) {
+      return "";
+    }
+    return Math.round(value * 100) + "%";
+  }
+
+  // Rounded for display only. The sign stays, so it reads like compute_edge.
+  function signed(value) {
+    var text = value.toFixed(3);
+    return value > 0 ? "+" + text : text;
+  }
+
+  function signClass(value) {
+    if (value === null || value === undefined) {
+      return "";
+    }
+    if (value > 0) {
+      return "pos";
+    }
+    if (value < 0) {
+      return "neg";
+    }
+    return "";
+  }
+
+  function stat(label, value, className) {
+    var box = makeEl("div", "stat " + (className || ""));
+    box.appendChild(makeEl("span", "stat-label", label));
+    box.appendChild(makeEl("span", "stat-value", value));
+    return box;
   }
 
   function fillEstimates(rows) {
@@ -121,20 +179,20 @@
     clearBody("estimates-body");
     document.getElementById("estimates-empty").hidden = rows.length > 0;
     rows.forEach(function (row) {
-      var tr = document.createElement("tr");
-      [
-        row.question,
-        row.market_price,
-        row.jev_prob,
-        row.jev_prob - row.market_price,
-        row.decider,
-        row.context_level,
-        row.confidence,
-        row.info_score
-      ].forEach(function (value) {
-        tr.appendChild(cell(value));
-      });
-      body.appendChild(tr);
+      var gap = row.jev_prob - row.market_price;
+      var card = makeEl("article", "card fade-in");
+      card.appendChild(makeEl("p", "question", row.question));
+      var numbers = makeEl("div", "numbers");
+      numbers.appendChild(stat("Market", percent(row.market_price)));
+      numbers.appendChild(stat("Jev", percent(row.jev_prob)));
+      numbers.appendChild(stat("Gap", signed(gap), signClass(gap)));
+      card.appendChild(numbers);
+      card.appendChild(makeEl("p", "meta",
+        "decider " + row.decider +
+        " · context " + row.context_level +
+        " · confidence " + row.confidence +
+        " · info " + row.info_score));
+      body.appendChild(card);
     });
   }
 
@@ -143,14 +201,21 @@
     clearBody("bets-body");
     var bets = portfolio.bets;
     document.getElementById("bets-empty").hidden = bets.length > 0;
-    document.getElementById("total-pnl").textContent = portfolio.total_pnl;
+    var total = document.getElementById("total-pnl");
+    total.textContent = portfolio.total_pnl;
+    total.className = "big-number " + signClass(portfolio.total_pnl);
     bets.forEach(function (bet) {
-      var tr = document.createElement("tr");
-      [bet.market_id, bet.side, bet.entry_price, bet.stake, bet.status, bet.pnl]
-        .forEach(function (value) {
-          tr.appendChild(cell(value));
-        });
-      body.appendChild(tr);
+      var card = makeEl("article", "card fade-in");
+      card.appendChild(makeEl("p", "meta", bet.market_id));
+      var numbers = makeEl("div", "numbers");
+      numbers.appendChild(stat("Side", bet.side));
+      numbers.appendChild(stat("Entry", bet.entry_price));
+      numbers.appendChild(stat("Stake", bet.stake));
+      numbers.appendChild(stat("Status", bet.status));
+      // Open bets have a null pnl, so this stays blank.
+      numbers.appendChild(stat("P&L", bet.pnl, signClass(bet.pnl)));
+      card.appendChild(numbers);
+      body.appendChild(card);
     });
   }
 
@@ -215,31 +280,36 @@
     await refresh();
   }
 
-  document.getElementById("sync").addEventListener("click", function () {
-    postJson("/markets/sync").catch(function (error) {
+  // Disabled while the POST runs, so a double click cannot send it twice.
+  async function runButton(id, path) {
+    var button = document.getElementById(id);
+    button.disabled = true;
+    button.classList.add("working");
+    try {
+      await postJson(path);
+    } catch (error) {
       showStatus(error.message);
-    });
+    } finally {
+      button.disabled = false;
+      button.classList.remove("working");
+    }
+  }
+
+  document.getElementById("sync").addEventListener("click", function () {
+    runButton("sync", "/markets/sync");
   });
   document.getElementById("fetch-news").addEventListener("click", function () {
-    postJson("/news/fetch").catch(function (error) {
-      showStatus(error.message);
-    });
+    runButton("fetch-news", "/news/fetch");
   });
   document.getElementById("run-estimates").addEventListener("click", function () {
     var context = document.getElementById("context").value;
-    postJson("/estimates/run?context=" + encodeURIComponent(context)).catch(function (error) {
-      showStatus(error.message);
-    });
+    runButton("run-estimates", "/estimates/run?context=" + encodeURIComponent(context));
   });
   document.getElementById("auto-bet").addEventListener("click", function () {
-    postJson("/pipeline/auto-bet").catch(function (error) {
-      showStatus(error.message);
-    });
+    runButton("auto-bet", "/pipeline/auto-bet");
   });
   document.getElementById("settle").addEventListener("click", function () {
-    postJson("/pipeline/settle").catch(function (error) {
-      showStatus(error.message);
-    });
+    runButton("settle", "/pipeline/settle");
   });
   document.getElementById("decider").addEventListener("change", function () {
     loadScorecard().catch(function (error) {

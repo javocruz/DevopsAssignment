@@ -1,39 +1,301 @@
+:root {
+  --ink: #e6e8ec;
+  --muted: #9aa3b2;
+  --line: #2a2f3a;
+  --paper: #0f1115;
+  --card: #171a21;
+  --card-inner: #1d212a;
+  --accent: #3b82f6;
+  --accent-dark: #1d4ed8;
+  --pos: #34d399;
+  --neg: #f87171;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: sans-serif;
-  margin: 1.5rem;
-  line-height: 1.4;
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.45;
+}
+
+header,
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.25rem 1.25rem 0;
+}
+
+header {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 1rem;
 }
 
 header h1 {
-  margin-bottom: 0.2rem;
+  margin: 0 0 0.25rem;
 }
 
-label {
-  margin-right: 1rem;
+header p,
+section p {
+  color: var(--muted);
 }
 
-button {
-  margin-right: 0.4rem;
+main {
+  padding-bottom: 2.5rem;
 }
 
 section {
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 1rem 1rem 1.15rem;
+}
+
+h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.15rem;
+}
+
+h3 {
+  margin: 1rem 0 0.4rem;
+  font-size: 1rem;
+}
+
+.small {
+  font-size: 0.85rem;
+  margin: 0.25rem 0 0.75rem;
+}
+
+label {
+  display: inline-block;
+  margin: 0 1rem 0.75rem 0;
+}
+
+input,
+select {
+  display: block;
+  margin-top: 0.25rem;
+  padding: 0.35rem 0.5rem;
+  font: inherit;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--card-inner);
+}
+
+/* Pipeline strip: the five steps in order, each with its button. */
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.5rem;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.75rem;
+  background: var(--card-inner);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.step p {
+  flex: 1;
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.step-num {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.step button {
+  width: 100%;
+  white-space: normal;
+}
+
+button {
+  font: inherit;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  transition: background 120ms ease, transform 80ms ease;
+}
+
+button:hover {
+  background: var(--accent-dark);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+/* Set by runButton while its POST is in flight. */
+button.working {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+button.working::after {
+  content: " (working)";
 }
 
 #status {
   min-height: 1.2rem;
+  margin: 0.75rem 0 0;
+  font-family: ui-monospace, monospace;
+  font-size: 0.85rem;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+/* Cards for estimates and bets, one column. */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.card {
+  padding: 0.75rem 0.85rem;
+  background: var(--card-inner);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.card p {
+  margin: 0;
+}
+
+.question {
+  color: var(--ink);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.numbers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin: 0.4rem 0;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  min-height: 1.4rem;
+}
+
+.meta {
+  font-size: 0.8rem;
+}
+
+.big-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin: 0.5rem 0;
+}
+
+.big-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.big-number {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.pos,
+.pos .stat-value {
+  color: var(--pos);
+}
+
+.neg,
+.neg .stat-value {
+  color: var(--neg);
+}
+
+.table-wrap {
+  overflow-x: auto;
 }
 
 table {
   border-collapse: collapse;
   width: 100%;
   margin-top: 0.5rem;
+  font-size: 0.9rem;
 }
 
 th,
 td {
-  border: 1px solid #ccc;
-  padding: 0.3rem 0.5rem;
+  border-bottom: 1px solid var(--line);
+  padding: 0.35rem 0.5rem;
   text-align: left;
   vertical-align: top;
+}
+
+th {
+  background: var(--card-inner);
+  font-weight: 600;
+}
+
+[hidden] {
+  display: none;
+}
+
+/* Runs once when an element is added. No loops. */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.fade-in {
+  animation: fade-in 250ms ease-out;
+}
+
+/* The browser asked for less motion, so skip fades and the press shift. */
+@media (prefers-reduced-motion: reduce) {
+  .fade-in {
+    animation: none;
+  }
+
+  button {
+    transition: none;
+  }
+
+  button:active {
+    transform: none;
+  }
 }
