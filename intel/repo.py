@@ -32,6 +32,10 @@ def list_markets(conn):
     return conn.execute("SELECT * FROM markets ORDER BY id").fetchall()
 
 
+def get_market(conn, market_id):
+    return conn.execute("SELECT * FROM markets WHERE id = ?", (market_id,)).fetchone()
+
+
 def latest_snapshot(conn, market_id):
     return conn.execute(
         """

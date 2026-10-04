@@ -1,329 +1,346 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="fade-in">
-  <h2>Pipeline</h2>
-  <label>
-    Admin token
-    <input id="admin-token" type="password" autocomplete="off">
-  </label>
-  <p class="small">Leave this empty and POST routes stay open. If you type a token, each button sends it as X-Admin-Token.</p>
-  <ol class="steps">
-    <li class="step">
-      <span class="step-num">1</span>
-      <p>Load markets into the local database.</p>
-      <button type="button" id="sync">Sync markets</button>
-    </li>
-    <li class="step">
-      <span class="step-num">2</span>
-      <p>Gather news headlines for each market.</p>
-      <button type="button" id="fetch-news">Fetch news</button>
-    </li>
-    <li class="step">
-      <span class="step-num">3</span>
-      <p>Ask for a chance, with the Context picked below.</p>
-      <button type="button" id="run-estimates">Run estimates</button>
-    </li>
-    <li class="step">
-      <span class="step-num">4</span>
-      <p>Place paper bets where the gap is big enough.</p>
-      <button type="button" id="auto-bet">Auto-bet</button>
-    </li>
-    <li class="step">
-      <span class="step-num">5</span>
-      <p>Close bets on markets that have resolved.</p>
-      <button type="button" id="settle">Settle</button>
-    </li>
-  </ol>
-  <p id="status"></p>
-</section>
 
-<section class="fade-in">
-  <h2>Jev vs market</h2>
-  <p class="small">Gap is Jev minus market. Positive means Jev thinks YES is more likely than the market does.</p>
-  <p id="estimates-empty">No estimates yet.</p>
-  <div id="estimates-body" class="cards"></div>
-</section>
+<!-- ============ OVERVIEW ============ -->
+<div id="panel-overview" class="panel" role="tabpanel" data-panel="overview" hidden>
+  <div class="overview-grid">
+    <div class="overview-main">
+      <section id="verdict" class="card hero-result">
+        <p class="eyebrow">Paper-trading desk for prediction markets</p>
+        <h2 class="hero-title">Can a forecaster beat the crowd?</h2>
+        <p class="hero-pitch">Edgebook asks a forecaster (Jev) for the chance of YES on markets whose answer is already known. It bets fake money when Jev disagrees with the crowd, then scores who was closer to the truth. New here? Read the Guide tab.</p>
+        <div class="hero-head">
+          <h3>Result for this pair</h3>
+          <span id="beats-badge" class="badge" hidden title="Lower Brier score than the market on the same markets">Beats market</span>
+        </div>
+        <div class="versus">
+          <div class="score score-jev">
+            <span class="score-label">Jev Brier</span>
+            <span id="jev-brier" class="score-value">none</span>
+          </div>
+          <span class="versus-vs">vs</span>
+          <div class="score score-market">
+            <span class="score-label">Market Brier</span>
+            <span id="market-brier" class="score-value">none</span>
+          </div>
+        </div>
+        <p id="verdict-text" class="verdict-text">Nothing to score yet. Press the five buttons on the right, in order.</p>
+        <p class="hero-foot">Brier score = average of (forecast minus outcome) squared. <strong>Lower is better</strong>, 0 is perfect, always guessing 50% scores 0.25. Scored on <span id="score-count">0</span> resolved markets.</p>
+        <p id="verdict-note" class="amber-note" hidden></p>
+      </section>
 
-<section class="fade-in">
-  <h2>Portfolio</h2>
-  <div class="big-stats">
-    <div class="big-stat">
-      <span class="stat-label">Total P&amp;L</span>
-      <span id="total-pnl" class="big-number">0</span>
+      <div class="kpis">
+        <div class="card kpi">
+          <span class="kpi-label">Markets</span>
+          <span id="count-markets" class="kpi-value">0</span>
+          <span class="kpi-note">Yes/no questions loaded.</span>
+        </div>
+        <div class="card kpi">
+          <span class="kpi-label">Estimates</span>
+          <span id="count-estimates" class="kpi-value">0</span>
+          <span class="kpi-note">Chances written down for this pair.</span>
+        </div>
+        <div class="card kpi">
+          <span class="kpi-label">Paper bets</span>
+          <span id="count-bets" class="kpi-value">0</span>
+          <span class="kpi-note">Estimates that passed the gates.</span>
+        </div>
+        <div class="card kpi">
+          <span class="kpi-label">Total P&amp;L</span>
+          <span id="total-pnl" class="kpi-value">0.00</span>
+          <span class="kpi-note">Fake dollars won or lost.</span>
+        </div>
+        <div class="card kpi">
+          <span class="kpi-label">Win rate</span>
+          <span id="win-rate" class="kpi-value">none</span>
+          <span id="win-note" class="kpi-note">Settled bets that made money.</span>
+        </div>
+      </div>
+
     </div>
-  </div>
-  <p id="bets-empty">No bets yet.</p>
-  <div id="bets-body" class="cards"></div>
-</section>
 
-<section class="fade-in">
-  <h2>Scorecard</h2>
-  <label>
-    Decider
-    <select id="decider">
-      <option value="stub">stub</option>
-      <option value="jev">jev</option>
-    </select>
-  </label>
-  <label>
-    Context
-    <select id="context">
-      <option value="basic">basic</option>
-      <option value="news">news</option>
-    </select>
-  </label>
-  <p class="small">The Context select is what Run estimates sends. The Decider select only filters this scorecard. DECIDER in the environment is still what actually runs.</p>
-  <p class="small">Count: <span id="score-count">0</span></p>
-  <div class="big-stats">
-    <div class="big-stat">
-      <span class="stat-label">Jev Brier</span>
-      <span id="jev-brier" class="big-number">none</span>
+    <aside class="pipeline-side" aria-label="Pipeline">
+      <section class="card pipeline">
+        <h2>Pipeline</h2>
+        <p class="small">Press 1 to 5 in order. Each reports how many it processed, skipped or failed.</p>
+        <ol class="steps">
+          <li class="step">
+            <span class="step-num">1</span>
+            <button type="button" id="sync" title="Load markets from the fixture or Polymarket into the local database.">Sync markets</button>
+          </li>
+          <li class="step">
+            <span class="step-num">2</span>
+            <button type="button" id="fetch-news" title="Save headlines published before the price was taken.">Fetch news</button>
+          </li>
+          <li class="step">
+            <span class="step-num">3</span>
+            <button type="button" id="run-estimates" title="Ask the decider for a probability. Uses the Context picked in the top bar.">Run estimates</button>
+          </li>
+          <li class="step">
+            <span class="step-num">4</span>
+            <button type="button" id="auto-bet" title="Place one paper bet per estimate when the edge, confidence, and info gates pass.">Auto-bet</button>
+          </li>
+          <li class="step">
+            <span class="step-num">5</span>
+            <button type="button" id="settle" title="Mark open bets won or lost using the market outcome.">Settle</button>
+          </li>
+        </ol>
+        <p id="status" class="status" role="status"></p>
+        <p class="small">Step 3 uses the Context in the top bar. The decider itself is set by the server.</p>
+        <details class="token-box">
+          <summary>Admin token (optional)</summary>
+          <label>
+            <span class="label-text">Admin token</span>
+            <input id="admin-token" type="password" autocomplete="off" title="Leave empty and the buttons stay open. If you type a token, each button sends it as X-Admin-Token.">
+          </label>
+          <p class="small">Only needed if the server was started with ADMIN_TOKEN.</p>
+        </details>
+      </section>
+    </aside>
+  </div>
+</div>
+
+<!-- ============ CHARTS ============ -->
+<div id="panel-charts" class="panel" role="tabpanel" data-panel="charts" hidden>
+  <header class="page-head">
+    <h2>Charts</h2>
+    <p>Four views of the same question: was Jev more accurate than the market, can its percentages be trusted, did the bets make money, and where did it disagree with the crowd. Everything is for the pair chosen in the top bar.</p>
+  </header>
+
+  <div class="grid-2x2">
+    <section class="card chart-card">
+      <h2>Who was more accurate?</h2>
+      <p class="caption">Average miss per forecaster (Brier score). Shorter bar is better. The selected pair is highlighted.</p>
+      <p id="brier-empty" class="empty" hidden>No Brier scores yet. Run steps 1 to 3 and 5.</p>
+      <div id="brier-box" class="chart-box" hidden>
+        <canvas id="brier-chart" role="img" aria-label="Brier score bar chart"></canvas>
+      </div>
+      <details class="how">
+        <summary>How to read this</summary>
+        <p>Each bar is the average miss of one forecaster on the same resolved markets. The grey bar is the crowd. Blue bars are Jev under each decider and context. The dashed line at 0.25 is what you get by always answering 50%: any bar above it is worse than not trying.</p>
+        <p id="brier-insight" class="insight"></p>
+      </details>
+    </section>
+
+    <section class="card chart-card">
+      <h2>Can you trust the percentages?</h2>
+      <p class="caption">When Jev says 70%, does YES happen about 70% of the time? Closer to the diagonal is better.</p>
+      <div id="calibration-box" class="chart-box" hidden>
+        <canvas id="calibration-chart" role="img" aria-label="Jev calibration scatter"></canvas>
+      </div>
+      <p id="calibration-empty" class="empty" hidden>No calibration data yet. Run steps 1 to 3 and 5.</p>
+      <details class="how">
+        <summary>How to read this</summary>
+        <p>Estimates are grouped by the chance Jev gave (0 to 10%, 10 to 20%, and so on). For each group, x is what Jev said on average and y is how often YES really happened. A bigger dot means more estimates. A dot below the diagonal means Jev was overconfident, above it underconfident. Small groups are noisy.</p>
+        <p id="calibration-insight" class="insight"></p>
+      </details>
+      <details class="how">
+        <summary>Calibration tables (the numbers behind the chart)</summary>
+        <p><strong>Avg pred</strong> is the chance that was forecast. <strong>Actual rate</strong> is the share that really resolved YES. The market table is the benchmark.</p>
+        <h3>Jev</h3>
+        <p id="jev-buckets-empty" class="empty">No buckets yet.</p>
+        <div class="scroll-box">
+          <table>
+            <thead><tr><th>Range</th><th class="num">Count</th><th class="num">Avg pred</th><th class="num">Actual rate</th></tr></thead>
+            <tbody id="jev-buckets"></tbody>
+          </table>
+        </div>
+        <h3>Market</h3>
+        <p id="market-buckets-empty" class="empty">No buckets yet.</p>
+        <div class="scroll-box">
+          <table>
+            <thead><tr><th>Range</th><th class="num">Count</th><th class="num">Avg pred</th><th class="num">Actual rate</th></tr></thead>
+            <tbody id="market-buckets"></tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <section class="card chart-card">
+      <h2>Did the paper bets make money?</h2>
+      <p class="caption">Running profit after each settled bet. Green dot won, red dot lost.</p>
+      <p id="equity-empty" class="empty">No settled bets yet. Run steps 1 to 5.</p>
+      <div id="equity-box" class="chart-box" hidden>
+        <canvas id="equity-chart" role="img" aria-label="Equity curve"></canvas>
+      </div>
+      <details class="how">
+        <summary>How to read this</summary>
+        <p>Starts at 0. Each point is one bet in the order they settled, and the line is the running total profit. Above the 0 line the desk is up overall. A winning bet earns stake divided by entry price, minus the stake. A losing bet costs the whole stake.</p>
+        <p id="equity-insight" class="insight"></p>
+      </details>
+    </section>
+
+    <section class="card chart-card">
+      <h2>Where did Jev disagree with the crowd?</h2>
+      <p class="caption">One dot per estimate. Distance from the diagonal is the edge the desk bets on.</p>
+      <p id="edge-empty" class="empty" hidden>No estimates for this pair yet. Run steps 1 to 3.</p>
+      <div id="edge-box" class="chart-box" hidden>
+        <canvas id="edge-chart" role="img" aria-label="Market price against Jev probability"></canvas>
+      </div>
+      <details class="how">
+        <summary>How to read this</summary>
+        <p>Left to right is the market's chance of YES, bottom to top is Jev's. On the dashed diagonal they agree. Green dots resolved YES, red dots resolved NO. A good forecaster has green dots high up and red dots low down. Many dots pile up near 0 because most questions are long shots.</p>
+        <p id="edge-insight" class="insight"></p>
+      </details>
+    </section>
+  </div>
+</div>
+
+<!-- ============ MARKETS ============ -->
+<div id="panel-markets" class="panel" role="tabpanel" data-panel="markets" hidden>
+  <header class="page-head">
+    <h2>Markets</h2>
+    <p>One card per market for the selected pair. The bar runs from 0% to 100% chance of YES. The shaded strip between the market and Jev is the edge. Click a card for the rules and the bet.</p>
+  </header>
+
+  <section class="card">
+    <div class="toolbar">
+      <label class="grow">
+        <span class="label-text">Search</span>
+        <input id="market-search" type="search" placeholder="Question" autocomplete="off">
+      </label>
+      <label>
+        <span class="label-text">Category</span>
+        <select id="filter-category"><option value="">All</option></select>
+      </label>
+      <label>
+        <span class="label-text">Outcome</span>
+        <select id="filter-outcome">
+          <option value="">All</option>
+          <option value="yes">Resolved YES</option>
+          <option value="no">Resolved NO</option>
+          <option value="open">Not resolved</option>
+        </select>
+      </label>
+      <label>
+        <span class="label-text">Sort by</span>
+        <select id="sort-by">
+          <option value="edge">Edge size</option>
+          <option value="price">Market price</option>
+          <option value="name">Name</option>
+        </select>
+      </label>
     </div>
-    <div class="big-stat">
-      <span class="stat-label">Market Brier</span>
-      <span id="market-brier" class="big-number">none</span>
+    <p id="markets-showing" class="small">Showing 0 of 0</p>
+    <p class="legend-line small">
+      <span class="key key-market">Market</span>
+      <span class="key key-jev">Jev</span>
+      <span>Shaded strip = edge (Jev minus market)</span>
+    </p>
+    <p id="markets-empty" class="empty">No estimates yet. Run steps 1 to 3.</p>
+    <div id="markets-scroll" class="scroll-box market-scroll">
+      <div id="markets-body" class="market-grid"></div>
     </div>
+  </section>
+</div>
+
+<!-- ============ PORTFOLIO ============ -->
+<div id="panel-portfolio" class="panel" role="tabpanel" data-panel="portfolio" hidden>
+  <header class="page-head">
+    <h2>Portfolio</h2>
+    <p>The paper bets the desk placed for this pair, how they settled, and the running profit. Fake money only.</p>
+  </header>
+
+  <div class="pf-summary">
+    <div class="card kpi"><span class="kpi-label">Bets</span><span id="pf-bets" class="kpi-value">0</span></div>
+    <div class="card kpi"><span class="kpi-label">Won</span><span id="pf-won" class="kpi-value">0</span></div>
+    <div class="card kpi"><span class="kpi-label">Lost</span><span id="pf-lost" class="kpi-value">0</span></div>
+    <div class="card kpi"><span class="kpi-label">Open</span><span id="pf-open" class="kpi-value">0</span></div>
+    <div class="card kpi"><span class="kpi-label">P&amp;L</span><span id="pf-pnl" class="kpi-value">0.00</span></div>
   </div>
-  <p class="small">lower is better</p>
-  <h3>Jev calibration</h3>
-  <p id="jev-buckets-empty">No buckets yet.</p>
-  <div class="table-wrap">
-  <table>
-    <thead>
-      <tr><th>Range</th><th>Count</th><th>Avg pred</th><th>Actual rate</th></tr>
-    </thead>
-    <tbody id="jev-buckets"></tbody>
-  </table>
+
+  <section class="card">
+    <h2>Equity curve</h2>
+    <p class="caption">Running profit after each settled bet for this pair.</p>
+    <p id="pf-equity-empty" class="empty">No settled bets yet. Run steps 1 to 5.</p>
+    <div id="pf-equity-box" class="chart-box" hidden>
+      <canvas id="pf-equity-chart" role="img" aria-label="Equity curve"></canvas>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Paper bets</h2>
+    <p class="caption"><strong>Side</strong> is what the desk bought: YES if Jev was above the market, otherwise NO. <strong>Entry</strong> is the price paid per share. <strong>Stake</strong> is the fake dollars risked. A win pays stake / entry minus stake, a loss costs the stake. A blank P&amp;L means the bet is still open.</p>
+    <div class="toolbar">
+      <label class="grow">
+        <span class="label-text">Search</span>
+        <input id="bet-search" type="search" placeholder="Question, side or status" autocomplete="off">
+      </label>
+    </div>
+    <p id="bets-showing" class="small">Showing 0 of 0</p>
+    <p id="bets-empty" class="empty">No bets yet. Run steps 1 to 4.</p>
+    <div class="scroll-box bets-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Question</th>
+            <th>Decider</th>
+            <th>Context</th>
+            <th>Side</th>
+            <th class="num" title="Price paid per share">Entry</th>
+            <th class="num" title="Fake dollars risked">Stake</th>
+            <th>Status</th>
+            <th class="num">P&amp;L</th>
+          </tr>
+        </thead>
+        <tbody id="bets-body"></tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<!-- ============ GUIDE ============ -->
+<div id="panel-guide" class="panel" role="tabpanel" data-panel="guide" hidden>
+  <header class="page-head">
+    <h2>Guide</h2>
+    <p>What this project is, the five pipeline steps, and the words used on every other tab.</p>
+  </header>
+
+  <section class="card">
+    <h2>What is this?</h2>
+    <p class="lead">A <strong>prediction market</strong> is a site where people trade shares on a yes/no question. A YES price of <strong>0.30</strong> means the crowd thinks there is a 30% chance. That price is the <strong>market's forecast</strong>.</p>
+    <p class="lead">Edgebook asks a forecaster called <strong>Jev</strong> for its own chance. When Jev disagrees with the crowd enough, the desk places a <strong>paper bet</strong> (fake money, never real). Once the market's real answer is known, the desk scores <strong>who was closer to the truth</strong>.</p>
+  </section>
+
+  <section class="card">
+    <h2>How it works: five steps, always in this order</h2>
+    <ol class="guide-steps">
+      <li><span class="step-num">1</span><div><h3>Load markets</h3><p>Copies the questions into the local database, each with the YES price taken before the answer was known.</p></div></li>
+      <li><span class="step-num">2</span><div><h3>Gather news</h3><p>Saves headlines published before that price date. Jev may read them. Nothing from after the date is allowed in.</p></div></li>
+      <li><span class="step-num">3</span><div><h3>Ask Jev</h3><p>Writes down one chance (0 to 100%) per market, using the Context chosen in the top bar: basic is the question only, news adds headlines.</p></div></li>
+      <li><span class="step-num">4</span><div><h3>Place paper bets</h3><p>Bets only where Jev and the market disagree by enough, and Jev is confident and well informed. A bigger gap means a bigger stake, up to a cap.</p></div></li>
+      <li><span class="step-num">5</span><div><h3>Settle and score</h3><p>Looks up the real answer, marks each bet won or lost, and scores Jev against the market.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>Glossary and worked example</h2>
+    <dl class="glossary">
+      <div><dt>Market price</dt><dd>The crowd's chance of YES, from 0 to 1. A price of 0.30 means 30%.</dd></div>
+      <div><dt>Jev probability</dt><dd>The forecaster's own chance of YES for the same question, written down before the answer is known.</dd></div>
+      <div><dt>Edge</dt><dd>Jev probability minus market price. Example: Jev 0.40, market 0.30, edge +0.10. The desk only bets when the edge is large enough (default 0.08), and Jev is confident (0.6) and informed (0.4) enough.</dd></div>
+      <div><dt>Paper bet</dt><dd>A pretend bet. Edge above zero buys YES at the market price, below zero buys NO at 1 minus the price. Stake grows with the edge and is capped.</dd></div>
+      <div><dt>Settle</dt><dd>Once the real answer is known, each bet is marked won or lost and its profit or loss is worked out.</dd></div>
+      <div><dt>Brier score</dt><dd>Average of (forecast minus outcome) squared. Example: Jev says 0.80 and the market resolves YES (1). Miss = (0.80 - 1)<sup>2</sup> = 0.04. If it had resolved NO (0) the miss would be (0.80 - 0)<sup>2</sup> = 0.64. Confident and wrong hurts most.</dd></div>
+      <div><dt>Calibration</dt><dd>Do the percentages mean what they say? Of all the times 70% was forecast, YES should happen about 70% of the time.</dd></div>
+      <div><dt>Stub vs Jev</dt><dd>The <strong>stub</strong> is an offline placeholder that takes the market price and nudges it by a fixed amount of up to 10 points, worked out from the market id. It lets the whole pipeline run without keys, so it shows the machinery working, not forecasting skill. <strong>Jev</strong> is the real API, used only when a key is configured.</dd></div>
+      <div><dt>Basic vs news</dt><dd>The context given to the decider. Basic is the question, rules, category and dates. News adds headlines published before the price date, never after.</dd></div>
+    </dl>
+  </section>
+</div>
+
+<dialog id="detail" aria-labelledby="detail-question">
+  <div class="dialog-body">
+    <h3 id="detail-question"></h3>
+    <p id="detail-rules" class="rules"></p>
+    <dl id="detail-facts" class="facts"></dl>
+    <h4 class="detail-heading">Headlines Jev could read</h4>
+    <p id="detail-news-note" class="small"></p>
+    <ul id="detail-news" class="headlines"></ul>
+    <form method="dialog">
+      <button type="submit" title="Close this detail.">Close</button>
+    </form>
   </div>
-  <h3>Market calibration</h3>
-  <p id="market-buckets-empty">No buckets yet.</p>
-  <div class="table-wrap">
-  <table>
-    <thead>
-      <tr><th>Range</th><th>Count</th><th>Avg pred</th><th>Actual rate</th></tr>
-    </thead>
-    <tbody id="market-buckets"></tbody>
-  </table>
-  </div>
-</section>
-
-<script>
-  function adminHeaders() {
-    var token = document.getElementById("admin-token").value;
-    if (token === "") {
-      return {};
-    }
-    return {"X-Admin-Token": token};
-  }
-
-  function showStatus(text) {
-    document.getElementById("status").textContent = text;
-  }
-
-  // Every piece of text goes in with textContent, so a market question cannot inject HTML.
-  function makeEl(tag, className, text) {
-    var el = document.createElement(tag);
-    if (className) {
-      el.className = className;
-    }
-    if (text !== undefined) {
-      el.textContent = text === null ? "" : text;
-    }
-    return el;
-  }
-
-  function cell(value) {
-    return makeEl("td", "", value === undefined ? null : value);
-  }
-
-  function clearBody(id) {
-    document.getElementById(id).replaceChildren();
-  }
-
-  function percent(value) {
-    if (value === null || value === undefined) {
-      return "";
-    }
-    return Math.round(value * 100) + "%";
-  }
-
-  // Rounded for display only. The sign stays, so it reads like compute_edge.
-  function signed(value) {
-    var text = value.toFixed(3);
-    return value > 0 ? "+" + text : text;
-  }
-
-  function signClass(value) {
-    if (value === null || value === undefined) {
-      return "";
-    }
-    if (value > 0) {
-      return "pos";
-    }
-    if (value < 0) {
-      return "neg";
-    }
-    return "";
-  }
-
-  function stat(label, value, className) {
-    var box = makeEl("div", "stat " + (className || ""));
-    box.appendChild(makeEl("span", "stat-label", label));
-    box.appendChild(makeEl("span", "stat-value", value));
-    return box;
-  }
-
-  function fillEstimates(rows) {
-    var body = document.getElementById("estimates-body");
-    clearBody("estimates-body");
-    document.getElementById("estimates-empty").hidden = rows.length > 0;
-    rows.forEach(function (row) {
-      var gap = row.jev_prob - row.market_price;
-      var card = makeEl("article", "card fade-in");
-      card.appendChild(makeEl("p", "question", row.question));
-      var numbers = makeEl("div", "numbers");
-      numbers.appendChild(stat("Market", percent(row.market_price)));
-      numbers.appendChild(stat("Jev", percent(row.jev_prob)));
-      numbers.appendChild(stat("Gap", signed(gap), signClass(gap)));
-      card.appendChild(numbers);
-      card.appendChild(makeEl("p", "meta",
-        "decider " + row.decider +
-        " · context " + row.context_level +
-        " · confidence " + row.confidence +
-        " · info " + row.info_score));
-      body.appendChild(card);
-    });
-  }
-
-  function fillBets(portfolio) {
-    var body = document.getElementById("bets-body");
-    clearBody("bets-body");
-    var bets = portfolio.bets;
-    document.getElementById("bets-empty").hidden = bets.length > 0;
-    var total = document.getElementById("total-pnl");
-    total.textContent = portfolio.total_pnl;
-    total.className = "big-number " + signClass(portfolio.total_pnl);
-    bets.forEach(function (bet) {
-      var card = makeEl("article", "card fade-in");
-      card.appendChild(makeEl("p", "meta", bet.market_id));
-      var numbers = makeEl("div", "numbers");
-      numbers.appendChild(stat("Side", bet.side));
-      numbers.appendChild(stat("Entry", bet.entry_price));
-      numbers.appendChild(stat("Stake", bet.stake));
-      numbers.appendChild(stat("Status", bet.status));
-      // Open bets have a null pnl, so this stays blank.
-      numbers.appendChild(stat("P&L", bet.pnl, signClass(bet.pnl)));
-      card.appendChild(numbers);
-      body.appendChild(card);
-    });
-  }
-
-  function fillBuckets(bodyId, emptyId, buckets) {
-    var body = document.getElementById(bodyId);
-    clearBody(bodyId);
-    document.getElementById(emptyId).hidden = buckets.length > 0;
-    buckets.forEach(function (bucket) {
-      var tr = document.createElement("tr");
-      [bucket.range, bucket.count, bucket.avg_pred, bucket.actual_rate]
-        .forEach(function (value) {
-          tr.appendChild(cell(value));
-        });
-      body.appendChild(tr);
-    });
-  }
-
-  function fillScorecard(card) {
-    document.getElementById("score-count").textContent = card.count;
-    document.getElementById("jev-brier").textContent = card.jev_brier === null ? "none" : card.jev_brier;
-    document.getElementById("market-brier").textContent = card.market_brier === null ? "none" : card.market_brier;
-    fillBuckets("jev-buckets", "jev-buckets-empty", card.jev_calibration);
-    fillBuckets("market-buckets", "market-buckets-empty", card.market_calibration);
-  }
-
-  async function readJson(response) {
-    var body = await response.json();
-    if (!response.ok) {
-      var detail = body.detail || "";
-      throw new Error(response.status + " " + detail);
-    }
-    return body;
-  }
-
-  async function loadEstimates() {
-    var response = await fetch("/estimates");
-    fillEstimates(await readJson(response));
-  }
-
-  async function loadPortfolio() {
-    var response = await fetch("/portfolio");
-    fillBets(await readJson(response));
-  }
-
-  async function loadScorecard() {
-    var decider = document.getElementById("decider").value;
-    var context = document.getElementById("context").value;
-    var response = await fetch("/scorecard?decider=" + encodeURIComponent(decider) + "&context=" + encodeURIComponent(context));
-    fillScorecard(await readJson(response));
-  }
-
-  async function refresh() {
-    await loadEstimates();
-    await loadPortfolio();
-    await loadScorecard();
-  }
-
-  async function postJson(path) {
-    var response = await fetch(path, {method: "POST", headers: adminHeaders()});
-    var body = await readJson(response);
-    showStatus(JSON.stringify(body));
-    await refresh();
-  }
-
-  // Disabled while the POST runs, so a double click cannot send it twice.
-  async function runButton(id, path) {
-    var button = document.getElementById(id);
-    button.disabled = true;
-    button.classList.add("working");
-    try {
-      await postJson(path);
-    } catch (error) {
-      showStatus(error.message);
-    } finally {
-      button.disabled = false;
-      button.classList.remove("working");
-    }
-  }
-
-  document.getElementById("sync").addEventListener("click", function () {
-    runButton("sync", "/markets/sync");
-  });
-  document.getElementById("fetch-news").addEventListener("click", function () {
-    runButton("fetch-news", "/news/fetch");
-  });
-  document.getElementById("run-estimates").addEventListener("click", function () {
-    var context = document.getElementById("context").value;
-    runButton("run-estimates", "/estimates/run?context=" + encodeURIComponent(context));
-  });
-  document.getElementById("auto-bet").addEventListener("click", function () {
-    runButton("auto-bet", "/pipeline/auto-bet");
-  });
-  document.getElementById("settle").addEventListener("click", function () {
-    runButton("settle", "/pipeline/settle");
-  });
-  document.getElementById("decider").addEventListener("change", function () {
-    loadScorecard().catch(function (error) {
-      showStatus(error.message);
-    });
-  });
-  document.getElementById("context").addEventListener("change", function () {
-    loadScorecard().catch(function (error) {
-      showStatus(error.message);
-    });
-  });
-
-  refresh().catch(function (error) {
-    showStatus(error.message);
-  });
-</script>
+</dialog>
 {% endblock %}
