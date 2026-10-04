@@ -7,12 +7,47 @@
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-  <header class="fade-in">
-    <h1>Edgebook</h1>
-    <p>Paper money only. This page only calls the app's own JSON routes.</p>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <h1>Edgebook</h1>
+        <span class="tag">paper desk</span>
+      </div>
+      <nav class="tabs" role="tablist" aria-label="Dashboard sections">
+        <a href="#overview" role="tab" data-tab="overview">Overview</a>
+        <a href="#charts" role="tab" data-tab="charts">Charts</a>
+        <a href="#markets" role="tab" data-tab="markets">Markets</a>
+        <a href="#portfolio" role="tab" data-tab="portfolio">Portfolio</a>
+        <a href="#guide" role="tab" data-tab="guide">Guide</a>
+      </nav>
+      <div class="pair-bar">
+        <span id="pair-chip" class="chip" title="Every number and chart on this page is for this decider and context only.">stub + basic</span>
+        <label>
+          <span class="label-text">Decider</span>
+          <select id="decider" title="Who forecasts. Changes what every tab shows.">
+            <option value="stub">stub</option>
+            <option value="jev">jev</option>
+          </select>
+        </label>
+        <label>
+          <span class="label-text">Context</span>
+          <select id="context" title="What the forecaster may read. Also what step 3 (Run estimates) sends.">
+            <option value="basic">basic</option>
+            <option value="news">news</option>
+          </select>
+        </label>
+      </div>
+    </div>
   </header>
   <main>
     {% block content %}{% endblock %}
   </main>
+  <footer class="footer">
+    <p id="schema-version"></p>
+    <p>Paper money only. This page only calls the app's own JSON routes.</p>
+  </footer>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+  <script src="/static/vendor/chart.min.js"></script>
+  <script src="/static/app.js"></script>
 </body>
 </html>

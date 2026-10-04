@@ -8,7 +8,14 @@ from db import get_db
 from intel.decider import get_decider
 from intel.estimates import run_estimates
 from intel.news import fetch_news_for_markets, get_news_source
-from intel.repo import list_estimate_records, list_markets, save_markets
+from intel.repo import (
+    get_market,
+    latest_snapshot,
+    list_estimate_records,
+    list_markets,
+    list_news_items,
+    save_markets,
+)
 from intel.sources import FixtureSource, get_source
 from security import require_admin
 
@@ -33,6 +40,20 @@ def sync_markets(conn=Depends(get_db), _admin=Depends(require_admin)):
 @router.get("/markets")
 def get_markets(conn=Depends(get_db)):
     return [dict(row) for row in list_markets(conn)]
+
+
+# Read-only. Returns the saved headlines for one market, newest first, plus the
+# price date they must be older than, so the page can show the look-ahead guard.
+# An unknown id is a 404, so a typo is not mistaken for "no news".
+@router.get("/markets/{market_id}/news")
+def get_market_news(market_id: str, conn=Depends(get_db)):
+    if get_market(conn, market_id) is None:
+        raise HTTPException(status_code=404, detail="Unknown market")
+    snapshot = latest_snapshot(conn, market_id)
+    cutoff = snapshot["captured_at"] if snapshot else None
+    items = list_news_items(conn, market_id)
+    items.sort(key=lambda item: item["published_at"], reverse=True)
+    return {"market_id": market_id, "cutoff": cutoff, "items": items}
 
 
 @router.post("/news/fetch")

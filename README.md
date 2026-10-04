@@ -85,7 +85,7 @@ Total coverage: 97% (62 tests).
 - `pipeline.py`: the only file that imports both `intel/` and `book/`, plus `GET /`
 - `intel/`: markets, news, estimates
 - `book/`: edge, settlement, scoring, bets
-- `templates/` and `static/`: the dashboard. It only calls JSON routes
+- `templates/` and `static/`: the dashboard. It only calls JSON routes. Charts are Chart.js 4.5.1, saved in `static/vendor/chart.min.js` and loaded from that file.
 - `fixtures/resolved_markets.json`: offline markets
 - `tests/`: offline tests, with saved API samples in `tests/data/`
 
