@@ -1,6 +1,6 @@
 # Architecture Decision Records
 
-Five entries, added on the day each decision is made.
+Entries 1 to 5 are Assignment 1 and stay as written. Entries 6 to 10 are Assignment 2, added on the day each decision is made.
 
 ## [1]. Backend framework
 Date: 2026-09-28
@@ -41,6 +41,14 @@ Context: The assignment leaves out real orders, user accounts, and a scheduler. 
 Decision: I keep paper bets only. There is one optional ADMIN_TOKEN instead of accounts. Nothing runs on a timer. Real orders wait until a new batch of markets beats the market on Brier.
 Alternatives considered: Lowering EDGE_THRESHOLD, MIN_CONFIDENCE, or MIN_INFO to place more bets on these same 35 markets. That would bet the forecasts should_bet already skipped, after I had seen the outcomes. Adding another information source. News barely moved Jev, and a new feed is another dependency and another look-ahead risk. Accounts and a scheduler. Neither one changes jev_prob. They only add login and a clock.
 Consequences: place_bets still writes paper rows, and settle_bet still scores them. The cost is that the app does not trade, does not know who the user is, and does not run unless someone presses the button.
+
+## [6]. Intel / Book services
+Date: 2026-11-17
+Status: Decided
+Context: Assignment 2 says to split the monolith along the seam from ADR 2. Each domain needs its own process, container, and database. At least one flow the user can see has to cross that seam on the server, not only in the browser.
+Decision: I keep the seam where ADR 2 put it. Intel still owns markets, prices, news, and estimates. Book still owns bets, settlement, and the scorecard. Book calls Intel over HTTP for estimates and resolutions. Intel does not call Book. pipeline.py goes away and those routes move into Book.
+Alternatives considered: Letting the page call both services and compute the scorecard in the browser. That would move brier_score out of Book, and the assignment wants the cross on the server. Moving the seam to some other cut. ADR 2 already matches the two domains, so a new cut would be a rewrite without a new boundary.
+Consequences: Book can still show the portfolio from its own bets table when Intel is down. The scorecard then uses a cached Intel response and is marked stale. Auto-bet and settle return 503, because a bet is not placed on stale estimates. The cost is an HTTP client in Book, and a cache that is a copy, not a foreign key.
 
 <!--
 Format (copy for each entry):

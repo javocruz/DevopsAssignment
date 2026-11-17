@@ -9,12 +9,13 @@ Pipeline, always in this order:
 
 **fetch markets -> gather news -> ask Jev -> decide bets -> settle bets -> score Jev**
 
-- Domain A, **Intel** (`intel/`): fetch markets, gather news headlines, ask Jev for a probability, save Estimates.
-- Domain B, **Book** (`book/`): read Estimates, decide paper bets, settle them, score Jev vs the market.
+- Domain A, **Intel**: fetch markets, gather news headlines, ask Jev for a probability, save Estimates.
+- Domain B, **Book**: read Estimates, decide paper bets, settle them, score Jev vs the market.
 - The ONLY handoff between them: `Estimate` and `Resolution` records defined in `contracts.py`.
+- Until C3 the code is still the Assignment 1 layout (`intel/`, `book/`, `pipeline.py`). C3 moves it to `services/intel/` and `services/book/`. After that, Book calls Intel over HTTP and does not import it.
 
-This is an individual university assignment (IE University, DevOps course, Assignment 1).
-The student (Javi) will be quizzed on paper, closed-book, on every line of this code.
+This is an individual university assignment (IE University, DevOps course). Assignment 1 is submitted. Assignment 2 splits, containers, and deploys it. Deadline **2026-11-22**.
+The student (Javi) will be quizzed on paper, closed-book, on every line of this code, including Dockerfiles and workflows.
 **Your job is to help him build it AND understand it.** Understanding is worth more than speed here.
 
 ## Where the details live
@@ -26,8 +27,9 @@ The student (Javi) will be quizzed on paper, closed-book, on every line of this 
 | `docs/context/03-architecture.md` | Before creating or moving files. Structure, env vars, routes, the seam |
 | `docs/context/04-data-model.md` | Before touching SQL or tables |
 | `docs/context/05-logic-spec.md` | Before writing strategy, settlement, scoring, or Jev questions |
-| `docs/context/06-commit-plan.md` | To find out what the current commit should contain. Work ONE commit at a time |
+| `docs/context/06-commit-plan.md` | Assignment 1 history. Do not add A2 work here |
 | `docs/context/07-learning-guide.md` | After each commit, to run the explain-back |
+| `docs/context/08-a2-plan.md` | The A2 commit to do next. It overrides `02-assignment-rules.md` where they conflict |
 
 ## Decisions belong to Javi
 
@@ -43,12 +45,12 @@ Opus is cancelled. C8 and C9 were done in Claude Code. **C13** and **C18** are d
 
 ## Hard rules for agents
 
-1. **One commit at a time.** Find the next unchecked commit in `06-commit-plan.md`. Only touch the files it lists. Stop when its "Done when" is met. Commit message starts with the plan id: `C1: Add validated config reading all env vars with offline defaults`.
-2. **Never** create a Dockerfile, docker-compose, `.github/workflows/`, Terraform/Bicep/ARM, or anything requiring a `.env` file to exist.
-3. **Never** add a dependency not listed in `03-architecture.md` without asking Javi first. Soft cap is 12 third-party packages.
-4. **Never** use an ORM. Plain `sqlite3` from the standard library, written SQL. (Learnability decision.)
+1. **One commit at a time.** Find the next unchecked commit in `docs/context/08-a2-plan.md`. Only touch the files it lists. Stop when its "Done when" is met. Commit message starts with the plan id, for example `C3: Split the monolith into intel and book services along the ADR 2 seam`.
+2. **A2 requires** a Dockerfile per service, `docker-compose.yml`, `.github/workflows/`, SQL Server, and one `requirements.txt` per service. Still **never** commit a secret, in source, compose, workflows, or history. Local database passwords go in a gitignored `.env`. Commit `.env.example` with placeholders only. No third service container. No Redis, queues, schedulers, Bicep, or Terraform unless Javi asks.
+3. **Never** add a dependency not listed in `08-a2-plan.md` without asking Javi first. Soft cap is about 12 third-party packages per service.
+4. **Never** use an ORM. Until C5, plain `sqlite3`. From C5, raw T-SQL through `pymssql`, or `pyodbc` if the Azure encryption check in the plan fails.
 5. **Never** write the Decision or Alternatives of an ADR on your own. Javi decides. You may format what he tells you and suggest alternatives he should consider.
-6. **Never** fake, backdate or batch git history. Javi commits and pushes himself, on the day planned.
+6. **Never** fake, backdate or batch git history. Do not do tomorrow's commits today. Push on the same day, because the course checks push timestamps. Changes reach `main` through a pull request.
 7. **Never** call the real Jev, Polymarket or TheNewsAPI in tests. Mock them with `httpx.MockTransport` and saved payloads in `tests/data/`.
 8. Keep math in **pure functions** (numbers in, numbers out, no DB, no HTTP). Keep I/O in separate files.
 9. Use plain names that match the docs exactly (`compute_edge`, `should_bet`, `size_stake`, `settle_bet`, `brier_score`, `calibration_buckets`). Javi memorizes these names.
@@ -56,7 +58,7 @@ Opus is cancelled. C8 and C9 were done in Claude Code. **C13** and **C18** are d
 11. Do not invent Jev or Polymarket API details. The verified Jev format is in `05-logic-spec.md`. If unsure about anything else, say so and point Javi to the docs (`docs.typesafe.ai`, `docs.polymarket.com`).
 12. **API keys** (`TYPESAFE_API_KEY`, `THENEWSAPI_TOKEN`, `ADMIN_TOKEN`) come only from env vars via `config.py`. Never hardcode, print, log, commit, or put them in `state_json`, sample payloads, or error messages. TheNewsAPI's token is in the URL, so never log request URLs.
 13. Every external call has a timeout. One failing market is logged and skipped, never crashes a batch.
-14. The only place the app writes files is `DATA_DIR`.
+14. The only place the app writes files is `DATA_DIR` until C5. After that, each service writes only through its own `DATABASE_URL`.
 
 ## After every change, you must give Javi
 
