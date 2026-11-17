@@ -107,8 +107,8 @@ These were in the nine-day plan and are not separate commits. Do not add them ba
 
 ### Day 1 (Tue 17 Nov) branch `a2-plan`
 
-- [ ] **C1** `Update agent rules for A2 and add the split plan`
-- [ ] **C2** `Add ADR 6: split Edgebook along the Intel/Book seam` (dated 2026-11-17). Javi writes it.
+- [x] **C1** `Update agent rules for A2 and add the split plan`
+- [x] **C2** `Add ADR 6: split Edgebook along the Intel/Book seam` (dated 2026-11-17). Javi writes it.
 - Not a commit: activate Azure for Students and write down the five allowed regions.
 
 ### Day 2 (Wed 18 Nov) branch `a2-services`
