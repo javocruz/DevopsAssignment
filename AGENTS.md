@@ -4,71 +4,54 @@ Read this first. It is the entry point for any AI agent working on this repo.
 
 ## What this project is
 
-**Edgebook**: a paper-trading desk for prediction markets.
-Pipeline, always in this order:
+**Edgebook**: a lab for testing prediction-market forecasters and strategies with paper money. Jev is the first forecaster.
 
-**fetch markets -> gather news -> ask Jev -> decide bets -> settle bets -> score Jev**
+- **Intel** (`services/intel/`): markets, prices, news, forecasts (estimates).
+- **Book** (`services/book/`): paper bets, settlement, scoring. Calls Intel over HTTP for estimates and resolutions.
+- **UI** (`ui/`): static site calling both services.
 
-- Domain A, **Intel**: fetch markets, gather news headlines, ask Jev for a probability, save Estimates.
-- Domain B, **Book**: read Estimates, decide paper bets, settle them, score Jev vs the market.
-- The ONLY handoff between them: `Estimate` and `Resolution` records defined in `contracts.py`.
-- Until C3 the code is still the Assignment 1 layout (`intel/`, `book/`, `pipeline.py`). C3 moves it to `services/intel/` and `services/book/`. After that, Book calls Intel over HTTP and does not import it.
-
-This is an individual university assignment (IE University, DevOps course). Assignment 1 is submitted. Assignment 2 splits, containers, and deploys it. Deadline **2026-11-22**.
-The student (Javi) will be quizzed on paper, closed-book, on every line of this code, including Dockerfiles and workflows.
-**Your job is to help him build it AND understand it.** Understanding is worth more than speed here.
+This is IE University DevOps, **Assignment 2**: split, containerize, migrate, CI/CD, deploy to Azure.
+Javi is quizzed on paper, closed-book, on every line, including Dockerfiles and workflows.
+**Your job: help him build the best version of this AND understand it.**
 
 ## Where the details live
 
 | File | Read it when |
 |---|---|
-| `docs/context/01-project.md` | You need the pitch, users, scope, what is out of scope |
-| `docs/context/02-assignment-rules.md` | Before adding ANY file, dependency or tool. Hard constraints live here |
-| `docs/context/03-architecture.md` | Before creating or moving files. Structure, env vars, routes, the seam |
-| `docs/context/04-data-model.md` | Before touching SQL or tables |
-| `docs/context/05-logic-spec.md` | Before writing strategy, settlement, scoring, or Jev questions |
-| `docs/context/06-commit-plan.md` | Assignment 1 history. Do not add A2 work here |
-| `docs/context/07-learning-guide.md` | After each commit, to run the explain-back |
-| `docs/context/08-a2-plan.md` | The A2 commit to do next. It overrides `02-assignment-rules.md` where they conflict |
+| `docs/context/08-a2-plan.md` | Always first. A2 rules, architecture, UI spec, commit plan |
+| `docs/context/05-logic-spec.md` | Before touching strategy, settlement, scoring, deciders |
+| `docs/context/04-data-model.md` | Before touching tables (now T-SQL, see 08) |
+| `docs/context/07-learning-guide.md` | For explain-back questions |
+| `docs/context/01-03, 06` | A1 history. Where they conflict with 08, 08 wins |
 
-## Decisions belong to Javi
+## Hard rules (graded or safety, never break)
 
-Stop and ask before choosing. If more than one reasonable option exists, name the options in plain language and wait. Do not pick for him.
+1. **No secrets anywhere in the repo**: source, compose, workflows, tests, fixtures, logs, history. Never read `.env`. Never ask Javi to paste a key in chat.
+2. **Never write the Decision or Alternatives of an ADR**, and never fill the "In my own words" column of AI_USAGE.md. Javi writes both. You may format and suggest alternatives.
+3. **Never fake, backdate or batch git history.** Javi commits and pushes himself, through PRs.
+4. **Never create, change or delete Azure resources yourself.** Write the `az` commands for the README; Javi runs them. After setup, only the pipeline changes Azure.
+5. **Migrations**: never edit an applied migration, never drop or recreate tables on boot. Fixes go in a new numbered file.
+6. **Tests never call real external services** (Jev, Polymarket, TheNewsAPI, Azure SQL). Mock them or use the local SQL Server container.
+7. **Stay inside the A2 brief**: exactly 2 service containers, no third container, no Redis/queues/job runners, no other database, no always-on compute.
 
-This includes what to build next, commit wording, history rewrites, new dependencies, ADR Decision and Alternatives, and any behavior the spec does not already fix.
+## Defaults (follow unless you have a good reason, then say why)
 
-If the spec already decides it, follow that and say which part you followed.
+- Work on the next unchecked commit in `08-a2-plan.md`. You may touch any file it reasonably needs (tests, imports, configs); list them in your summary.
+- Fixing a failing test, a lint error or a small bug you find on the way is fine. Bigger improvements or out-of-plan features: propose first, build after Javi says yes.
+- New dependencies: the ones named in `08-a2-plan.md` are pre-approved. Anything else, ask first. Soft cap ~12 per service.
+- Raw SQL with `pymssql`, no ORM (learnability, see ADR). Ask before changing this.
+- Keep math in pure functions, I/O in separate files. Keep the names from `05-logic-spec.md`.
+- Short functions, comments explain why. Readable over clever.
+- Run tests, lint and `docker compose up --build` yourself when relevant, and report results honestly.
+- Do not invent API details (Jev, Polymarket, Azure, GitHub Actions). If unsure, say so and point to the docs.
 
-## Opus commits
+## After every commit, give Javi
 
-Opus is cancelled. C8 and C9 were done in Claude Code. **C13** and **C18** are done in this chat, same as the other commits.
-
-## Hard rules for agents
-
-1. **One commit at a time.** Find the next unchecked commit in `docs/context/08-a2-plan.md`. Only touch the files it lists. Stop when its "Done when" is met. Commit message starts with the plan id, for example `C3: Split the monolith into intel and book services along the ADR 2 seam`.
-2. **A2 requires** a Dockerfile per service, `docker-compose.yml`, `.github/workflows/`, SQL Server, and one `requirements.txt` per service. Still **never** commit a secret, in source, compose, workflows, or history. Local database passwords go in a gitignored `.env`. Commit `.env.example` with placeholders only. No third service container. No Redis, queues, schedulers, Bicep, or Terraform unless Javi asks.
-3. **Never** add a dependency not listed in `08-a2-plan.md` without asking Javi first. Soft cap is about 12 third-party packages per service.
-4. **Never** use an ORM. Until C5, plain `sqlite3`. From C5, raw T-SQL through `pymssql`, or `pyodbc` if the Azure encryption check in the plan fails.
-5. **Never** write the Decision or Alternatives of an ADR on your own. Javi decides. You may format what he tells you and suggest alternatives he should consider.
-6. **Never** fake, backdate or batch git history. Do not do tomorrow's commits today. Push on the same day, because the course checks push timestamps. Changes reach `main` through a pull request.
-7. **Never** call the real Jev, Polymarket or TheNewsAPI in tests. Mock them with `httpx.MockTransport` and saved payloads in `tests/data/`.
-8. Keep math in **pure functions** (numbers in, numbers out, no DB, no HTTP). Keep I/O in separate files.
-9. Use plain names that match the docs exactly (`compute_edge`, `should_bet`, `size_stake`, `settle_bet`, `brier_score`, `calibration_buckets`). Javi memorizes these names.
-10. Short functions. Comments explain **why**, not what. No clever one-liners.
-11. Do not invent Jev or Polymarket API details. The verified Jev format is in `05-logic-spec.md`. If unsure about anything else, say so and point Javi to the docs (`docs.typesafe.ai`, `docs.polymarket.com`).
-12. **API keys** (`TYPESAFE_API_KEY`, `THENEWSAPI_TOKEN`, `ADMIN_TOKEN`) come only from env vars via `config.py`. Never hardcode, print, log, commit, or put them in `state_json`, sample payloads, or error messages. TheNewsAPI's token is in the URL, so never log request URLs.
-13. Every external call has a timeout. One failing market is logged and skipped, never crashes a batch.
-14. The only place the app writes files is `DATA_DIR` until C5. After that, each service writes only through its own `DATABASE_URL`.
-
-## After every change, you must give Javi
-
-1. **Explain-back**: 3 to 6 bullets on how the new code works, using the real function and variable names, in plain language.
-2. **A worked example** if any math was added (real numbers, step by step).
-3. **Write the `AI_USAGE.md` entry into the file as a new table row** with the six required columns. Fill Date/commit, Tool, Prompt, Disposition, and What changed. Leave **In my own words, how this works** blank. Never write that cell for him. Do not switch the log to headings. Do not only paste the entry in chat.
-4. **2 or 3 quiz questions** from `07-learning-guide.md` that the commit touches.
+1. **Explain-back**: 3 to 6 bullets on how it works, with real names, plain language. For Dockerfiles and workflows, explain what each block does.
+2. **A worked example** if math or a data flow was added.
+3. **A draft AI_USAGE.md row** (Date/commit, Tool, Prompt, Disposition). Last column: `TODO: Javi writes this`.
+4. **2 quiz questions** about what changed.
 
 ## Tone
 
-Javi prefers direct, informal, plain-language explanations. Bullets over paragraphs. No em dashes.
-
-After every AI_USAGE draft, also give an easy explanation of that draft, in plain language, so he can rewrite it in his own words.
+Direct, informal, plain language. Bullets over paragraphs. No em dashes.
