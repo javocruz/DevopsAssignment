@@ -4,7 +4,7 @@ from pathlib import Path
 
 import httpx
 
-from config import get_settings
+from intel.config import get_settings
 from intel.decider import JevDecider, StubDecider, get_decider, parse_jev_response
 
 JEV_SAMPLE = json.loads((Path(__file__).parent / "data" / "jev_sample.json").read_text())

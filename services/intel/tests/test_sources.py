@@ -3,7 +3,7 @@ from pathlib import Path
 
 import httpx
 
-from db import get_connection
+from intel.db import get_connection
 from intel.repo import latest_snapshot, list_markets, save_markets
 from intel.sources import FixtureSource, PolymarketSource, parse_gamma_market
 

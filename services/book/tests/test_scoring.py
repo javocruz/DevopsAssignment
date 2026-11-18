@@ -1,8 +1,5 @@
-from fastapi.testclient import TestClient
-
-from app import app
 from book.scoring import brier_score, calibration_buckets
-from db import get_connection
+from intel.db import get_connection
 from intel.decider import Decision
 from intel.repo import save_estimate, save_markets
 
@@ -48,7 +45,8 @@ def save_one_estimate(conn, market_id, decider_name, context_level, jev_prob):
     )
 
 
-def test_scorecard_uses_one_decider_and_one_context(tmp_db):
+def test_scorecard_uses_one_decider_and_one_context(bridged):
+    intel, book = bridged
     conn = get_connection()
     save_markets(conn, [
         market("m-yes", 0.62, 1),
@@ -62,14 +60,13 @@ def test_scorecard_uses_one_decider_and_one_context(tmp_db):
     save_one_estimate(conn, "m-open", "stub", "basic", 0.99)
     conn.close()
 
-    client = TestClient(app)
-    body = client.get("/scorecard?decider=stub&context=basic").json()
+    body = book.get("/scorecard?decider=stub&context=basic").json()
     assert body["count"] == 2
     assert body["decider"] == "stub"
     assert body["context_level"] == "basic"
     assert body["jev_brier"] == brier_score([0.8, 0.3], [1, 0])
     assert body["market_brier"] == brier_score([0.62, 0.40], [1, 0])
-    assert client.get("/scorecard").json() == body
+    assert book.get("/scorecard").json() == body
 
-    rejected = client.get("/scorecard?decider=other&context=basic")
+    rejected = book.get("/scorecard?decider=other&context=basic")
     assert rejected.status_code == 400

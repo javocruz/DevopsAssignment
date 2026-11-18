@@ -1,4 +1,4 @@
-from contracts import Estimate, Resolution
+from intel.contracts import Estimate, Resolution
 
 
 # INSERT OR IGNORE plus the UNIQUE keys make every save idempotent:
@@ -143,6 +143,21 @@ def list_estimate_records(conn):
         )
         for row in rows
     ]
+
+
+def get_estimate_detail(conn, estimate_id):
+    return conn.execute(
+        """
+        SELECT e.id, e.market_id, m.question, s.yes_price, e.jev_prob,
+               e.info_score, e.confidence, e.decider, e.context_level,
+               e.created_at, e.state_json
+        FROM estimates e
+        JOIN markets m ON m.id = e.market_id
+        JOIN price_snapshots s ON s.id = e.snapshot_id
+        WHERE e.id = ?
+        """,
+        (estimate_id,),
+    ).fetchone()
 
 
 # markets has no resolved_at column, so end_date stands in for it.

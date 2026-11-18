@@ -18,9 +18,9 @@ from pathlib import Path
 
 import httpx
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent / "services" / "intel"))
 
-from config import get_settings  # noqa: E402
+from intel.config import get_settings  # noqa: E402
 from intel.news import TheNewsApi, build_news_query, filter_news_before  # noqa: E402
 from intel.sources import FIXTURE_PATH, GAMMA_MARKETS_URL  # noqa: E402
 

@@ -125,12 +125,12 @@ Day 2 is this feedback commit, then C3, then C4. C5 stays on Day 3. Day 6 still 
 
 - [x] **Docs** `Apply A1 grading feedback to the A2 plan and agent rules`
 - Not a commit, today: in GitHub settings, turn on branch protection for `main`. Require a pull request. Block force pushes. Do not require a CI status check yet. That check is added after C12, once the workflow exists. It is still a GitHub setting, not a commit, and it does not go in a pull request template.
-- [ ] **C3** `Split the monolith into intel and book services along the ADR 2 seam`
+- [x] **C3** `Split the monolith into intel and book services along the ADR 2 seam`
   - Move code into `services/intel/` and `services/book/`. Still SQLite, so tests stay green.
   - Book gets auto-bet, settle, and the scorecard, plus `intel_client.py`.
   - Intel gets `GET /resolutions`. Delete `pipeline.py`. Fixtures move with Intel.
   - Pure move. Do not fix the sync count here. That is C5. C5 stays on Day 3.
-- [ ] **C4** `Add /health, request logging, CORS, and the estimate audit route`
+- [x] **C4** `Add /health, request logging, CORS, and the estimate audit route`
   - `/health` checks its own database. `version` comes from `GIT_SHA` (default `dev`).
   - One log line per request, and `intel_client.py` forwards `X-Request-ID`.
   - `CORSMiddleware` from `CORS_ORIGINS`.

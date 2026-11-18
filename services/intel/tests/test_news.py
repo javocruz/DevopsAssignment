@@ -4,7 +4,7 @@ from pathlib import Path
 
 import httpx
 
-from db import get_connection
+from intel.db import get_connection
 from intel.news import (
     FixtureNews,
     NoNews,
@@ -148,7 +148,7 @@ def test_fixture_reads_do_not_count_as_api_calls(tmp_db):
 
 
 def test_get_news_source_picks_by_settings(monkeypatch, caplog):
-    from config import get_settings
+    from intel.config import get_settings
 
     monkeypatch.setenv("NEWS_SOURCE", "none")
     assert isinstance(get_news_source(get_settings()), NoNews)
