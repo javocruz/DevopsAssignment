@@ -28,7 +28,7 @@ Javi is quizzed on paper, closed-book, on every line, including Dockerfiles and 
 
 1. **No secrets anywhere in the repo**: source, compose, workflows, tests, fixtures, logs, history. Never read `.env`. Never ask Javi to paste a key in chat.
 2. **Never write the Decision or Alternatives of an ADR**, and never fill the "In my own words" column of AI_USAGE.md. Javi writes both. You may format and suggest alternatives.
-3. **Never fake, backdate or batch git history.** Javi commits and pushes himself, through PRs.
+3. **Never fake, backdate or batch git history.** Never amend, rebase, or force-push anything already pushed. `main` only changes through pull requests. Javi commits and pushes himself, through PRs.
 4. **Never create, change or delete Azure resources yourself.** Write the `az` commands for the README; Javi runs them. After setup, only the pipeline changes Azure.
 5. **Migrations**: never edit an applied migration, never drop or recreate tables on boot. Fixes go in a new numbered file.
 6. **Tests never call real external services** (Jev, Polymarket, TheNewsAPI, Azure SQL). Mock them or use the local SQL Server container.
@@ -49,7 +49,7 @@ Javi is quizzed on paper, closed-book, on every line, including Dockerfiles and 
 
 1. **Explain-back**: 3 to 6 bullets on how it works, with real names, plain language. For Dockerfiles and workflows, explain what each block does.
 2. **A worked example** if math or a data flow was added.
-3. **A draft AI_USAGE.md row** (Date/commit, Tool, Prompt, Disposition). Last column: `TODO: Javi writes this`.
+3. **A draft AI_USAGE.md row** (Date/commit, Tool, Prompt, Disposition, What changed). Last column stays `TODO: Javi writes this`. With the row, give Javi a 3-line hint for that cell: (a) the file and function or block names involved, (b) what goes in, what it does, what comes out, (c) one why. The last column explains HOW the code works, never what the commit achieved. Bad: "Added Docker." Good: "The Dockerfile copies requirements.txt and runs pip install before copying the app folder, so a code change reuses the cached install layer." Do not credit work to the wrong commit. The A1 C19 row claimed a dashboard the commit only restyled.
 4. **2 quiz questions** about what changed.
 
 ## Tone
