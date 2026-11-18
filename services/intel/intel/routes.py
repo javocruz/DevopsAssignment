@@ -1,3 +1,4 @@
+import json
 from dataclasses import asdict
 from datetime import datetime, timezone
 
@@ -11,6 +12,7 @@ from intel.news import fetch_news_for_markets, get_news_source
 from intel.repo import (
     get_market,
     latest_snapshot,
+    get_estimate_detail,
     list_estimate_records,
     list_markets,
     list_news_items,
@@ -88,6 +90,28 @@ def run_estimates_route(
 @router.get("/estimates")
 def get_estimates(conn=Depends(get_db)):
     return [asdict(record) for record in list_estimate_records(conn)]
+
+
+@router.get("/estimates/{estimate_id}")
+def get_estimate(estimate_id: int, conn=Depends(get_db)):
+    row = get_estimate_detail(conn, estimate_id)
+    if row is None:
+        raise HTTPException(status_code=404, detail="Unknown estimate")
+    # market_price is the snapshot price. yes_price and outcome stay out of
+    # this document so the audit trail cannot leak them under another name.
+    return {
+        "estimate_id": row["id"],
+        "market_id": row["market_id"],
+        "question": row["question"],
+        "market_price": row["yes_price"],
+        "jev_prob": row["jev_prob"],
+        "info_score": row["info_score"],
+        "confidence": row["confidence"],
+        "decider": row["decider"],
+        "context_level": row["context_level"],
+        "created_at": row["created_at"],
+        "state_json": json.loads(row["state_json"]),
+    }
 
 
 @router.get("/resolutions")

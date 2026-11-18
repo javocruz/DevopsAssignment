@@ -37,6 +37,17 @@ def apps(tmp_path, monkeypatch):
 
 
 @pytest.fixture
+def book_client(tmp_db):
+    return TestClient(load_app(SERVICE, "book_asgi_client"))
+
+
+@pytest.fixture
+def book_cors_client(tmp_db, monkeypatch):
+    monkeypatch.setenv("CORS_ORIGINS", "http://localhost:8080")
+    return TestClient(load_app(SERVICE, "book_asgi_cors"))
+
+
+@pytest.fixture
 def bridged(apps, monkeypatch):
     intel, book = apps
     bridge(monkeypatch, intel)

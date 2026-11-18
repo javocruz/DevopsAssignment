@@ -8,12 +8,12 @@ class IntelUnavailable(Exception):
     pass
 
 
-def fetch_estimates():
-    return [_estimate(row) for row in _get("/estimates")]
+def fetch_estimates(request_id=None):
+    return [_estimate(row) for row in _get("/estimates", request_id)]
 
 
-def fetch_resolutions():
-    return [_resolution(row) for row in _get("/resolutions")]
+def fetch_resolutions(request_id=None):
+    return [_resolution(row) for row in _get("/resolutions", request_id)]
 
 
 def _estimate(row):
@@ -40,13 +40,16 @@ def _resolution(row):
 
 
 # One retry, then the caller turns this into a 503. Caching is a later commit.
-def _get(path):
+def _get(path, request_id=None):
     settings = get_settings()
+    headers = {}
+    if request_id:
+        headers["X-Request-ID"] = request_id
     last_error = None
     for _attempt in (1, 2):
         try:
             with httpx.Client(base_url=settings.intel_url, timeout=settings.intel_timeout_s) as client:
-                response = client.get(path)
+                response = client.get(path, headers=headers)
                 response.raise_for_status()
                 return response.json()
         except httpx.HTTPError as exc:

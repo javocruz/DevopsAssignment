@@ -49,14 +49,16 @@ def get_portfolio(conn=Depends(get_db)):
 
 
 @router.post("/pipeline/auto-bet")
-def auto_bet(conn=Depends(get_db), _admin=Depends(require_admin)):
-    estimates = intel_or_503(fetch_estimates)
+def auto_bet(request: Request, conn=Depends(get_db), _admin=Depends(require_admin)):
+    request_id = getattr(request.state, "request_id", None)
+    estimates = intel_or_503(lambda: fetch_estimates(request_id))
     return place_bets(conn, estimates, get_settings(), run_time())
 
 
 @router.post("/pipeline/settle")
-def settle(conn=Depends(get_db), _admin=Depends(require_admin)):
-    resolutions = intel_or_503(fetch_resolutions)
+def settle(request: Request, conn=Depends(get_db), _admin=Depends(require_admin)):
+    request_id = getattr(request.state, "request_id", None)
+    resolutions = intel_or_503(lambda: fetch_resolutions(request_id))
     return settle_bets(conn, resolutions, run_time())
 
 
@@ -75,14 +77,15 @@ def scored_rows(estimates, resolutions, decider, context_level):
 
 
 @router.get("/scorecard")
-def get_scorecard(decider: str = "stub", context: str = "basic", conn=Depends(get_db)):
+def get_scorecard(request: Request, decider: str = "stub", context: str = "basic"):
     if decider not in DECIDERS or context not in CONTEXT_LEVELS:
         raise HTTPException(
             status_code=400,
             detail=f"decider must be one of {DECIDERS} and context must be one of {CONTEXT_LEVELS}",
         )
-    estimates = intel_or_503(fetch_estimates)
-    resolutions = intel_or_503(fetch_resolutions)
+    request_id = getattr(request.state, "request_id", None)
+    estimates = intel_or_503(lambda: fetch_estimates(request_id))
+    resolutions = intel_or_503(lambda: fetch_resolutions(request_id))
     rows = scored_rows(estimates, resolutions, decider, context)
     jev_probs = [estimate.jev_prob for estimate, _outcome in rows]
     market_prices = [estimate.market_price for estimate, _outcome in rows]

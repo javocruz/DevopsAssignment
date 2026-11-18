@@ -25,3 +25,9 @@ def load_app():
 @pytest.fixture
 def client(tmp_db):
     return TestClient(load_app())
+
+
+@pytest.fixture
+def cors_client(tmp_db, monkeypatch):
+    monkeypatch.setenv("CORS_ORIGINS", "http://localhost:8080")
+    return TestClient(load_app())

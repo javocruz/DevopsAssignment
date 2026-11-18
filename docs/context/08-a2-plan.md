@@ -130,7 +130,7 @@ Day 2 is this feedback commit, then C3, then C4. C5 stays on Day 3. Day 6 still 
   - Book gets auto-bet, settle, and the scorecard, plus `intel_client.py`.
   - Intel gets `GET /resolutions`. Delete `pipeline.py`. Fixtures move with Intel.
   - Pure move. Do not fix the sync count here. That is C5. C5 stays on Day 3.
-- [ ] **C4** `Add /health, request logging, CORS, and the estimate audit route`
+- [x] **C4** `Add /health, request logging, CORS, and the estimate audit route`
   - `/health` checks its own database. `version` comes from `GIT_SHA` (default `dev`).
   - One log line per request, and `intel_client.py` forwards `X-Request-ID`.
   - `CORSMiddleware` from `CORS_ORIGINS`.
