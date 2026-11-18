@@ -21,7 +21,7 @@ Deadline: **2026-11-22**. The six commit days are 17, 18, 19, 20, 21, and 22. Sk
 - **No secrets in the repo**, including compose and history. A leaked secret is rotated within 24 h and noted in the README. An unreported leak caps the grade at 40.
 - **Same stack**: Python 3.12, FastAPI, no ORM. Soft cap about 12 third-party packages per service.
 - **Changes reach `main` through pull requests.**
-- **Out of scope**: a third container, Redis, queues, schedulers, any other database, always-on compute, accounts, uploading strategies, new deciders.
+- **Out of scope**: a third container, Redis, queues, schedulers, any other database, always-on compute, accounts, uploading strategies, new deciders. No bet editing and no per-bet action. A1 noted that Book cannot act on one bet. That is not an A2 feature.
 
 ## Architecture after the split
 
@@ -97,13 +97,23 @@ Apple Silicon: enable Rosetta for the SQL Server image. Ports: intel `8001:8000`
 
 `ui/index.html`, `ui/app.js`, `ui/style.css`, `ui/config.js`, and the vendored Chart.js already in the repo. Move the current dashboard behavior off Jinja. The page calls both services. It shows the lab summary, forecaster vs market, markets, portfolio, and each service's `/health`. It shows the stale banner and the waking-up banner. The admin token stays in `sessionStorage`. Drop `jinja2` from the service requirements when the templates are removed.
 
+## Lessons from the A1 grade
+
+These change the plan. They do not add features.
+
+- **Sync count, in C5 only.** A repeat `POST /markets/sync` reported `processed: 35` because the route returned `len(result["rows"])` after `INSERT OR IGNORE`. C3 does not fix this. C3 is a pure move. C5, the Intel SQL port, uses `INSERT ... WHERE NOT EXISTS` and sets `processed` from `cursor.rowcount`, so only inserted rows count. A test asserts the second sync returns `processed` 0.
+- **Report diagrams.** Draw each service's database diagram from its migration files. Show every table. Intel: `markets`, `price_snapshots`, `news_items`, `estimates`. Book: `bets`, `intel_cache`. A1 lost points because the report diagram left tables out. The repo diagram was not the one that was graded.
+- **README coverage.** Copy the numbers from the CI run on the tagged commit, per service, or link that run. Never type a coverage number from memory. A1 lost points for a stale 97% and 62 tests. The measured suite was 94.5% from 65 tests.
+- **ADR alternatives.** Do not edit ADR 1. For ADRs 6 to 10, "Alternatives considered" names the closest real option. Numbered SQL files against Alembic (ADR 7). A stale cached scorecard against a hard 503 on every Intel failure (ADR 6 or ADR 9). Azure CLI in the workflow against Bicep (ADR 8). The `httpx.MockTransport` stub against a compose end-to-end test (ADR 9). `pymssql` against `pyodbc` where the driver is part of that decision. ADR 6 is already written. The hard-503 alternative still has to appear in ADR 6 or ADR 9. Javi writes that sentence.
+- **No new Book features from the feedback.** Do not add bet editing or a per-bet action.
+
 ## What this schedule dropped
 
-These were in the nine-day plan and are not separate commits. Do not add them back unless a day finishes early: five-file design system, compose smoke in CI, gitleaks, pip-audit, branch protection, a rollback workflow, a separate runbook commit. The recovery plan is written in ADR 7 (new forward migration, redeploy an older image by hand if needed, Azure point-in-time restore). Diagrams land in the last commit. The report still needs them.
+These were in the nine-day plan and are not separate commits. Do not add them back unless a day finishes early: five-file design system, compose smoke in CI, gitleaks, pip-audit, a rollback workflow, a pull request template, a separate runbook commit. Branch protection is not a commit. It is a GitHub setting, below. The recovery plan is written in ADR 7 (new forward migration, redeploy an older image by hand if needed, Azure point-in-time restore). Diagrams land in the last commit. The report still needs them, and they must match the migrations.
 
 ## Commit plan
 
-16 commits, 6 days, at most 3 on days 1 to 5 and 4 on day 6. Four of 16 is 25 percent, under the 40 percent cap. Each day: branch off `main`, commit, push, open a PR, merge.
+Day 2 is this feedback commit, then C3, then C4. C5 stays on Day 3. Day 6 still has four commits. Four commits on one day stays under the 40 percent cap. Each day: branch off `main`, commit, push, open a PR, merge.
 
 ### Day 1 (Tue 17 Nov) branch `a2-plan`
 
@@ -113,10 +123,13 @@ These were in the nine-day plan and are not separate commits. Do not add them ba
 
 ### Day 2 (Wed 18 Nov) branch `a2-services`
 
+- [x] **Docs** `Apply A1 grading feedback to the A2 plan and agent rules`
+- Not a commit, today: in GitHub settings, turn on branch protection for `main`. Require a pull request. Block force pushes. Do not require a CI status check yet. That check is added after C12, once the workflow exists. It is still a GitHub setting, not a commit, and it does not go in a pull request template.
 - [ ] **C3** `Split the monolith into intel and book services along the ADR 2 seam`
   - Move code into `services/intel/` and `services/book/`. Still SQLite, so tests stay green.
   - Book gets auto-bet, settle, and the scorecard, plus `intel_client.py`.
   - Intel gets `GET /resolutions`. Delete `pipeline.py`. Fixtures move with Intel.
+  - Pure move. Do not fix the sync count here. That is C5. C5 stays on Day 3.
 - [ ] **C4** `Add /health, request logging, CORS, and the estimate audit route`
   - `/health` checks its own database. `version` comes from `GIT_SHA` (default `dev`).
   - One log line per request, and `intel_client.py` forwards `X-Request-ID`.
@@ -126,8 +139,11 @@ These were in the nine-day plan and are not separate commits. Do not add them ba
 ### Day 3 (Thu 19 Nov) branch `a2-sqlserver`
 
 - [ ] **C5** `Port Intel to SQL Server with a numbered migration runner`
+  - Also fix the A1 sync count. A repeat `POST /markets/sync` must return `processed` 0.
+  - The insert is `INSERT ... WHERE NOT EXISTS`. `processed` comes from `cursor.rowcount`, which is the number of rows actually inserted.
+  - Test the second sync. Do not leave this for a later commit, and do not move it back onto C3.
 - [ ] **C6** `Port Book to SQL Server with bets and intel_cache`
-- [ ] **C7** `Add ADR 7 on data per service and migrations` (dated 2026-11-19). Javi writes: two databases, no foreign key across the seam, `intel_cache` is a copy not a join, recovery is a new migration plus point-in-time restore.
+- [ ] **C7** `Add ADR 7 on data per service and migrations` (dated 2026-11-19). Javi writes: two databases, no foreign key across the seam, `intel_cache` is a copy not a join, recovery is a new migration plus point-in-time restore. The closest alternative is Alembic, not "no migrations". Name `pymssql` against `pyodbc` if the driver choice is part of this entry.
 
 ### Day 4 (Fri 20 Nov) branch `a2-containers`
 
@@ -141,13 +157,15 @@ These were in the nine-day plan and are not separate commits. Do not add them ba
 - [ ] **C10** `Move the dashboard to a static UI that calls both services`
 - [ ] **C11** `Add OpenAPI documents per service and system.yaml`
   - Needs `system.schema.json` from Blackboard. Every env var is listed. Secrets have no default and are marked `secret: true`.
-- [ ] **C12** `Add CI and ADR 9 on the pipeline and testing` (ADR dated 2026-11-21). Javi writes the ADR before the commit: what CI gates, the stub seam test, and what is not tested (live Jev, Polymarket, TheNewsAPI).
+- [ ] **C12** `Add CI and ADR 9 on the pipeline and testing` (ADR dated 2026-11-21). Javi writes the ADR before the commit: what CI gates, the stub seam test, and what is not tested (live Jev, Polymarket, TheNewsAPI). The closest alternative to the stub is a compose end-to-end test. The hard 503 for the scorecard belongs here if it was not added to ADR 6.
+  - Not a commit, after this is on `main`: add this workflow as a required status check on the Day 2 branch protection rule.
 
 ### Day 6 (Sun 22 Nov) branch `a2-deploy`
 
 Azure setup must already be done before C14. Document the commands you actually ran.
 
 - [ ] **C13** `Document local run and the Azure setup in the README`
+  - Coverage numbers are copied from the CI run on the tagged commit, per service, or the README links that run. Do not reuse 97% or 62 tests.
 - [ ] **C14** `Add CD to Azure: SHA-tagged images, Container Apps, static UI, and a health gate`
   - `cd.yml` on push to `main` calls `ci.yml`, then deploys with `id-token: write`. Images are `ghcr.io/<owner>/<image>:$GITHUB_SHA` with `provenance: false`. Container Apps get the image, `GIT_SHA`, and secrets via `secretref`. Write `ui/config.js`, upload `ui/` to `$web`, retry `/health` for about 5 minutes.
   - Keep the link to the first failed run.
@@ -155,7 +173,7 @@ Azure setup must already be done before C14. Document the commands you actually 
   - Before this commit: run sync, estimates, auto-bet, and settle on Azure, and save a screenshot of the rows.
 - [ ] **C16** `Add ADR 8, ADR 10, the diagrams, and the live URL` (both ADRs dated 2026-11-22). Then `git tag submission <sha>` and `git push origin submission`.
 
-ADR 8 is the serverless cost model, scale to zero, database pause, connection retries, one replica so migrations cannot run twice, and what would change at 100x traffic. ADR 10 is public forecaster submissions, which we do not build: they need accounts, a sandbox, and abuse limits, and they are worth building only when more than one trusted person needs to add a forecaster.
+ADR 8 is the serverless cost model, scale to zero, database pause, connection retries, one replica so migrations cannot run twice, and what would change at 100x traffic. Its closest alternative is Bicep, not "deploy by hand in the portal". ADR 10 is public forecaster submissions, which we do not build: they need accounts, a sandbox, and abuse limits, and they are worth building only when more than one trusted person needs to add a forecaster. The closest alternative is actually building that submission flow. Do not edit ADR 1.
 
 ## Final checklist
 
@@ -167,4 +185,5 @@ ADR 8 is the serverless cost model, scale to zero, database pause, connection re
 - [ ] ADR 6 to 10 exist on at least 3 dates. ADR 1 to 5 stay as they are
 - [ ] At least 12 new commits, 6 days, no day over 40 percent, all via PRs
 - [ ] Professors have Reader on `rg-<prefix>`
-- [ ] Report: before and after architecture, deployment diagram, one database diagram per service, migration evidence, partial-failure evidence, one green CD run and one failed-then-fixed run, README, AI disclosure
+- [ ] Report: before and after architecture, deployment diagram, one database diagram per service drawn from that service's migration files and showing every table (Intel: `markets`, `price_snapshots`, `news_items`, `estimates`; Book: `bets`, `intel_cache`), migration evidence, partial-failure evidence, one green CD run and one failed-then-fixed run, README, AI disclosure
+- [ ] README coverage matches the CI run on the tagged commit, per service, or links that run
