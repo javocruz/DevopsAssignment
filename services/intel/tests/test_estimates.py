@@ -1,10 +1,7 @@
 import json
 
-from fastapi.testclient import TestClient
-
-from app import app
-from contracts import Estimate
-from db import get_connection
+from intel.contracts import Estimate
+from intel.db import get_connection
 from intel.decider import StubDecider
 from intel.estimates import build_state, days_to_resolution, render_state, run_estimates
 from intel.news import NoNews
@@ -146,6 +143,6 @@ def test_list_estimate_records_returns_estimates(tmp_db):
     assert records[0].question == "Will the ECB cut rates in December 2026?"
 
 
-def test_run_route_rejects_unknown_context(tmp_db):
-    response = TestClient(app).post("/estimates/run?context=everything")
+def test_run_route_rejects_unknown_context(client):
+    response = client.post("/estimates/run?context=everything")
     assert response.status_code == 400

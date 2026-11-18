@@ -1,8 +1,8 @@
 import pytest
 
-from db import SCHEMA_VERSION, get_connection, get_schema_version, init_db
+from book.db import SCHEMA_VERSION, get_connection, get_schema_version, init_db
 
-EXPECTED_TABLES = {"markets", "price_snapshots", "news_items", "estimates", "bets"}
+EXPECTED_TABLES = {"bets"}
 
 
 def table_names(conn):
@@ -12,7 +12,7 @@ def table_names(conn):
     return {row["name"] for row in rows}
 
 
-def test_fresh_db_gets_version_1_and_5_tables(tmp_db):
+def test_fresh_db_gets_version_1_and_bets(tmp_db):
     conn = get_connection()
     assert get_schema_version(conn) == SCHEMA_VERSION == 1
     assert table_names(conn) == EXPECTED_TABLES

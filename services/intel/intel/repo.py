@@ -1,4 +1,4 @@
-from contracts import Estimate, Resolution
+from intel.contracts import Estimate, Resolution
 
 
 # INSERT OR IGNORE plus the UNIQUE keys make every save idempotent:

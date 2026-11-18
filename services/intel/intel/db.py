@@ -1,7 +1,7 @@
 import sqlite3
 from pathlib import Path
 
-from config import get_settings
+from intel.config import get_settings
 
 SCHEMA_VERSION = 1
 
@@ -54,28 +54,11 @@ CREATE TABLE estimates (
     UNIQUE (market_id, snapshot_id, decider, context_level)
 );
 
--- Book table. estimate_id and market_id have no FK on purpose: they cross
--- the Intel/Book seam, so the two domains can live in separate DBs in A2.
-CREATE TABLE bets (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    estimate_id INTEGER NOT NULL UNIQUE,
-    market_id TEXT NOT NULL,
-    decider TEXT NOT NULL,
-    context_level TEXT NOT NULL,
-    side TEXT NOT NULL,
-    entry_price REAL NOT NULL,
-    stake REAL NOT NULL,
-    shares REAL NOT NULL,
-    status TEXT NOT NULL,
-    pnl REAL,
-    placed_at TEXT NOT NULL,
-    settled_at TEXT
-);
 """
 
 
 def db_path():
-    return Path(get_settings().data_dir) / "edgebook.db"
+    return Path(get_settings().data_dir) / "intel.db"
 
 
 # Pragmas are per connection, so every new connection has to set them again.
@@ -115,7 +98,7 @@ def init_db():
         elif version != SCHEMA_VERSION:
             raise RuntimeError(
                 f"DB schema is v{version}, app expects v{SCHEMA_VERSION}. "
-                "Delete DATA_DIR/edgebook.db or migrate."
+                "Delete DATA_DIR/intel.db or migrate."
             )
     finally:
         conn.close()

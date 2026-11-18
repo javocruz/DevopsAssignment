@@ -3,8 +3,8 @@ from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException
 
-from config import get_settings
-from db import get_db
+from intel.config import get_settings
+from intel.db import get_db
 from intel.decider import get_decider
 from intel.estimates import run_estimates
 from intel.news import fetch_news_for_markets, get_news_source
@@ -14,10 +14,11 @@ from intel.repo import (
     list_estimate_records,
     list_markets,
     list_news_items,
+    list_resolutions,
     save_markets,
 )
 from intel.sources import FixtureSource, get_source
-from security import require_admin
+from intel.security import require_admin
 
 router = APIRouter()
 
@@ -87,3 +88,8 @@ def run_estimates_route(
 @router.get("/estimates")
 def get_estimates(conn=Depends(get_db)):
     return [asdict(record) for record in list_estimate_records(conn)]
+
+
+@router.get("/resolutions")
+def get_resolutions(conn=Depends(get_db)):
+    return [asdict(record) for record in list_resolutions(conn)]

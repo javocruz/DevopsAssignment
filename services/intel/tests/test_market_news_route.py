@@ -1,6 +1,3 @@
-from fastapi.testclient import TestClient
-
-from app import app
 
 
 def load_offline_data(client):
@@ -8,8 +5,7 @@ def load_offline_data(client):
     assert client.post("/news/fetch").status_code == 200
 
 
-def test_news_route_returns_headlines_newest_first_and_before_cutoff(tmp_db):
-    client = TestClient(app)
+def test_news_route_returns_headlines_newest_first_and_before_cutoff(client):
     load_offline_data(client)
 
     for market in client.get("/markets").json():
@@ -21,8 +17,7 @@ def test_news_route_returns_headlines_newest_first_and_before_cutoff(tmp_db):
         assert all(date < body["cutoff"] for date in dates)
 
 
-def test_news_route_has_at_least_one_market_with_headlines(tmp_db):
-    client = TestClient(app)
+def test_news_route_has_at_least_one_market_with_headlines(client):
     load_offline_data(client)
 
     counts = [
@@ -32,6 +27,6 @@ def test_news_route_has_at_least_one_market_with_headlines(tmp_db):
     assert max(counts) > 0
 
 
-def test_news_route_unknown_market_is_404(tmp_db):
-    response = TestClient(app).get("/markets/not-a-real-market/news")
+def test_news_route_unknown_market_is_404(client):
+    response = client.get("/markets/not-a-real-market/news")
     assert response.status_code == 404

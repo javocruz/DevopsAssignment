@@ -1,6 +1,6 @@
 import pytest
 
-from config import get_settings
+from intel.config import get_settings
 
 EDGEBOOK_VARS = [
     "PORT", "DATA_DIR", "LOG_LEVEL", "ADMIN_TOKEN",
