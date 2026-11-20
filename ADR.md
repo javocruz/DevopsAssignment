@@ -50,6 +50,14 @@ Decision: I keep the seam where ADR 2 put it. Intel still owns markets, prices, 
 Alternatives considered: Letting the page call both services and compute the scorecard in the browser. That would move brier_score out of Book, and the assignment wants the cross on the server. Moving the seam to some other cut. ADR 2 already matches the two domains, so a new cut would be a rewrite without a new boundary.
 Consequences: Book can still show the portfolio from its own bets table when Intel is down. The scorecard then uses a cached Intel response and is marked stale. Auto-bet and settle return 503, because a bet is not placed on stale estimates. The cost is an HTTP client in Book, and a cache that is a copy, not a foreign key.
 
+## [7]. data per service and migrations
+date: 2026-11-20
+status: decided
+context: assignment 2 wants intel and book to each have their own database. before this we had one sqlite file and pragma user_version, and that does not carry over to sql server.
+decision: i decided to give intel and book their own database. book does not reach into intel's tables, and there is no foreign key between them. when the schema has to change i add a new numbered sql file, and i dont go back and edit one that already ran. i went with pymssql because the encrypted connection to azure sql already worked.
+alternatives considered: i didnt use alembic. it writes the migrations for you, but then the sql is harder to read, and the numbered files are short enough on their own. i also didnt use pyodbc with encrypt=yes. that needs an odbc driver in the image, and pymssql already connected, so it would be extra for no reason.
+consequences: if a migration is wrong i write a new file instead of fixing the old one. if i need the data back, that is an azure point-in-time restore. intel_cache is just a copy of what intel sent, it is not a join.
+
 <!--
 Format (copy for each entry):
 
