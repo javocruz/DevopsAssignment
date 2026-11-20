@@ -143,7 +143,7 @@ Day 2 is this feedback commit, then C3, then C4. C5 stays on Day 3. Day 6 still 
   - The insert is `INSERT ... WHERE NOT EXISTS`. `processed` comes from `cursor.rowcount`, which is the number of rows actually inserted.
   - Test the second sync. Do not leave this for a later commit, and do not move it back onto C3.
 - [ ] **C6** `Port Book to SQL Server with bets and intel_cache`
-- [ ] **C7** `Add ADR 7 on data per service and migrations` (dated 2026-11-19). Javi writes: two databases, no foreign key across the seam, `intel_cache` is a copy not a join, recovery is a new migration plus point-in-time restore. The closest alternative is Alembic, not "no migrations". Name `pymssql` against `pyodbc` if the driver choice is part of this entry.
+- [x] **C7** `Add ADR 7 on data per service and migrations` (dated 2026-11-20). Javi writes: two databases, no foreign key across the seam, `intel_cache` is a copy not a join, recovery is a new migration plus point-in-time restore. The closest alternative is Alembic, not "no migrations". Name `pymssql` against `pyodbc` if the driver choice is part of this entry.
 
 ### Day 4 (Fri 20 Nov) branch `a2-containers`
 
