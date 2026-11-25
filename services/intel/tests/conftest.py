@@ -4,14 +4,10 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
-from intel.db import init_db
-
 
 @pytest.fixture
-def tmp_db(tmp_path, monkeypatch):
-    monkeypatch.setenv("DATA_DIR", str(tmp_path))
-    init_db()
-    return tmp_path
+def tmp_db(intel_test_db):
+    return intel_test_db
 
 
 def load_app():

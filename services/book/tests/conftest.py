@@ -3,9 +3,8 @@ from pathlib import Path
 
 import httpx
 import pytest
-from fastapi.testclient import TestClient
-
 from book.db import init_db
+from fastapi.testclient import TestClient
 
 SERVICE = Path(__file__).resolve().parents[1]
 INTEL = SERVICE.parent / "intel"
@@ -26,10 +25,8 @@ def tmp_db(tmp_path, monkeypatch):
 
 
 @pytest.fixture
-def apps(tmp_path, monkeypatch):
+def apps(tmp_path, monkeypatch, intel_test_db):
     monkeypatch.setenv("DATA_DIR", str(tmp_path))
-    from intel.db import init_db as init_intel
-    init_intel()
     init_db()
     intel = TestClient(load_app(INTEL, "intel_asgi"))
     book = TestClient(load_app(SERVICE, "book_asgi"))

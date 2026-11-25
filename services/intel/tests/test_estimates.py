@@ -5,7 +5,13 @@ from intel.db import get_connection
 from intel.decider import StubDecider
 from intel.estimates import build_state, days_to_resolution, render_state, run_estimates
 from intel.news import NoNews
-from intel.repo import list_estimate_records, list_markets, save_markets, save_news_items
+from intel.repo import (
+    list_estimate_records,
+    list_markets,
+    query,
+    save_markets,
+    save_news_items,
+)
 
 NOW = "2026-10-01T12:00:00Z"
 HEADLINE = {
@@ -36,13 +42,13 @@ def stored_market_and_snapshot(market_id="m1"):
     conn = get_connection()
     save_markets(conn, [estimate_market(market_id)])
     market = list_markets(conn)[0]
-    snapshot = conn.execute("SELECT * FROM price_snapshots").fetchone()
+    snapshot = query(conn, "SELECT * FROM price_snapshots").fetchone()
     conn.close()
     return market, snapshot
 
 
 def count_estimates(conn):
-    return conn.execute("SELECT COUNT(*) FROM estimates").fetchone()[0]
+    return query(conn, "SELECT COUNT(*) AS total FROM estimates").fetchone()["total"]
 
 
 class FailsOn:
@@ -123,7 +129,7 @@ def test_state_json_is_the_dict_with_cached_headlines(tmp_db):
     save_markets(conn, [estimate_market("m1")])
     save_news_items(conn, "m1", [HEADLINE], NOW)
     run_estimates(conn, StubDecider(), NoNews(3), "news", 20, NOW)
-    row = conn.execute("SELECT state_json, created_at FROM estimates").fetchone()
+    row = query(conn, "SELECT state_json, created_at FROM estimates").fetchone()
     conn.close()
     state = json.loads(row["state_json"])
     assert state["headlines"][0]["title"] == HEADLINE["title"]
@@ -147,7 +153,7 @@ def test_estimate_detail_hides_outcome_and_yes_price(client):
     setup = get_connection()
     save_markets(setup, [estimate_market("m1")])
     run_estimates(setup, StubDecider(), NoNews(3), "basic", 20, NOW)
-    estimate_id = setup.execute("SELECT id FROM estimates").fetchone()["id"]
+    estimate_id = query(setup, "SELECT id FROM estimates").fetchone()["id"]
     setup.close()
     body = client.get(f"/estimates/{estimate_id}").json()
     state = body["state_json"]

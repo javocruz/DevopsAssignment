@@ -3,7 +3,6 @@ import logging
 from pathlib import Path
 
 import httpx
-
 from intel.db import get_connection
 from intel.news import (
     FixtureNews,
@@ -14,7 +13,13 @@ from intel.news import (
     filter_news_before,
     get_news_source,
 )
-from intel.repo import list_markets, market_ids_with_news, save_markets, save_news_items
+from intel.repo import (
+    list_markets,
+    market_ids_with_news,
+    query,
+    save_markets,
+    save_news_items,
+)
 
 NEWS_SAMPLE = json.loads((Path(__file__).parent / "data" / "thenewsapi_sample.json").read_text())
 FAKE_TOKEN = "test-token-never-real"
@@ -131,7 +136,7 @@ def test_saving_same_article_twice_does_not_duplicate(tmp_db):
             "url": "https://x.com/a", "published_at": "2025-12-01T00:00:00Z"}
     save_news_items(conn, "m1", [item], "2025-12-02T00:00:00Z")
     save_news_items(conn, "m1", [item], "2025-12-03T00:00:00Z")
-    count = conn.execute("SELECT COUNT(*) FROM news_items").fetchone()[0]
+    count = query(conn, "SELECT COUNT(*) AS total FROM news_items").fetchone()["total"]
     conn.close()
     assert count == 1
 

@@ -1,9 +1,8 @@
 import pytest
-
 from intel.config import get_settings
 
 EDGEBOOK_VARS = [
-    "PORT", "DATA_DIR", "LOG_LEVEL", "ADMIN_TOKEN",
+    "PORT", "DATABASE_URL", "LOG_LEVEL", "ADMIN_TOKEN",
     "MARKET_SOURCE", "POLYMARKET_LIMIT",
     "NEWS_SOURCE", "THENEWSAPI_TOKEN", "NEWS_ARTICLES", "NEWS_MAX_CALLS_PER_RUN",
     "DECIDER", "TYPESAFE_API_KEY", "TYPESAFE_BASE_URL", "JEV_MODEL",
@@ -22,7 +21,7 @@ def clean_env(monkeypatch):
 def test_defaults_with_empty_env():
     settings = get_settings()
     assert settings.port == 8000
-    assert settings.data_dir == "./data"
+    assert settings.database_url == ""
     assert settings.market_source == "fixture"
     assert settings.news_source == "fixture"
     assert settings.decider == "stub"

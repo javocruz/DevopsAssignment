@@ -10,17 +10,17 @@ from intel.decider import get_decider
 from intel.estimates import run_estimates
 from intel.news import fetch_news_for_markets, get_news_source
 from intel.repo import (
+    get_estimate_detail,
     get_market,
     latest_snapshot,
-    get_estimate_detail,
     list_estimate_records,
     list_markets,
     list_news_items,
     list_resolutions,
     save_markets,
 )
-from intel.sources import FixtureSource, get_source
 from intel.security import require_admin
+from intel.sources import FixtureSource, get_source
 
 router = APIRouter()
 
@@ -32,9 +32,9 @@ def sync_markets(conn=Depends(get_db), _admin=Depends(require_admin)):
     # FixtureSource returns a plain list, PolymarketSource returns a summary.
     if isinstance(source, FixtureSource):
         result = {"rows": result, "skipped": 0, "failed": []}
-    save_markets(conn, result["rows"])
+    inserted = save_markets(conn, result["rows"])
     return {
-        "processed": len(result["rows"]),
+        "processed": inserted,
         "skipped": result["skipped"],
         "failed": result["failed"],
     }
