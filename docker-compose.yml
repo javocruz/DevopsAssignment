@@ -1,0 +1,62 @@
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    platform: linux/amd64
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:?Set MSSQL_SA_PASSWORD}
+      INTEL_DB_PASSWORD: ${INTEL_DB_PASSWORD:?Set INTEL_DB_PASSWORD}
+      BOOK_DB_PASSWORD: ${BOOK_DB_PASSWORD:?Set BOOK_DB_PASSWORD}
+    command: ["/bin/bash", "/bootstrap/start.sh"]
+    volumes:
+      - sql-data:/var/opt/mssql
+      - ./db:/bootstrap:ro
+    ports:
+      - "127.0.0.1:1433:1433"
+    healthcheck:
+      test: ["CMD-SHELL", "test -f /tmp/edgebook-db-ready && SQLCMDPASSWORD=\"$$MSSQL_SA_PASSWORD\" /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -C -b -Q 'SELECT 1' >/dev/null"]
+      interval: 5s
+      timeout: 4s
+      retries: 24
+
+  intel:
+    build: ./services/intel
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8001:8000"
+    environment:
+      MARKET_SOURCE: ${MARKET_SOURCE:-fixture}
+      NEWS_SOURCE: ${NEWS_SOURCE:-fixture}
+      DECIDER: ${DECIDER:-stub}
+      TYPESAFE_API_KEY: ${TYPESAFE_API_KEY:-}
+      THENEWSAPI_TOKEN: ${THENEWSAPI_TOKEN:-}
+      DATABASE_URL: mssql://intel@db:1433/intel
+      DB_PASSWORD: ${INTEL_DB_PASSWORD}
+      CORS_ORIGINS: http://localhost:8080
+      ADMIN_TOKEN: ${ADMIN_TOKEN:-}
+
+  book:
+    build: ./services/book
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8002:8000"
+    environment:
+      DATABASE_URL: mssql://book@db:1433/book
+      DB_PASSWORD: ${BOOK_DB_PASSWORD}
+      INTEL_URL: http://intel:8000
+      CORS_ORIGINS: http://localhost:8080
+      ADMIN_TOKEN: ${ADMIN_TOKEN:-}
+
+  ui:
+    image: nginx:alpine
+    volumes:
+      - ./ui:/usr/share/nginx/html:ro
+    ports:
+      - "127.0.0.1:8080:80"
+
+volumes:
+  sql-data:

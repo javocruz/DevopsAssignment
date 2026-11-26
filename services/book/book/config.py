@@ -108,13 +108,14 @@ def get_settings():
 
 def database_options(url):
     parsed = urlsplit(url)
+    password = unquote(parsed.password) if parsed.password else os.getenv("DB_PASSWORD")
     if (parsed.scheme != "mssql" or not parsed.hostname or not parsed.username
-            or not parsed.password or not parsed.path.strip("/")):
+            or not password or not parsed.path.strip("/")):
         raise ValueError("DATABASE_URL must specify a SQL Server, login and database")
     return {
         "server": parsed.hostname,
         "port": parsed.port or 1433,
         "user": unquote(parsed.username),
-        "password": unquote(parsed.password),
+        "password": password,
         "database": unquote(parsed.path[1:]),
     }

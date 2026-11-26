@@ -8,16 +8,20 @@ A paper-trading desk for prediction markets. Edgebook pulls markets, asks Jev (T
 
 ## Quick start
 
-Python 3.12.
+From a clean clone, start Docker Desktop. On Apple Silicon, enable Rosetta for the SQL Server image.
 
 ```bash
-python3.12 -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-python app.py
+cp .env.example .env
+docker compose up --build
 ```
 
-With no env vars the app stays offline: fixture markets, fixture headlines, and the stub decider. Open http://localhost:8000. Leave the admin token box empty.
+Use three distinct local passwords in the copied file before the first boot. Intel listens on port 8001 and Book on 8002. Check `/health` on each. Port 8080 serves a placeholder for the static UI. The default sources use fixtures and the stub forecaster.
+
+SQL Server keeps both databases in the named volume `sql-data`. Use `docker compose down` to stop the stack and keep the rows.
+
+## Assignment 1 reference
+
+The following settings and routes describe the original single-process version.
 
 ## Keys
 
