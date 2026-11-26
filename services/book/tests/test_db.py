@@ -1,35 +1,38 @@
+import pymssql
 import pytest
-
-from book.db import SCHEMA_VERSION, get_connection, get_schema_version, init_db
-
-EXPECTED_TABLES = {"bets"}
-
-
-def table_names(conn):
-    rows = conn.execute(
-        "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'"
-    ).fetchall()
-    return {row["name"] for row in rows}
+from book.db import get_connection
+from book.migrate import init_db
+from book.repo import query
 
 
-def test_fresh_db_gets_version_1_and_bets(tmp_db):
-    conn = get_connection()
-    assert get_schema_version(conn) == SCHEMA_VERSION == 1
-    assert table_names(conn) == EXPECTED_TABLES
-    conn.close()
+def test_fresh_db_has_book_tables_and_migration_record(tmp_db):
+    with get_connection() as conn:
+        tables = query(conn, "SELECT name FROM sys.tables").fetchall()
+        assert {row["name"] for row in tables} == {
+            "bets", "intel_cache", "schema_migrations"
+        }
+        assert query(conn, "SELECT version FROM schema_migrations").fetchall() == [{"version": 1}]
 
 
-def test_second_init_is_a_no_op(tmp_db):
+def test_second_init_preserves_the_original_migration_record(tmp_db):
+    with get_connection() as conn:
+        before = query(conn, "SELECT * FROM schema_migrations").fetchall()
     init_db()
-    conn = get_connection()
-    assert get_schema_version(conn) == 1
-    assert table_names(conn) == EXPECTED_TABLES
-    conn.close()
+    with get_connection() as conn:
+        assert query(conn, "SELECT * FROM schema_migrations").fetchall() == before
 
 
-def test_wrong_version_raises(tmp_db):
-    conn = get_connection()
-    conn.execute("PRAGMA user_version = 2")
-    conn.close()
-    with pytest.raises(RuntimeError, match="v2, app expects v1"):
+def test_failed_migration_rolls_back_and_can_be_retried(tmp_db, tmp_path, monkeypatch):
+    monkeypatch.setattr("book.migrate.MIGRATIONS", tmp_path)
+    migration = tmp_path / "002_test.sql"
+    create = "CREATE TABLE migration_probe (id INT PRIMARY KEY);"
+    migration.write_text(create + " THROW 50001, 'test failure', 1;")
+    with pytest.raises(pymssql.DatabaseError):
         init_db()
+    with get_connection() as conn:
+        assert query(conn, "SELECT name FROM sys.tables WHERE name='migration_probe'").fetchone() is None
+        assert query(conn, "SELECT version FROM schema_migrations WHERE version=2").fetchone() is None
+    migration.write_text(create)
+    init_db()
+    with get_connection() as conn:
+        assert query(conn, "SELECT version FROM schema_migrations WHERE version=2").fetchone()

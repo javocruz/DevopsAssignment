@@ -1,26 +1,32 @@
 import logging
 import os
-import sqlite3
 import sys
 import time
 import uuid
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 import book.db as database
+import pymssql
 import uvicorn
+from book.config import get_settings
+from book.migrate import init_db
+from book.routes import router as book_router
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.base import BaseHTTPMiddleware
 
-from book.config import get_settings
-from book.db import init_db
-from book.routes import router as book_router
-
 access_log = logging.getLogger("edgebook.access")
 
-app = FastAPI(title="Edgebook Book")
+@asynccontextmanager
+async def lifespan(_app):
+    init_db()
+    yield
+
+
+app = FastAPI(title="Edgebook Book", lifespan=lifespan)
 app.include_router(book_router)
 app.mount(
     "/static",
@@ -69,11 +75,13 @@ def health():
     try:
         conn = database.get_connection()
         try:
-            conn.execute("SELECT 1").fetchone()
-            conn.execute("UPDATE bets SET id = id WHERE 0")
+            cursor = conn.cursor()
+            cursor.execute("SELECT TOP (1) id FROM bets")
+            cursor.fetchone()
+            cursor.execute("UPDATE bets SET status = status WHERE 1 = 0")
         finally:
             conn.close()
-    except sqlite3.Error:
+    except (pymssql.Error, ValueError):
         return JSONResponse(
             status_code=503,
             content={"status": "down", "db": "down", "version": version},
@@ -85,7 +93,6 @@ def main():
     settings = get_settings()
     logging.basicConfig(stream=sys.stdout, level=settings.log_level)
     logging.getLogger("httpx").setLevel(logging.WARNING)
-    init_db()
     uvicorn.run(app, host="0.0.0.0", port=settings.port)
 
 

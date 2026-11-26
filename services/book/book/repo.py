@@ -1,26 +1,41 @@
 import logging
 
+import pymssql
+
 from book.settlement import settle_bet
 from book.strategy import compute_edge, entry_price, pick_side, should_bet, size_stake
 
 logger = logging.getLogger(__name__)
 
 
+def query(conn, sql, params=()):
+    cursor = conn.cursor()
+    cursor.execute(sql, params)
+    return cursor
+
+
 # estimate_id is UNIQUE, so a second auto-bet inserts nothing.
 def insert_open_bet(conn, estimate, side, price, stake, shares, now):
-    conn.execute(
-        """
-        INSERT OR IGNORE INTO bets (
-            estimate_id, market_id, decider, context_level, side,
-            entry_price, stake, shares, status, placed_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'open', ?)
-        """,
-        (
-            estimate.estimate_id, estimate.market_id, estimate.decider,
-            estimate.context_level, side, price, stake, shares, now,
-        ),
-    )
-    inserted = conn.execute("SELECT changes()").fetchone()[0]
+    try:
+        cursor = query(conn,
+            """
+            INSERT INTO bets (
+                estimate_id, market_id, decider, context_level, side,
+                entry_price, stake, shares, status, placed_at
+            ) SELECT %s, %s, %s, %s, %s, %s, %s, %s, 'open', %s
+            WHERE NOT EXISTS (SELECT 1 FROM bets WITH (UPDLOCK, HOLDLOCK) WHERE estimate_id = %s)
+            """,
+            (
+                estimate.estimate_id, estimate.market_id, estimate.decider,
+                estimate.context_level, side, price, stake, shares, now, estimate.estimate_id,
+            ),
+        )
+    except pymssql.IntegrityError as exc:
+        conn.rollback()
+        if exc.args[0] in (2601, 2627):
+            return False
+        raise
+    inserted = cursor.rowcount
     conn.commit()
     return inserted == 1
 
@@ -48,6 +63,7 @@ def place_bets(conn, estimates, settings, now):
         # One bad estimate is logged and skipped, never crashes the batch.
         # Only the error type is logged, so a leaky message can't print a key.
         except Exception as error:
+            conn.rollback()
             logger.warning("Bet failed for %s: %s", estimate.market_id, type(error).__name__)
             failed.append({"market_id": estimate.market_id, "reason": type(error).__name__})
 
@@ -55,7 +71,7 @@ def place_bets(conn, estimates, settings, now):
 
 
 def list_open_bets(conn):
-    rows = conn.execute(
+    rows = query(conn,
         "SELECT * FROM bets WHERE status = 'open' ORDER BY id"
     ).fetchall()
     return [dict(row) for row in rows]
@@ -77,17 +93,20 @@ def settle_bets(conn, resolutions, now):
             status, pnl = settle_bet(
                 bet["side"], bet["stake"], bet["entry_price"], resolution.outcome
             )
-            conn.execute(
+            cursor = query(conn,
                 """
                 UPDATE bets
-                SET status = ?, pnl = ?, settled_at = ?
-                WHERE id = ? AND status = 'open'
+                SET status = %s, pnl = %s, settled_at = %s
+                WHERE id = %s AND status = 'open'
                 """,
                 (status, pnl, now, bet["id"]),
             )
+            changed = cursor.rowcount
             conn.commit()
-            processed += 1
+            processed += changed
+            skipped += 1 - changed
         except Exception as error:
+            conn.rollback()
             logger.warning("Settle failed for %s: %s", bet["market_id"], type(error).__name__)
             failed.append({"market_id": bet["market_id"], "reason": type(error).__name__})
 
@@ -95,13 +114,13 @@ def settle_bets(conn, resolutions, now):
 
 
 def list_bets(conn):
-    rows = conn.execute("SELECT * FROM bets ORDER BY id").fetchall()
+    rows = query(conn, "SELECT * FROM bets ORDER BY id").fetchall()
     return [dict(row) for row in rows]
 
 
 # Open bets have a null pnl, so they are left out of the sum.
 def total_pnl(conn):
-    rows = conn.execute("SELECT pnl FROM bets WHERE pnl IS NOT NULL").fetchall()
+    rows = query(conn, "SELECT pnl FROM bets WHERE pnl IS NOT NULL").fetchall()
     if not rows:
         return 0.0
     return round(sum(row["pnl"] for row in rows), 2)

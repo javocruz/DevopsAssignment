@@ -1,66 +1,36 @@
-import sqlite3
-from pathlib import Path
+import time
 
-from book.config import get_settings
+import pymssql
 
-SCHEMA_VERSION = 1
-
-SCHEMA_SQL = """
-CREATE TABLE bets (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    estimate_id INTEGER NOT NULL UNIQUE,
-    market_id TEXT NOT NULL,
-    decider TEXT NOT NULL,
-    context_level TEXT NOT NULL,
-    side TEXT NOT NULL,
-    entry_price REAL NOT NULL,
-    stake REAL NOT NULL,
-    shares REAL NOT NULL,
-    status TEXT NOT NULL,
-    pnl REAL,
-    placed_at TEXT NOT NULL,
-    settled_at TEXT
-);
-"""
+from book.config import database_options, get_settings
 
 
-def db_path():
-    return Path(get_settings().data_dir) / "book.db"
+def retry_database(operation):
+    deadline = time.monotonic() + 90
+    delay = 1
+    while True:
+        try:
+            return operation()
+        except pymssql.OperationalError as exc:
+            remaining = deadline - time.monotonic()
+            if exc.args[0] not in (20002, 20003, 20006, 20009, 20017, 40613) or remaining <= 0:
+                raise
+            time.sleep(min(delay, remaining))
+            delay = min(delay * 2, 16)
+
+
+def connect():
+    options = database_options(get_settings().database_url)
+    return pymssql.connect(**options, as_dict=True, login_timeout=5, encryption="require")
 
 
 def get_connection():
-    conn = sqlite3.connect(db_path())
-    conn.row_factory = sqlite3.Row
-    conn.execute("PRAGMA foreign_keys=ON")
-    conn.execute("PRAGMA journal_mode=WAL")
-    return conn
+    return retry_database(connect)
 
 
 def get_db():
     conn = get_connection()
     try:
         yield conn
-    finally:
-        conn.close()
-
-
-def get_schema_version(conn):
-    return conn.execute("PRAGMA user_version").fetchone()[0]
-
-
-def init_db():
-    Path(get_settings().data_dir).mkdir(parents=True, exist_ok=True)
-    conn = get_connection()
-    try:
-        version = get_schema_version(conn)
-        if version == 0:
-            conn.executescript(SCHEMA_SQL)
-            conn.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
-            conn.commit()
-        elif version != SCHEMA_VERSION:
-            raise RuntimeError(
-                f"DB schema is v{version}, app expects v{SCHEMA_VERSION}. "
-                "Delete DATA_DIR/book.db or migrate."
-            )
     finally:
         conn.close()

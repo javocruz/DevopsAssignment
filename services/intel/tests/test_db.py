@@ -1,8 +1,8 @@
 import pymssql
 import pytest
 from intel.db import get_connection
+from intel.migrate import init_db
 from intel.repo import query
-from migrate import init_db
 
 
 def test_fresh_db_has_intel_tables_and_migration_record(tmp_db):
@@ -23,7 +23,7 @@ def test_second_init_preserves_the_original_migration_record(tmp_db):
 
 
 def test_failed_migration_rolls_back_and_can_be_retried(tmp_db, tmp_path, monkeypatch):
-    monkeypatch.setattr("migrate.MIGRATIONS", tmp_path)
+    monkeypatch.setattr("intel.migrate.MIGRATIONS", tmp_path)
     migration = tmp_path / "002_test.sql"
     create = "CREATE TABLE migration_probe (id INT PRIMARY KEY);"
     migration.write_text(create + " THROW 50001, 'test failure', 1;")

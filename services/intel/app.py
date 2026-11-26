@@ -12,8 +12,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from intel.config import get_settings
+from intel.migrate import init_db
 from intel.routes import router as intel_router
-from migrate import init_db
 from starlette.middleware.base import BaseHTTPMiddleware
 
 access_log = logging.getLogger("edgebook.access")
