@@ -1,48 +1,76 @@
+import pymssql
+
 from intel.contracts import Estimate, Resolution
 
 
-# INSERT OR IGNORE plus the UNIQUE keys make every save idempotent:
-# syncing the same markets twice changes nothing the second time.
+def query(conn, sql, params=()):
+    cursor = conn.cursor()
+    cursor.execute(sql, params)
+    return cursor
+
+
+def insert_once(conn, sql, params):
+    try:
+        return query(conn, sql, params).rowcount
+    except pymssql.IntegrityError as exc:
+        if exc.args[0] in (2601, 2627):
+            return 0
+        raise
+
+
 def save_markets(conn, rows):
+    inserted = 0
     for row in rows:
-        conn.execute(
+        inserted += insert_once(
+            conn,
             """
-            INSERT OR IGNORE INTO markets
+            INSERT INTO markets
                 (id, question, rules, category, end_date, news_query,
                  analyst_notes, source, status, outcome)
-            VALUES (?, ?, ?, ?, ?, ?, NULL, ?, ?, ?)
+            SELECT %s, %s, %s, %s, %s, %s, NULL, %s, %s, %s
+            WHERE NOT EXISTS (
+                SELECT 1 FROM markets WITH (UPDLOCK, HOLDLOCK)
+                WHERE id = %s
+            )
             """,
             (
                 row["id"], row["question"], row["rules"], row["category"],
                 row["end_date"], row["news_query"],
                 row.get("source", "fixture"), row["status"], row["outcome"],
+                row["id"],
             ),
         )
-        conn.execute(
+        insert_once(
+            conn,
             """
-            INSERT OR IGNORE INTO price_snapshots (market_id, yes_price, captured_at)
-            VALUES (?, ?, ?)
+            INSERT INTO price_snapshots (market_id, yes_price, captured_at)
+            SELECT %s, %s, %s
+            WHERE NOT EXISTS (
+                SELECT 1 FROM price_snapshots WITH (UPDLOCK, HOLDLOCK)
+                WHERE market_id = %s AND captured_at = %s
+            )
             """,
-            (row["id"], row["yes_price"], row["captured_at"]),
+            (row["id"], row["yes_price"], row["captured_at"], row["id"], row["captured_at"]),
         )
     conn.commit()
+    return inserted
 
 
 def list_markets(conn):
-    return conn.execute("SELECT * FROM markets ORDER BY id").fetchall()
+    return query(conn, "SELECT * FROM markets ORDER BY id").fetchall()
 
 
 def get_market(conn, market_id):
-    return conn.execute("SELECT * FROM markets WHERE id = ?", (market_id,)).fetchone()
+    return query(conn, "SELECT * FROM markets WHERE id = %s", (market_id,)).fetchone()
 
 
 def latest_snapshot(conn, market_id):
-    return conn.execute(
+    return query(
+        conn,
         """
-        SELECT * FROM price_snapshots
-        WHERE market_id = ?
+        SELECT TOP (1) * FROM price_snapshots
+        WHERE market_id = %s
         ORDER BY captured_at DESC
-        LIMIT 1
         """,
         (market_id,),
     ).fetchone()
@@ -52,15 +80,21 @@ def latest_snapshot(conn, market_id):
 # twice and a re-run costs no API calls.
 def save_news_items(conn, market_id, items, fetched_at):
     for item in items:
-        conn.execute(
+        insert_once(
+            conn,
             """
-            INSERT OR IGNORE INTO news_items
+            INSERT INTO news_items
                 (market_id, title, description, source, url, published_at, fetched_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            SELECT %s, %s, %s, %s, %s, %s, %s
+            WHERE NOT EXISTS (
+                SELECT 1 FROM news_items WITH (UPDLOCK, HOLDLOCK)
+                WHERE market_id = %s AND url_hash = HASHBYTES('SHA2_256', CONVERT(NVARCHAR(MAX), %s))
+            )
             """,
             (
                 market_id, item["title"], item.get("description"),
                 item.get("source"), item["url"], item["published_at"], fetched_at,
+                market_id, item["url"],
             ),
         )
     conn.commit()
@@ -68,16 +102,16 @@ def save_news_items(conn, market_id, items, fetched_at):
 
 # One query for the whole batch instead of one COUNT per market.
 def market_ids_with_news(conn):
-    rows = conn.execute("SELECT DISTINCT market_id FROM news_items").fetchall()
+    rows = query(conn, "SELECT DISTINCT market_id FROM news_items").fetchall()
     return {row["market_id"] for row in rows}
 
 
-
 def list_news_items(conn, market_id):
-    rows = conn.execute(
+    rows = query(
+        conn,
         """
         SELECT title, description, published_at FROM news_items
-        WHERE market_id = ?
+        WHERE market_id = %s
         """,
         (market_id,),
     ).fetchall()
@@ -85,10 +119,11 @@ def list_news_items(conn, market_id):
 
 
 def estimate_exists(conn, market_id, snapshot_id, decider_name, context_level):
-    row = conn.execute(
+    row = query(
+        conn,
         """
-        SELECT 1 FROM estimates
-        WHERE market_id = ? AND snapshot_id = ? AND decider = ? AND context_level = ?
+        SELECT id FROM estimates
+        WHERE market_id = %s AND snapshot_id = %s AND decider = %s AND context_level = %s
         """,
         (market_id, snapshot_id, decider_name, context_level),
     ).fetchone()
@@ -99,17 +134,23 @@ def estimate_exists(conn, market_id, snapshot_id, decider_name, context_level):
 # save for the same key a no-op.
 def save_estimate(conn, market_id, snapshot_id, decider_name, context_level,
                   decision, state_json, created_at):
-    conn.execute(
+    insert_once(
+        conn,
         """
-        INSERT OR IGNORE INTO estimates
+        INSERT INTO estimates
             (market_id, snapshot_id, decider, context_level, jev_prob,
              info_score, confidence, category, state_json, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+        WHERE NOT EXISTS (
+            SELECT 1 FROM estimates WITH (UPDLOCK, HOLDLOCK)
+            WHERE market_id = %s AND snapshot_id = %s AND decider = %s AND context_level = %s
+        )
         """,
         (
             market_id, snapshot_id, decider_name, context_level, decision.jev_prob,
             decision.info_score, decision.confidence, decision.category,
             state_json, created_at,
+            market_id, snapshot_id, decider_name, context_level,
         ),
     )
     conn.commit()
@@ -118,7 +159,8 @@ def save_estimate(conn, market_id, snapshot_id, decider_name, context_level,
 # market_price is the snapshot the estimate was made at, not the latest one,
 # so Book compares Jev against the price he could actually have bet on.
 def list_estimate_records(conn):
-    rows = conn.execute(
+    rows = query(
+        conn,
         """
         SELECT e.id, e.market_id, m.question, s.yes_price, e.jev_prob,
                e.info_score, e.confidence, e.decider, e.context_level, e.created_at
@@ -146,7 +188,8 @@ def list_estimate_records(conn):
 
 
 def get_estimate_detail(conn, estimate_id):
-    return conn.execute(
+    return query(
+        conn,
         """
         SELECT e.id, e.market_id, m.question, s.yes_price, e.jev_prob,
                e.info_score, e.confidence, e.decider, e.context_level,
@@ -154,7 +197,7 @@ def get_estimate_detail(conn, estimate_id):
         FROM estimates e
         JOIN markets m ON m.id = e.market_id
         JOIN price_snapshots s ON s.id = e.snapshot_id
-        WHERE e.id = ?
+        WHERE e.id = %s
         """,
         (estimate_id,),
     ).fetchone()
@@ -162,7 +205,8 @@ def get_estimate_detail(conn, estimate_id):
 
 # markets has no resolved_at column, so end_date stands in for it.
 def list_resolutions(conn):
-    rows = conn.execute(
+    rows = query(
+        conn,
         """
         SELECT id, outcome, end_date FROM markets
         WHERE outcome IS NOT NULL

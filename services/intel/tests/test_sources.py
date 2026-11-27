@@ -2,9 +2,8 @@ import json
 from pathlib import Path
 
 import httpx
-
 from intel.db import get_connection
-from intel.repo import latest_snapshot, list_markets, save_markets
+from intel.repo import latest_snapshot, list_markets, query, save_markets
 from intel.sources import FixtureSource, PolymarketSource, parse_gamma_market
 
 GAMMA_SAMPLE = json.loads((Path(__file__).parent / "data" / "gamma_sample.json").read_text())
@@ -40,7 +39,7 @@ def test_saving_twice_does_not_duplicate(tmp_db):
     save_markets(conn, rows)
     save_markets(conn, rows)
     assert len(list_markets(conn)) == len(rows)
-    snapshots = conn.execute("SELECT COUNT(*) FROM price_snapshots").fetchone()[0]
+    snapshots = query(conn, "SELECT COUNT(*) AS total FROM price_snapshots").fetchone()["total"]
     assert snapshots == len(rows)
     conn.close()
 
@@ -94,3 +93,17 @@ def test_timeout_returns_summary_without_crashing():
     result = source.fetch()
     assert result["rows"] == []
     assert result["failed"] == [{"market_id": None, "reason": "TimeoutException"}]
+
+
+def test_repeat_sync_counts_only_new_markets(client):
+    assert client.post("/markets/sync").json()["processed"] == len(FixtureSource().fetch())
+    assert client.post("/markets/sync").json()["processed"] == 0
+
+
+def test_existing_market_can_receive_a_new_price_snapshot(tmp_db):
+    row = FixtureSource().fetch()[0]
+    with get_connection() as conn:
+        assert save_markets(conn, [row]) == 1
+        newer = dict(row, captured_at="2099-01-01T00:00:00Z", yes_price=0.75)
+        assert save_markets(conn, [newer]) == 0
+        assert latest_snapshot(conn, row["id"])["yes_price"] == 0.75

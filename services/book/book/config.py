@@ -1,5 +1,6 @@
 import os
 from dataclasses import dataclass
+from urllib.parse import unquote, urlsplit
 
 MARKET_SOURCES = ("fixture", "polymarket")
 NEWS_SOURCES = ("none", "fixture", "thenewsapi")
@@ -9,7 +10,7 @@ DECIDERS = ("stub", "jev")
 @dataclass(frozen=True)
 class Settings:
     port: int
-    data_dir: str
+    database_url: str
     log_level: str
     admin_token: str
     market_source: str
@@ -80,7 +81,7 @@ def read_threshold(name, default):
 def get_settings():
     return Settings(
         port=read_int("PORT", 8000),
-        data_dir=read_str("DATA_DIR", "./data"),
+        database_url=read_str("DATABASE_URL", ""),
         log_level=read_str("LOG_LEVEL", "INFO"),
         admin_token=read_str("ADMIN_TOKEN", ""),
         market_source=read_choice("MARKET_SOURCE", "fixture", MARKET_SOURCES),
@@ -103,3 +104,17 @@ def get_settings():
         intel_url=read_str("INTEL_URL", "http://127.0.0.1:8001"),
         intel_timeout_s=read_float("INTEL_TIMEOUT_S", 10),
     )
+
+
+def database_options(url):
+    parsed = urlsplit(url)
+    if (parsed.scheme != "mssql" or not parsed.hostname or not parsed.username
+            or not parsed.password or not parsed.path.strip("/")):
+        raise ValueError("DATABASE_URL must specify a SQL Server, login and database")
+    return {
+        "server": parsed.hostname,
+        "port": parsed.port or 1433,
+        "user": unquote(parsed.username),
+        "password": unquote(parsed.password),
+        "database": unquote(parsed.path[1:]),
+    }

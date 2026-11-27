@@ -1,5 +1,6 @@
 import logging
-import sqlite3
+
+import pymssql
 
 
 def test_health_ok_logs_method_path_status_and_request_id(book_client, caplog):
@@ -14,7 +15,7 @@ def test_health_ok_logs_method_path_status_and_request_id(book_client, caplog):
 
 def test_health_is_503_when_the_database_cannot_be_opened(book_client, monkeypatch):
     def broken():
-        raise sqlite3.OperationalError("cannot open")
+        raise pymssql.OperationalError("cannot open")
 
     monkeypatch.setattr("book.db.get_connection", broken)
     response = book_client.get("/health")

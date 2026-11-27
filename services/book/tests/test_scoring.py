@@ -1,7 +1,7 @@
 from book.scoring import brier_score, calibration_buckets
 from intel.db import get_connection
 from intel.decider import Decision
-from intel.repo import save_estimate, save_markets
+from intel.repo import query, save_estimate, save_markets
 
 
 def test_brier_example_rounds_to_four_decimals():
@@ -36,8 +36,8 @@ def market(market_id, yes_price, outcome):
 
 
 def save_one_estimate(conn, market_id, decider_name, context_level, jev_prob):
-    snapshot_id = conn.execute(
-        "SELECT id FROM price_snapshots WHERE market_id = ?", (market_id,)
+    snapshot_id = query(conn,
+        "SELECT id FROM price_snapshots WHERE market_id = %s", (market_id,)
     ).fetchone()["id"]
     save_estimate(
         conn, market_id, snapshot_id, decider_name, context_level,

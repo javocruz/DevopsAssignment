@@ -1,11 +1,12 @@
 import importlib.util
+from dataclasses import replace
 from pathlib import Path
 
 import httpx
 import pytest
+from book.config import get_settings
+from book.migrate import init_db
 from fastapi.testclient import TestClient
-
-from book.db import init_db
 
 SERVICE = Path(__file__).resolve().parents[1]
 INTEL = SERVICE.parent / "intel"
@@ -19,18 +20,17 @@ def load_app(root, name):
 
 
 @pytest.fixture
-def tmp_db(tmp_path, monkeypatch):
-    monkeypatch.setenv("DATA_DIR", str(tmp_path))
-    init_db()
-    return tmp_path
+def tmp_db(fresh_database, monkeypatch):
+    with fresh_database("book") as url:
+        # The two in-process apps normally get separate container environments.
+        settings = replace(get_settings(), database_url=url)
+        monkeypatch.setattr("book.db.get_settings", lambda: settings)
+        init_db()
+        yield url
 
 
 @pytest.fixture
-def apps(tmp_path, monkeypatch):
-    monkeypatch.setenv("DATA_DIR", str(tmp_path))
-    from intel.db import init_db as init_intel
-    init_intel()
-    init_db()
+def apps(tmp_db, intel_test_db):
     intel = TestClient(load_app(INTEL, "intel_asgi"))
     book = TestClient(load_app(SERVICE, "book_asgi"))
     return intel, book
